@@ -614,7 +614,7 @@
                                 android:nextFocusUp="@id/special_junk_i5_text"
                                 android:nextFocusDown="@id/set_excluded_applications"
                                 android:nextFocusForward="@id/set_excluded_applications"
-                                android:text="@={config.interface.imitateProtocol}"
+                                app:dropdownValue="@={config.interface.imitateProtocol}"
                                 app:simpleItems="@array/imitate_protocol_values" />
                         </com.google.android.material.textfield.TextInputLayout>
 
