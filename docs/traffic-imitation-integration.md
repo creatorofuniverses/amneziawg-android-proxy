@@ -8,17 +8,23 @@ config key through to the UAPI string.
 ## What was changed
 
 ### 1. Build wiring (required for all tiers)
-`tunnel/tools/libwg-go/go.mod` — point the embedded core at the local fork (same module
-path, so a `replace` is enough):
+The fork is vendored as a **git submodule** at `tunnel/tools/amneziawg-go-proxy` (pinned to a
+commit), and `tunnel/tools/libwg-go/go.mod` points the embedded core at it. The fork keeps the
+upstream module path (`module github.com/amnezia-vpn/amneziawg-go`), so a `replace` is enough:
 
 ```
-replace github.com/amnezia-vpn/amneziawg-go => ../../../../amneziawg-go-proxy
+replace github.com/amnezia-vpn/amneziawg-go => ../amneziawg-go-proxy
 ```
 
 `go mod tidy` adds **no** new dependencies — the imitation code uses Go std crypto only.
 
-> **Before a release APK:** push `amneziawg-go-proxy` and replace the local-path `replace`
-> with a pinned tag (`require ...@<tag>`), so CI builds don't depend on a local checkout.
+> A *remote* `replace => github.com/.../amneziawg-go-proxy v…` does **not** work: Go rejects
+> the module-path mismatch (the fork's go.mod still declares the upstream path). The submodule
+> keeps the path intact (clean upstream rebases) while pinning an exact commit.
+
+**Clone / CI:** `git submodule update --init --recursive` before building (same as the existing
+`amneziawg-tools` / `elf-cleaner` submodules). **Updating the fork:** push to the fork, then
+`cd tunnel/tools/amneziawg-go-proxy && git pull`, and commit the bumped submodule pointer.
 
 ### 2. Config key `imitate_protocol` (Tiers 1 + 2)
 `tunnel/.../config/Interface.java` + `BadConfigException.java` — a new optional interface
