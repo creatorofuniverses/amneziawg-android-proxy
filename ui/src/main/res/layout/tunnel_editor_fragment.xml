@@ -589,9 +589,33 @@
                                 android:imeOptions="actionDone"
                                 android:inputType="textNoSuggestions"
                                 android:nextFocusUp="@id/special_junk_i4_text"
+                                android:nextFocusDown="@id/imitate_protocol_text"
+                                android:nextFocusForward="@id/imitate_protocol_text"
+                                android:text="@={config.interface.specialJunkI5}" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/imitate_protocol_layout"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:hint="@string/imitate_protocol"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/special_junk_i5_layout">
+
+                            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                                android:id="@+id/imitate_protocol_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:imeOptions="actionDone"
+                                android:inputType="none"
+                                android:nextFocusUp="@id/special_junk_i5_text"
                                 android:nextFocusDown="@id/set_excluded_applications"
                                 android:nextFocusForward="@id/set_excluded_applications"
-                                android:text="@={config.interface.specialJunkI5}" />
+                                android:text="@={config.interface.imitateProtocol}"
+                                app:simpleItems="@array/imitate_protocol_values" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.button.MaterialButton
@@ -600,7 +624,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:nextFocusUp="@id/special_junk_i5_text"
+                            android:nextFocusUp="@id/imitate_protocol_text"
                             android:nextFocusDown="@id/peers_layout"
                             android:nextFocusForward="@id/peers_layout"
                             android:onClick="@{fragment::onRequestSetExcludedIncludedApplications}"
@@ -609,7 +633,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/special_junk_i5_layout"
+                            app:layout_constraintTop_toBottomOf="@id/imitate_protocol_layout"
                             app:rippleColor="?attr/colorSecondary"
                             tools:text="4 excluded applications" />
                     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Values are the literal config/UAPI tokens for imitate_protocol; not translatable. -->
+    <string-array name="imitate_protocol_values" translatable="false">
+        <item>none</item>
+        <item>quic</item>
+        <item>dns</item>
+        <item>stun</item>
+        <item>sip</item>
+    </string-array>
+</resources>

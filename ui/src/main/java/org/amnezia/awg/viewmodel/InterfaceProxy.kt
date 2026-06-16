@@ -166,6 +166,13 @@ class InterfaceProxy : BaseObservable, Parcelable {
         }
 
     @get:Bindable
+    var imitateProtocol: String = ""
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.imitateProtocol)
+        }
+
+    @get:Bindable
     var privateKey: String = ""
         set(value) {
             field = value
@@ -204,6 +211,7 @@ class InterfaceProxy : BaseObservable, Parcelable {
         specialJunkI3 = parcel.readString() ?: ""
         specialJunkI4 = parcel.readString() ?: ""
         specialJunkI5 = parcel.readString() ?: ""
+        imitateProtocol = parcel.readString() ?: ""
         privateKey = parcel.readString() ?: ""
     }
 
@@ -231,6 +239,7 @@ class InterfaceProxy : BaseObservable, Parcelable {
         specialJunkI3 = other.specialJunkI3.orElse("")
         specialJunkI4 = other.specialJunkI4.orElse("")
         specialJunkI5 = other.specialJunkI5.orElse("")
+        imitateProtocol = other.imitateProtocol.orElse("")
         val keyPair = other.keyPair
         privateKey = keyPair.privateKey.toBase64()
     }
@@ -271,6 +280,7 @@ class InterfaceProxy : BaseObservable, Parcelable {
         if (specialJunkI3.isNotEmpty()) builder.parseSpecialJunkI3(specialJunkI3)
         if (specialJunkI4.isNotEmpty()) builder.parseSpecialJunkI4(specialJunkI4)
         if (specialJunkI5.isNotEmpty()) builder.parseSpecialJunkI5(specialJunkI5)
+        if (imitateProtocol.isNotEmpty()) builder.parseImitateProtocol(imitateProtocol)
         if (privateKey.isNotEmpty()) builder.parsePrivateKey(privateKey)
         return builder.build()
     }
@@ -298,6 +308,7 @@ class InterfaceProxy : BaseObservable, Parcelable {
         dest.writeString(specialJunkI3)
         dest.writeString(specialJunkI4)
         dest.writeString(specialJunkI5)
+        dest.writeString(imitateProtocol)
         dest.writeString(privateKey)
     }
 

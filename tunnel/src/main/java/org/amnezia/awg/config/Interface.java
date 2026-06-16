@@ -62,6 +62,7 @@ public final class Interface {
     private final Optional<String> specialJunkI3;
     private final Optional<String> specialJunkI4;
     private final Optional<String> specialJunkI5;
+    private final Optional<String> imitateProtocol;
 
     private Interface(final Builder builder) {
         // Defensively copy to ensure immutability even if the Builder is reused.
@@ -89,6 +90,7 @@ public final class Interface {
         specialJunkI3 = builder.specialJunkI3;
         specialJunkI4 = builder.specialJunkI4;
         specialJunkI5 = builder.specialJunkI5;
+        imitateProtocol = builder.imitateProtocol;
     }
 
     /**
@@ -175,6 +177,9 @@ public final class Interface {
                 case "i5":
                     builder.parseSpecialJunkI5(attribute.getValue());
                     break;
+                case "imitateprotocol":
+                    builder.parseImitateProtocol(attribute.getValue());
+                    break;
                 default:
                     throw new BadConfigException(Section.INTERFACE, Location.TOP_LEVEL,
                             Reason.UNKNOWN_ATTRIBUTE, attribute.getKey());
@@ -211,7 +216,8 @@ public final class Interface {
                 && specialJunkI2.equals(other.specialJunkI2)
                 && specialJunkI3.equals(other.specialJunkI3)
                 && specialJunkI4.equals(other.specialJunkI4)
-                && specialJunkI5.equals(other.specialJunkI5);
+                && specialJunkI5.equals(other.specialJunkI5)
+                && imitateProtocol.equals(other.imitateProtocol);
     }
 
     /**
@@ -435,6 +441,15 @@ public final class Interface {
         return specialJunkI5;
     }
 
+    /**
+     * Returns the traffic-imitation protocol used for the AmneziaWG interface.
+     *
+     * @return the imitateProtocol, or {@code Optional.empty()} if none is configured
+     */
+    public Optional<String> getImitateProtocol() {
+        return imitateProtocol;
+    }
+
 
     @Override
     public int hashCode() {
@@ -462,6 +477,7 @@ public final class Interface {
         hash = 31 * hash + specialJunkI3.hashCode();
         hash = 31 * hash + specialJunkI4.hashCode();
         hash = 31 * hash + specialJunkI5.hashCode();
+        hash = 31 * hash + imitateProtocol.hashCode();
         return hash;
     }
 
@@ -517,6 +533,7 @@ public final class Interface {
         specialJunkI3.ifPresent(i3 -> sb.append("I3 = ").append(i3).append('\n'));
         specialJunkI4.ifPresent(i4 -> sb.append("I4 = ").append(i4).append('\n'));
         specialJunkI5.ifPresent(i5 -> sb.append("I5 = ").append(i5).append('\n'));
+        imitateProtocol.ifPresent(ip -> sb.append("ImitateProtocol = ").append(ip).append('\n'));
         sb.append("PrivateKey = ").append(keyPair.getPrivateKey().toBase64()).append('\n');
         return sb.toString();
     }
@@ -547,6 +564,7 @@ public final class Interface {
         specialJunkI3.ifPresent(i3 -> sb.append("i3=").append(i3).append('\n'));
         specialJunkI4.ifPresent(i4 -> sb.append("i4=").append(i4).append('\n'));
         specialJunkI5.ifPresent(i5 -> sb.append("i5=").append(i5).append('\n'));
+        imitateProtocol.ifPresent(ip -> sb.append("imitate_protocol=").append(ip).append('\n'));
         return sb.toString();
     }
 
@@ -600,6 +618,8 @@ public final class Interface {
         private Optional<String> specialJunkI4 = Optional.empty();
         // Defaults to not present.
         private Optional<String> specialJunkI5 = Optional.empty();
+        // Defaults to not present.
+        private Optional<String> imitateProtocol = Optional.empty();
 
 
         public Builder addAddress(final InetNetwork address) {
@@ -1012,6 +1032,31 @@ public final class Interface {
                 this.specialJunkI5 = Optional.empty();
             } else {
                 this.specialJunkI5 = Optional.of(specialJunkI5.trim());
+            }
+            return this;
+        }
+
+        public Builder parseImitateProtocol(final String imitateProtocol) throws BadConfigException {
+            return setImitateProtocol(imitateProtocol);
+        }
+
+        public Builder setImitateProtocol(final String imitateProtocol) throws BadConfigException {
+            if (imitateProtocol == null || imitateProtocol.trim().isEmpty()) {
+                this.imitateProtocol = Optional.empty();
+            } else {
+                final String value = imitateProtocol.trim().toLowerCase(Locale.ROOT);
+                switch (value) {
+                    case "none":
+                    case "quic":
+                    case "dns":
+                    case "stun":
+                    case "sip":
+                        this.imitateProtocol = Optional.of(value);
+                        break;
+                    default:
+                        throw new BadConfigException(Section.INTERFACE, Location.IMITATE_PROTOCOL,
+                                Reason.INVALID_VALUE, imitateProtocol);
+                }
             }
             return this;
         }
