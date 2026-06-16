@@ -4,7 +4,9 @@
  */
 package org.amnezia.awg.databinding
 
+import android.text.Editable
 import android.text.InputFilter
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
@@ -12,8 +14,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
 import androidx.databinding.ObservableList
 import androidx.databinding.ViewDataBinding
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import androidx.databinding.adapters.ListenerUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -167,6 +172,34 @@ object BindingAdapters {
     @BindingAdapter("android:text")
     fun setStringSetText(view: TextView, strings: Iterable<String?>?) {
         view.text = if (strings != null) Attribute.join(strings) else ""
+    }
+
+    /**
+     * Two-way binding for a [MaterialAutoCompleteTextView] used as an exposed-dropdown picker.
+     * Sets the text with filtering disabled ([MaterialAutoCompleteTextView.setText] with
+     * filter = false) so the popup always lists every item instead of being filtered down to
+     * the rows matching the currently selected value.
+     */
+    @JvmStatic
+    @BindingAdapter("dropdownValue")
+    fun setDropdownValue(view: MaterialAutoCompleteTextView, value: String?) {
+        val v = value ?: ""
+        if (v != view.text.toString()) view.setText(v, false)
+    }
+
+    @JvmStatic
+    @InverseBindingAdapter(attribute = "dropdownValue", event = "dropdownValueAttrChanged")
+    fun getDropdownValue(view: MaterialAutoCompleteTextView): String = view.text.toString()
+
+    @JvmStatic
+    @BindingAdapter("dropdownValueAttrChanged")
+    fun setDropdownValueListener(view: MaterialAutoCompleteTextView, listener: InverseBindingListener?) {
+        if (listener == null) return
+        view.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) = listener.onChange()
+        })
     }
 
     @JvmStatic

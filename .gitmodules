@@ -4,3 +4,6 @@
 [submodule "tunnel/tools/elf-cleaner"]
 	path = tunnel/tools/elf-cleaner
 	url = https://github.com/termux/termux-elf-cleaner
+[submodule "tunnel/tools/amneziawg-go-proxy"]
+	path = tunnel/tools/amneziawg-go-proxy
+	url = https://github.com/creatorofuniverses/amneziawg-go-proxy.git

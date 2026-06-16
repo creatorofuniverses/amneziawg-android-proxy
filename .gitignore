@@ -9,7 +9,9 @@
 .cxx/
 Thumbs.db
 build/
+*.aab
 *.apk
+*.idsig
 *.class
 *.dex
 *.iml

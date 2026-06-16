@@ -676,6 +676,33 @@
                         app:constraint_referenced_ids="transport_packet_magic_header_text,special_junk_i1_text,special_junk_i2_text,special_junk_i3_text,special_junk_i4_text,special_junk_i5_text" />
 
                     <TextView
+                        android:id="@+id/imitate_protocol_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:labelFor="@+id/imitate_protocol_text"
+                        android:text="@string/imitate_protocol"
+                        android:visibility="@{!config.interface.imitateProtocol.isPresent() ? android.view.View.GONE : android.view.View.VISIBLE}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/amnezia_barrier" />
+
+                    <TextView
+                        android:id="@+id/imitate_protocol_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/imitate_protocol"
+                        android:nextFocusUp="@id/special_junk_i5_text"
+                        android:nextFocusDown="@id/applications_text"
+                        android:nextFocusForward="@id/applications_text"
+                        android:onClick="@{ClipboardUtils::copyTextView}"
+                        android:text="@{config.interface.imitateProtocol}"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:visibility="@{!config.interface.imitateProtocol.isPresent() ? android.view.View.GONE : android.view.View.VISIBLE}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imitate_protocol_label"
+                        tools:text="quic" />
+
+                    <TextView
                         android:id="@+id/applications_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -683,14 +710,14 @@
                         android:labelFor="@+id/applications_text"
                         android:text="@string/applications"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/amnezia_barrier" />
+                        app:layout_constraintTop_toBottomOf="@+id/imitate_protocol_text" />
 
                     <TextView
                         android:id="@+id/applications_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/applications"
-                        android:nextFocusUp="@id/special_junk_i5_text"
+                        android:nextFocusUp="@id/imitate_protocol_text"
                         android:nextFocusDown="@id/peers_layout"
                         android:nextFocusForward="@id/peers_layout"
                         android:onClick="@{ClipboardUtils::copyTextView}"

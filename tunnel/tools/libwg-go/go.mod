@@ -12,3 +12,8 @@ require (
 	golang.org/x/net v0.44.0 // indirect
 	golang.zx2c4.com/wintun v0.0.0-20230126152724-0fa3db229ce2 // indirect
 )
+
+// Use the amneziawg-go-proxy fork (client-side traffic imitation:
+// imitate_protocol + i1=<q|qinit> builders), pinned via the git submodule at
+// tunnel/tools/amneziawg-go-proxy. Run `git submodule update --init` first.
+replace github.com/amnezia-vpn/amneziawg-go => ../amneziawg-go-proxy
