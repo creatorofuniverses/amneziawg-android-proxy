@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -15,197 +14,117 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/create_from_file"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/sheet_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:nextFocusDown="@id/create_from_qrcode"
-        android:nextFocusForward="@id/create_from_qrcode"
-        android:orientation="horizontal"
-        android:paddingHorizontal="@dimen/space_lg"
-        android:paddingVertical="@dimen/space_md"
+        android:layout_marginTop="@dimen/space_sm"
+        android:layout_marginBottom="@dimen/space_sm"
+        android:text="@string/add_tunnel_title"
+        android:textAppearance="@style/TextAppearance.Awg.Title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/drag_handle">
+        app:layout_constraintTop_toBottomOf="@id/drag_handle" />
 
-        <FrameLayout
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_icon_well">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_action_open"
-                app:tint="?attr/colorOnPrimaryContainer" />
-        </FrameLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_lg"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/create_from_file"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="?attr/colorOnSurface" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_subtitle_file"
-                android:textAppearance="?attr/textAppearanceBodySmall"
-                android:textColor="?attr/colorOnSurfaceVariant" />
-        </LinearLayout>
-    </LinearLayout>
-
+    <!-- 1 · Scan QR -->
     <LinearLayout
         android:id="@+id/create_from_qrcode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:nextFocusUp="@id/create_from_file"
-        android:nextFocusDown="@id/create_empty"
-        android:nextFocusForward="@id/create_empty"
-        android:orientation="horizontal"
-        android:paddingHorizontal="@dimen/space_lg"
-        android:paddingVertical="@dimen/space_md"
+        style="@style/AddTunnelRow"
+        android:nextFocusDown="@id/create_from_file"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/create_from_file">
-
-        <FrameLayout
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_icon_well">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_action_scan_qr_code"
-                app:tint="?attr/colorOnPrimaryContainer" />
+        app:layout_constraintTop_toBottomOf="@id/sheet_title">
+        <FrameLayout style="@style/AddTunnelIconWell">
+            <ImageView style="@style/AddTunnelIcon" android:src="@drawable/ic_action_scan_qr_code" />
         </FrameLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_lg"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/create_from_qr_code"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="?attr/colorOnSurface" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_subtitle_qr"
-                android:textAppearance="?attr/textAppearanceBodySmall"
-                android:textColor="?attr/colorOnSurfaceVariant" />
+        <LinearLayout style="@style/AddTunnelText">
+            <TextView style="@style/AddTunnelTitle" android:text="@string/create_from_qr_code" />
+            <TextView style="@style/AddTunnelSubtitle" android:text="@string/add_subtitle_qr" />
         </LinearLayout>
     </LinearLayout>
 
+    <!-- 2 · Import from file -->
     <LinearLayout
-        android:id="@+id/create_empty"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
+        android:id="@+id/create_from_file"
+        style="@style/AddTunnelRow"
         android:nextFocusUp="@id/create_from_qrcode"
-        android:nextFocusDown="@id/disclaimer"
-        android:nextFocusForward="@id/disclaimer"
-        android:orientation="horizontal"
-        android:paddingHorizontal="@dimen/space_lg"
-        android:paddingVertical="@dimen/space_md"
+        android:nextFocusDown="@id/create_from_paste"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/create_from_qrcode">
-
-        <FrameLayout
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_icon_well">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_action_edit"
-                app:tint="?attr/colorOnPrimaryContainer" />
+        <FrameLayout style="@style/AddTunnelIconWell">
+            <ImageView style="@style/AddTunnelIcon" android:src="@drawable/ic_action_open" />
         </FrameLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_lg"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/create_empty"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="?attr/colorOnSurface" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_subtitle_empty"
-                android:textAppearance="?attr/textAppearanceBodySmall"
-                android:textColor="?attr/colorOnSurfaceVariant" />
+        <LinearLayout style="@style/AddTunnelText">
+            <TextView style="@style/AddTunnelTitle" android:text="@string/create_from_file" />
+            <TextView style="@style/AddTunnelSubtitle" android:text="@string/add_subtitle_file" />
         </LinearLayout>
     </LinearLayout>
 
-    <View
-        android:id="@+id/delimiter"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="@dimen/space_lg"
-        android:layout_marginTop="@dimen/space_sm"
-        android:layout_marginBottom="@dimen/space_md"
-        android:background="?attr/colorOutlineVariant"
+    <!-- 3 · Paste config string (NEW) -->
+    <LinearLayout
+        android:id="@+id/create_from_paste"
+        style="@style/AddTunnelRow"
+        android:nextFocusUp="@id/create_from_file"
+        android:nextFocusDown="@id/create_empty"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/create_empty" />
+        app:layout_constraintTop_toBottomOf="@id/create_from_file">
+        <FrameLayout style="@style/AddTunnelIconWell">
+            <ImageView style="@style/AddTunnelIcon" android:src="@drawable/ic_paste" />
+        </FrameLayout>
+        <LinearLayout style="@style/AddTunnelText">
+            <TextView style="@style/AddTunnelTitle" android:text="@string/add_paste_string" />
+            <TextView style="@style/AddTunnelSubtitle" android:text="@string/add_paste_string_sub" />
+        </LinearLayout>
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/disclaimer"
+    <!-- 4 · Create from scratch -->
+    <LinearLayout
+        android:id="@+id/create_empty"
+        style="@style/AddTunnelRow"
+        android:nextFocusUp="@id/create_from_paste"
+        android:nextFocusDown="@id/trust_warning"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/create_from_paste">
+        <FrameLayout style="@style/AddTunnelIconWell">
+            <ImageView style="@style/AddTunnelIcon" android:src="@drawable/ic_action_edit" />
+        </FrameLayout>
+        <LinearLayout style="@style/AddTunnelText">
+            <TextView style="@style/AddTunnelTitle" android:text="@string/create_empty" />
+            <TextView style="@style/AddTunnelSubtitle" android:text="@string/add_subtitle_empty" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Trust warning: amber triangle + caption, amnezia.org emphasized in code -->
+    <LinearLayout
+        android:id="@+id/trust_warning"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/space_lg"
-        android:focusable="true"
-        android:linksClickable="true"
-        android:nextFocusUp="@id/create_empty"
-        android:text="@string/import_disclaimer"
-        android:textAppearance="?attr/textAppearanceBodySmall"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textColorLink="?android:attr/textColorLink"
+        android:layout_marginTop="@dimen/space_md"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/delimiter" />
+        app:layout_constraintTop_toBottomOf="@id/create_empty">
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginEnd="@dimen/space_sm"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_warning_triangle"
+            app:tint="@color/tunnel_status_connecting" />
+        <TextView
+            android:id="@+id/trust_warning_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/add_trust_warning"
+            android:textAppearance="@style/TextAppearance.Awg.FieldLabel"
+            android:textColor="?attr/colorOnSurfaceVariant" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

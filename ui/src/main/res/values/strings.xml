@@ -240,6 +240,7 @@
     <string name="tunnel_create_error">Unable to create tunnel: %s</string>
     <string name="tunnel_create_success">Successfully created tunnel “%s”</string>
     <string name="tunnel_error_already_exists">Tunnel “%s” already exists</string>
+    <string name="tunnel_error_duplicate_config">This config is already added as “%1$s”.</string>
     <string name="tunnel_error_invalid_name">Invalid name</string>
     <string name="tunnel_list_placeholder">Add a tunnel using the button below</string>
     <string name="tunnel_list_empty_title">No tunnels yet</string>

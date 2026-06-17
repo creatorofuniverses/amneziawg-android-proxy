@@ -1,7 +1,7 @@
 # AmneziaWG config share-string — design
 
 **Date:** 2026-06-17
-**Status:** Design only — **not scheduled for implementation yet** (brainstorm artifact). When ready, run `superpowers:writing-plans` against this doc.
+**Status:** Android app + Python CLI halves **implemented** (codec, CLI, interop vector, refreshed add-sheet, paste screen, deep link) per `docs/superpowers/plans/2026-06-17-config-share-string-import.md`; server-side UI for emitting share-strings remains future work.
 **Scope:** cross-repo — Android app (`amneziawg-android`, Kotlin), server UI (`amnezia-wg2-easy`, Node.js + vanilla-JS/Vue frontend), and optional Python tooling.
 
 ## Problem

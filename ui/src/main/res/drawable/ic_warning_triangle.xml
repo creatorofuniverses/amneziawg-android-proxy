@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ui/src/main/res/drawable/ic_warning_triangle.xml -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <path android:fillColor="#00000000" android:strokeColor="@android:color/white"
+        android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M10.29,3.86 L1.82,18 a2,2 0 0 0 1.71,3 h16.94 a2,2 0 0 0 1.71,-3 L13.71,3.86 a2,2 0 0 0 -3.42,0 z M12,9 v4 M12,17 h0.01" />
+</vector>

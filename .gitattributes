@@ -1,0 +1,4 @@
+# Share-string interop fixtures are byte-pinned: the awg://v1 encoder hashed the
+# exact LF bytes of the .conf, so any CRLF rewrite on checkout breaks decode==conf.
+*.conf text eol=lf
+*.awg text eol=lf

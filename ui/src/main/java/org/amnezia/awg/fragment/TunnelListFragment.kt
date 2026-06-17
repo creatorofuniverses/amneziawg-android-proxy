@@ -28,6 +28,7 @@ import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import org.amnezia.awg.Application
 import org.amnezia.awg.R
+import org.amnezia.awg.activity.PasteConfigActivity
 import org.amnezia.awg.activity.TunnelCreatorActivity
 import org.amnezia.awg.backend.Tunnel
 import org.amnezia.awg.databinding.ObservableKeyedRecyclerViewAdapter.RowConfigurationHandler
@@ -130,6 +131,10 @@ class TunnelListFragment : BaseFragment() {
                             .setBeepEnabled(false)
                             .setPrompt(getString(R.string.qr_code_hint))
                     )
+                }
+
+                AddTunnelsSheet.REQUEST_PASTE -> {
+                    startActivity(Intent(requireActivity(), PasteConfigActivity::class.java))
                 }
             }
         }

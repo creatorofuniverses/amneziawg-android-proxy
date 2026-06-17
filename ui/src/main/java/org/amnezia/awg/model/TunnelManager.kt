@@ -25,6 +25,7 @@ import org.amnezia.awg.databinding.ObservableSortedKeyedArrayList
 import org.amnezia.awg.util.ErrorMessages
 import org.amnezia.awg.util.UserKnobs
 import org.amnezia.awg.util.applicationScope
+import org.amnezia.awg.util.sameTunnelIdentity
 import org.amnezia.awg.config.Config
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -52,12 +53,22 @@ class TunnelManager(private val configStore: ConfigStore) : BaseObservable() {
 
     suspend fun getTunnels(): ObservableSortedKeyedArrayList<String, ObservableTunnel> = tunnels.await()
 
+    suspend fun findMatchingTunnel(config: Config): ObservableTunnel? = withContext(Dispatchers.Main.immediate) {
+        getTunnels().firstOrNull { existing ->
+            val existingConfig = runCatching { existing.getConfigAsync() }.getOrNull() ?: return@firstOrNull false
+            sameTunnelIdentity(existingConfig, config)
+        }
+    }
+
     suspend fun create(name: String, config: Config?): ObservableTunnel = withContext(Dispatchers.Main.immediate) {
         if (Tunnel.isNameInvalid(name))
             throw IllegalArgumentException(context.getString(R.string.tunnel_error_invalid_name))
         if (tunnelMap.containsKey(name))
             throw IllegalArgumentException(context.getString(R.string.tunnel_error_already_exists, name))
-        addToList(name, withContext(Dispatchers.IO) { configStore.create(name, config!!) }, Tunnel.State.DOWN)
+        findMatchingTunnel(config!!)?.let {
+            throw IllegalArgumentException(context.getString(R.string.tunnel_error_duplicate_config, it.name))
+        }
+        addToList(name, withContext(Dispatchers.IO) { configStore.create(name, config) }, Tunnel.State.DOWN)
     }
 
     suspend fun delete(tunnel: ObservableTunnel) = withContext(Dispatchers.Main.immediate) {

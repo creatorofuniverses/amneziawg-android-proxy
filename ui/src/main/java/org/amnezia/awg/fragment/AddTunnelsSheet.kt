@@ -6,7 +6,6 @@ package org.amnezia.awg.fragment
 
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +41,18 @@ class AddTunnelsSheet : BottomSheetDialogFragment() {
             qrcode.isEnabled = false
             qrcode.visibility = View.GONE
         }
-        view.findViewById<TextView>(R.id.disclaimer)?.let { it.movementMethod = LinkMovementMethod.getInstance() }
+        view.findViewById<TextView>(R.id.trust_warning_text)?.let { tv ->
+            val full = getString(R.string.add_trust_warning)
+            val mark = "amnezia.org"
+            val i = full.indexOf(mark)
+            if (i >= 0) {
+                val sp = android.text.SpannableString(full)
+                val onSurface = com.google.android.material.color.MaterialColors.getColor(tv, com.google.android.material.R.attr.colorOnSurface)
+                sp.setSpan(android.text.style.ForegroundColorSpan(onSurface), i, i + mark.length, android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                sp.setSpan(android.text.style.StyleSpan(android.graphics.Typeface.BOLD), i, i + mark.length, android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                tv.text = sp
+            }
+        }
         return view
     }
 
@@ -70,6 +80,10 @@ class AddTunnelsSheet : BottomSheetDialogFragment() {
                     dismiss()
                     onRequestScanQRCode()
                 }
+                dialog.findViewById<View>(R.id.create_from_paste)?.setOnClickListener {
+                    dismiss()
+                    onRequestPasteString()
+                }
             }
         })
         // Let the themed bottom-sheet background (rounded 26dp top, surfaceContainer)
@@ -94,11 +108,16 @@ class AddTunnelsSheet : BottomSheetDialogFragment() {
         setFragmentResult(REQUEST_KEY_NEW_TUNNEL, bundleOf(REQUEST_METHOD to REQUEST_SCAN))
     }
 
+    private fun onRequestPasteString() {
+        setFragmentResult(REQUEST_KEY_NEW_TUNNEL, bundleOf(REQUEST_METHOD to REQUEST_PASTE))
+    }
+
     companion object {
         const val REQUEST_KEY_NEW_TUNNEL = "request_new_tunnel"
         const val REQUEST_METHOD = "request_method"
         const val REQUEST_CREATE = "request_create"
         const val REQUEST_IMPORT = "request_import"
         const val REQUEST_SCAN = "request_scan"
+        const val REQUEST_PASTE = "request_paste"
     }
 }

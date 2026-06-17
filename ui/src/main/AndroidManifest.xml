@@ -88,6 +88,20 @@
             android:parentActivityName=".activity.MainActivity" />
 
         <activity
+            android:name=".activity.PasteConfigActivity"
+            android:exported="true"
+            android:label="@string/paste_title"
+            android:parentActivityName=".activity.MainActivity"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter android:label="@string/paste_title">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="awg" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />

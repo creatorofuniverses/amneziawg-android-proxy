@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Add-tunnel sheet + paste-string screen. -->
+<resources>
+    <string name="add_tunnel_title">Add a tunnel</string>
+    <string name="add_paste_string">Paste config string</string>
+    <string name="add_paste_string_sub">awg:// link or .conf text</string>
+
+    <!-- Security warning (sheet AND paste screen) -->
+    <string name="add_trust_warning">Only add configs from sources you trust — amnezia.org or people you know personally.</string>
+
+    <!-- Paste-string screen -->
+    <string name="paste_title">Paste config string</string>
+    <string name="paste_hint">Paste an encoded config link to decode it into a tunnel.</string>
+    <string name="paste_field_label">Config string</string>
+    <string name="paste_from_clipboard">Paste from clipboard</string>
+    <string name="paste_valid">Valid AmneziaWG link — "%1$s"</string>
+    <string name="paste_invalid">Couldn\'t decode this string. Check you copied the whole link.</string>
+    <string name="paste_duplicate">Already added as “%1$s”</string>
+    <string name="paste_preview">Decoded preview</string>
+    <string name="paste_preview_name">Name</string>
+    <string name="paste_preview_endpoint">Endpoint</string>
+    <string name="paste_preview_obfuscation">Obfuscation</string>
+    <string name="paste_add">Add tunnel</string>
+</resources>
