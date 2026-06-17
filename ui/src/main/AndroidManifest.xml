@@ -79,7 +79,8 @@
         <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/settings"
-            android:parentActivityName=".activity.MainActivity" />
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.Settings" />
 
         <activity
             android:name=".activity.TunnelCreatorActivity"

@@ -18,6 +18,7 @@
         <item name="actionModeStyle">@style/AmneziaWgTheme.ActionMode</item>
         <item name="actionModeCloseDrawable">@drawable/ic_arrow_back</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="preferenceTheme">@style/Awg.PreferenceThemeOverlay</item>
     </style>
 
     <!-- Selection-mode top bar: primaryContainer so it reads as a distinct mode. -->
@@ -31,6 +32,17 @@
 
     <!-- Various additional API-specific features in values-v*/styles.xml -->
     <style name="AppTheme" parent="AppThemeBase" />
+
+    <!-- SettingsActivity supplies its own MaterialToolbar via setSupportActionBar,
+         so it must NOT also receive the decor action bar from the Material3 parent
+         (that combination throws IllegalStateException on create). Scope the
+         no-action-bar flags here so MainActivity keeps its decor action bar. -->
+    <style name="AppTheme.Settings" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 
     <!-- Visual refresh: bump radius 4->16dp, padding 8->16dp, flat tonal surface. -->
     <style name="AmneziaWgTheme.MaterialCardView" parent="Widget.Material3.CardView.Elevated">

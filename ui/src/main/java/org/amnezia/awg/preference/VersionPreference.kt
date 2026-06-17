@@ -8,8 +8,10 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.AttributeSet
+import android.widget.TextView
 import android.widget.Toast
 import androidx.preference.Preference
+import androidx.preference.PreferenceViewHolder
 import org.amnezia.awg.Application
 import org.amnezia.awg.BuildConfig
 import org.amnezia.awg.R
@@ -28,6 +30,12 @@ class VersionPreference(context: Context, attrs: AttributeSet?) : Preference(con
     override fun getSummary() = versionSummary
 
     override fun getTitle() = context.getString(R.string.version_title, BuildConfig.VERSION_NAME)
+
+    override fun onBindViewHolder(holder: PreferenceViewHolder) {
+        super.onBindViewHolder(holder)
+        (holder.findViewById(R.id.version_pill) as? TextView)?.text =
+            context.getString(R.string.version_pill, BuildConfig.VERSION_NAME)
+    }
 
     override fun onClick() {
         val intent = Intent(Intent.ACTION_VIEW)

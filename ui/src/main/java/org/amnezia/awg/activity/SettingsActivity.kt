@@ -29,9 +29,13 @@ import kotlinx.coroutines.withContext
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (supportFragmentManager.findFragmentById(android.R.id.content) == null) {
+        setContentView(R.layout.settings_activity)
+        val toolbar = findViewById<com.google.android.material.appbar.MaterialToolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener { finish() }
+        if (supportFragmentManager.findFragmentById(R.id.settings_fragment_container) == null) {
             supportFragmentManager.commit {
-                add(android.R.id.content, SettingsFragment())
+                add(R.id.settings_fragment_container, SettingsFragment())
             }
         }
     }
@@ -48,17 +52,14 @@ class SettingsActivity : AppCompatActivity() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, key: String?) {
             preferenceManager.preferenceDataStore = PreferencesPreferenceDataStore(lifecycleScope, Application.getPreferencesDataStore())
             addPreferencesFromResource(R.xml.preferences)
-            preferenceScreen.initialExpandedChildrenCount = 5
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || QuickTileService.isAdded) {
                 val quickTile = preferenceManager.findPreference<Preference>("quick_tile")
                 quickTile?.parent?.removePreference(quickTile)
-                --preferenceScreen.initialExpandedChildrenCount
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 val darkTheme = preferenceManager.findPreference<Preference>("dark_theme")
                 darkTheme?.parent?.removePreference(darkTheme)
-                --preferenceScreen.initialExpandedChildrenCount
             }
             if (AdminKnobs.disableConfigExport) {
                 val zipExporter = preferenceManager.findPreference<Preference>("zip_exporter")
@@ -72,11 +73,11 @@ class SettingsActivity : AppCompatActivity() {
             awgQuickOnlyPrefs.forEach { it.isVisible = false }
             lifecycleScope.launch {
                 if (Application.getBackend() is AwgQuickBackend) {
-                    ++preferenceScreen.initialExpandedChildrenCount
                     awgQuickOnlyPrefs.forEach { it.isVisible = true }
                 } else {
                     awgQuickOnlyPrefs.forEach { it.parent?.removePreference(it) }
                 }
+                removeEmptyCategories()
             }
             preferenceManager.findPreference<Preference>("log_viewer")?.setOnPreferenceClickListener {
                 startActivity(Intent(requireContext(), LogViewerActivity::class.java))
@@ -92,10 +93,33 @@ class SettingsActivity : AppCompatActivity() {
                             kernelModuleEnabler?.parent?.removePreference(kernelModuleEnabler)
                         }
                     }
+                    removeEmptyCategories()
                 }
             } else {
                 kernelModuleEnabler?.parent?.removePreference(kernelModuleEnabler)
             }
+        }
+
+        private fun removeEmptyCategories() {
+            val screen = preferenceScreen
+            for (i in screen.preferenceCount - 1 downTo 0) {
+                val pref = screen.getPreference(i)
+                if (pref is androidx.preference.PreferenceCategory && pref.preferenceCount == 0) {
+                    screen.removePreference(pref)
+                }
+            }
+        }
+
+        override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
+            setDivider(null)
+            setDividerHeight(0)
+            listView.clipToPadding = false
+            val pad = (16 * resources.displayMetrics.density).toInt()
+            listView.setPaddingRelative(pad, listView.paddingTop, pad, pad)
+            listView.addItemDecoration(
+                org.amnezia.awg.preference.PreferenceGroupCardDecoration(requireContext())
+            )
         }
     }
 }
