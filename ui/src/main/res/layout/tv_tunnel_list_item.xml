@@ -60,6 +60,7 @@
                 android:id="@+id/tunnel_transfer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_sm"
                 android:textAppearance="?attr/textAppearanceBodyLarge"
                 android:visibility="@{isDeleting ? View.GONE : View.VISIBLE}"
                 app:layout_constraintStart_toStartOf="parent"

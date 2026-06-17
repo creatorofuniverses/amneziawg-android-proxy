@@ -110,6 +110,13 @@ class TunnelEditorFragment : BaseFragment(), MenuProvider {
         menuInflater.inflate(R.menu.config_editor, menu)
     }
 
+    override fun onPrepareMenu(menu: Menu) {
+        val saveItem = menu.findItem(R.id.menu_action_save)
+        saveItem?.actionView?.findViewById<View>(R.id.action_save_button)?.setOnClickListener {
+            onMenuItemSelected(saveItem)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

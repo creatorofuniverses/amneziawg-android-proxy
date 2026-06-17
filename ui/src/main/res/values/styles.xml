@@ -120,4 +120,26 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <!-- App icon shape: 9dp rounded corners for the split-tunnel row (Task 8). -->
+    <style name="ShapeAppearance.Awg.AppIcon" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">9dp</item>
+    </style>
+
+    <!-- Segmented Include/Exclude toggle buttons with filled checked state. -->
+    <style name="Widget.Awg.SegmentedButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:textColor">@color/segmented_button_text</item>
+        <item name="backgroundTint">@color/segmented_button_bg</item>
+    </style>
+
+    <!-- Full-screen dialog theme for the Split-tunnel panel (Task 8). -->
+    <style name="ThemeOverlay_Awg_FullScreenDialog" parent="AppTheme">
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowBackground">?attr/colorSurface</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
 </resources>

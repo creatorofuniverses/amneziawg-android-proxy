@@ -90,7 +90,8 @@
                 android:id="@+id/tunnel_status_row"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="@dimen/space_md"
+                android:layout_marginBottom="@dimen/space_xs"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 

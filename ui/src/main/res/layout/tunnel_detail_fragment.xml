@@ -39,17 +39,24 @@
                 android:id="@+id/connection_summary_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/screen_padding"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/screen_padding"
+                app:cardBackgroundColor="@color/awg_connected_fill"
+                app:strokeColor="@color/awg_connected_stroke"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="15dp">
 
+                    <!-- Row 1: status dot + status label + resolved IP at end -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -58,9 +65,8 @@
 
                         <View
                             android:id="@+id/summary_status_dot"
-                            android:layout_width="10dp"
-                            android:layout_height="10dp"
-                            android:layout_marginEnd="8dp"
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
                             android:background="@drawable/ic_status_dot"
                             app:backgroundTintColor="@{tunnel.connectionStatus == ConnectionStatus.CONNECTED ? @color/tunnel_status_connected : tunnel.connectionStatus == ConnectionStatus.CONNECTING ? @color/tunnel_status_connecting : @color/tunnel_status_disconnected}"
                             tools:backgroundTint="@color/tunnel_status_connected" />
@@ -70,10 +76,11 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:layout_marginStart="@dimen/space_sm"
                             android:maxLines="1"
                             android:ellipsize="end"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textColor="?attr/colorOnSurface"
+                            android:textAppearance="@style/TextAppearance.Awg.Status"
+                            android:textColor="@{tunnel.connectionStatus == ConnectionStatus.CONNECTED ? @color/tunnel_status_connected : tunnel.connectionStatus == ConnectionStatus.CONNECTING ? @color/tunnel_status_connecting : @color/tunnel_status_disconnected}"
                             android:text="@{tunnel.connectionStatus == ConnectionStatus.CONNECTED ? @string/tunnel_status_connected : tunnel.connectionStatus == ConnectionStatus.CONNECTING ? @string/tunnel_status_connecting : @string/tunnel_status_disconnected}"
                             tools:text="Connected" />
 
@@ -82,20 +89,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="@style/TextAppearance.Awg.Mono"
-                            android:textColor="?attr/colorOnSurface"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textAlignment="viewEnd"
                             tools:text="201.51.6.117:443" />
                     </LinearLayout>
 
+                    <!-- Row 2: 3-column stats grid (DOWNLOAD / UPLOAD / HANDSHAKE) -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/space_md"
                         android:baselineAligned="false"
                         android:orientation="horizontal"
-                        android:visibility="@{tunnel.state == State.UP ? android.view.View.VISIBLE : android.view.View.GONE}"
-                        android:weightSum="2">
+                        android:visibility="@{tunnel.state == State.UP ? android.view.View.VISIBLE : android.view.View.GONE}">
 
+                        <!-- DOWNLOAD column -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -105,19 +113,18 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/transfer"
-                                android:textAppearance="?attr/textAppearanceBodySmall"
-                                android:textColor="?attr/colorOnSurfaceVariant" />
+                                android:text="@string/stat_download"
+                                android:textAppearance="@style/TextAppearance.Awg.StatLabel" />
 
                             <TextView
-                                android:id="@+id/summary_transfer"
+                                android:id="@+id/summary_download"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textAppearance="?attr/textAppearanceBodyLarge"
-                                android:textColor="?attr/colorOnSurface"
-                                tools:text="rx: 1.2 MB, tx: 340 KB" />
+                                android:textAppearance="@style/TextAppearance.Awg.Mono.Accent"
+                                tools:text="48.2 MB" />
                         </LinearLayout>
 
+                        <!-- UPLOAD column -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -127,422 +134,512 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/latest_handshake"
-                                android:textAppearance="?attr/textAppearanceBodySmall"
-                                android:textColor="?attr/colorOnSurfaceVariant" />
+                                android:text="@string/stat_upload"
+                                android:textAppearance="@style/TextAppearance.Awg.StatLabel" />
+
+                            <TextView
+                                android:id="@+id/summary_upload"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="@style/TextAppearance.Awg.Mono.Accent"
+                                tools:text="7.1 MB" />
+                        </LinearLayout>
+
+                        <!-- HANDSHAKE column -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/stat_handshake"
+                                android:textAppearance="@style/TextAppearance.Awg.StatLabel" />
 
                             <TextView
                                 android:id="@+id/summary_handshake"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textAppearance="?attr/textAppearanceBodyLarge"
-                                android:textColor="?attr/colorOnSurface"
-                                tools:text="23 seconds ago" />
+                                android:textAppearance="@style/TextAppearance.Awg.Mono"
+                                tools:text="23s ago" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- ── Interface card (collapsible) ───────────────────────────── -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/tunnel_detail_card"
+            <!-- ── Interface section: label row OUTSIDE + card as body ──────── -->
+            <LinearLayout
+                android:id="@+id/interface_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="@dimen/screen_padding"
+                android:layout_marginBottom="@dimen/card_gap"
+                app:layout_constraintTop_toBottomOf="@id/connection_summary_card"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/connection_summary_card">
+                app:layout_constraintEnd_toEndOf="parent">
 
+                <!-- Interface label row (collapse tap target) -->
                 <LinearLayout
+                    android:id="@+id/interface_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:animateLayoutChanges="true">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/touch_min"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingStart="@dimen/space_xs"
+                    android:paddingEnd="@dimen/space_xs">
 
-                    <!-- Header row: tap to expand/collapse -->
-                    <LinearLayout
-                        android:id="@+id/interface_header"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/interface_title"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:minHeight="@dimen/touch_min"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackground"
-                        android:paddingEnd="@dimen/space_xs">
+                        android:layout_weight="1"
+                        android:textAppearance="@style/TextAppearance.Awg.SectionHeader"
+                        android:text="@string/section_interface" />
 
-                        <TextView
-                            android:id="@+id/interface_title"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textAppearance="@style/TextAppearance.Awg.SectionHeader"
-                            android:text="@string/section_interface" />
+                    <org.amnezia.awg.widget.ToggleSwitch
+                        android:id="@+id/tunnel_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/space_sm"
+                        android:nextFocusDown="@id/interface_name_text"
+                        android:nextFocusForward="@id/interface_name_text"
+                        app:checked="@{tunnel.state == State.UP}"
+                        app:onBeforeCheckedChanged="@{fragment::setTunnelState}" />
 
-                        <org.amnezia.awg.widget.ToggleSwitch
-                            android:id="@+id/tunnel_switch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/space_sm"
-                            android:nextFocusDown="@id/interface_name_text"
-                            android:nextFocusForward="@id/interface_name_text"
-                            app:checked="@{tunnel.state == State.UP}"
-                            app:onBeforeCheckedChanged="@{fragment::setTunnelState}" />
+                    <ImageView
+                        android:id="@+id/interface_chevron"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_chevron_down"
+                        android:contentDescription="@null" />
+                </LinearLayout>
 
-                        <ImageView
-                            android:id="@+id/interface_chevron"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_chevron_down"
-                            android:contentDescription="@null" />
-                    </LinearLayout>
+                <!-- Interface card (collapsible body) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/interface_card"
+                    style="@style/AmneziaWgTheme.MaterialCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                    <!-- Body: all Interface field rows -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <LinearLayout
                         android:id="@+id/interface_body"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/space_sm">
+                        android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/interface_name_label"
-                            android:layout_width="wrap_content"
+                        <!-- Interface field rows: two-line rows with hairline dividers.
+                             Divider strategy: divider BEFORE each row except the first.
+                             Each divider carries the same visibility as the row it precedes,
+                             so a hidden field never leaves an orphaned divider. -->
+
+                        <!-- Row 1: Name (always visible — no divider before it) -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:labelFor="@+id/interface_name_text"
-                            android:text="@string/name"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:orientation="vertical"
+                            android:paddingVertical="@dimen/space_sm"
+                            android:paddingHorizontal="@dimen/space_md">
+                            <TextView
+                                android:id="@+id/interface_name_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@+id/interface_name_text"
+                                android:text="@string/name"
+                                android:textAppearance="@style/TextAppearance.Awg.FieldLabel" />
+                            <TextView
+                                android:id="@+id/interface_name_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/name"
+                                android:nextFocusUp="@id/tunnel_switch"
+                                android:nextFocusDown="@id/public_key_text"
+                                android:nextFocusForward="@id/public_key_text"
+                                android:onClick="@{ClipboardUtils::copyTextView}"
+                                android:text="@{tunnel.name}"
+                                android:textAppearance="@style/TextAppearance.Awg.FieldValue"
+                                tools:text="awg0" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/interface_name_text"
-                            android:layout_width="wrap_content"
+                        <!-- Divider before Row 2: Public key (always visible) -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?attr/colorOutlineVariant" />
+
+                        <!-- Row 2: Public key (always visible, Mono + copy affordance) -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/name"
-                            android:nextFocusUp="@id/tunnel_switch"
-                            android:nextFocusDown="@id/public_key_text"
-                            android:nextFocusForward="@id/public_key_text"
-                            android:onClick="@{ClipboardUtils::copyTextView}"
-                            android:text="@{tunnel.name}"
-                            android:textAppearance="?attr/textAppearanceBodyLarge"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/interface_name_label"
-                            app:layout_constraintBaseline_toBaselineOf="@+id/proto_badge"
-                            tools:text="awg0" />
+                            android:orientation="vertical"
+                            android:paddingVertical="@dimen/space_sm"
+                            android:paddingHorizontal="@dimen/space_md">
+                            <TextView
+                                android:id="@+id/public_key_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@+id/public_key_text"
+                                android:text="@string/public_key"
+                                android:textAppearance="@style/TextAppearance.Awg.FieldLabel" />
+                            <TextView
+                                android:id="@+id/public_key_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/public_key"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:nextFocusUp="@id/interface_name_text"
+                                android:nextFocusDown="@id/addresses_text"
+                                android:nextFocusForward="@id/addresses_text"
+                                android:onClick="@{ClipboardUtils::copyTextView}"
+                                android:text="@{config.interface.keyPair.publicKey.toBase64}"
+                                android:textAppearance="@style/TextAppearance.Awg.Mono"
+                                tools:text="wOs2eguFEohqIZxlSJ1CAT9584tc6ejj9hfGFsoBVkA=" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/proto_badge"
-                            android:layout_width="wrap_content"
+                        <!-- Divider before Row 3: Addresses (mirrors addresses visibility) -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?attr/colorOutlineVariant"
+                            android:visibility="@{config.interface.addresses.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}" />
+
+                        <!-- Row 3: Addresses (conditional, Mono) -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/space_sm"
-                            android:background="@drawable/bg_stat_chip"
-                            android:backgroundTint="?attr/colorPrimaryContainer"
-                            android:paddingHorizontal="@dimen/space_sm"
-                            android:paddingVertical="2dp"
-                            android:textColor="?attr/colorOnPrimaryContainer"
-                            android:textAppearance="@style/TextAppearance.Awg.StatLabel"
-                            app:layout_constraintStart_toEndOf="@id/interface_name_text"
-                            app:layout_constraintTop_toBottomOf="@+id/interface_name_label"
-                            tools:text="Proxy" />
+                            android:orientation="vertical"
+                            android:paddingVertical="@dimen/space_sm"
+                            android:paddingHorizontal="@dimen/space_md"
+                            android:visibility="@{config.interface.addresses.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}">
+                            <TextView
+                                android:id="@+id/addresses_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@+id/addresses_text"
+                                android:text="@string/addresses"
+                                android:textAppearance="@style/TextAppearance.Awg.FieldLabel" />
+                            <TextView
+                                android:id="@+id/addresses_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/addresses"
+                                android:singleLine="true"
+                                android:ellipsize="end"
+                                android:nextFocusUp="@id/public_key_text"
+                                android:nextFocusDown="@id/dns_servers_text"
+                                android:nextFocusForward="@id/dns_servers_text"
+                                android:onClick="@{ClipboardUtils::copyTextView}"
+                                android:text="@{config.interface.addresses}"
+                                android:textAppearance="@style/TextAppearance.Awg.Mono"
+                                tools:text="fc00:bbbb:bbbb:bb11::3:368b/128" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/public_key_label"
-                            android:layout_width="wrap_content"
+                        <!-- Divider before Row 4: DNS Servers (mirrors dns_servers visibility) -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?attr/colorOutlineVariant"
+                            android:visibility="@{config.interface.dnsServers.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}" />
+
+                        <!-- Row 4: DNS Servers (conditional, FieldValue) -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:labelFor="@+id/public_key_text"
-                            android:text="@string/public_key"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/interface_name_text" />
+                            android:orientation="vertical"
+                            android:paddingVertical="@dimen/space_sm"
+                            android:paddingHorizontal="@dimen/space_md"
+                            android:visibility="@{config.interface.dnsServers.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}">
+                            <TextView
+                                android:id="@+id/dns_servers_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@+id/dns_servers_text"
+                                android:text="@string/dns_servers"
+                                android:textAppearance="@style/TextAppearance.Awg.FieldLabel" />
+                            <TextView
+                                android:id="@+id/dns_servers_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/dns_servers"
+                                android:nextFocusUp="@id/addresses_text"
+                                android:nextFocusDown="@id/dns_search_domains_text"
+                                android:nextFocusForward="@id/dns_search_domains_text"
+                                android:onClick="@{ClipboardUtils::copyTextView}"
+                                android:text="@{config.interface.dnsServers}"
+                                android:textAppearance="@style/TextAppearance.Awg.FieldValue"
+                                tools:text="8.8.8.8, 8.8.4.4" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/public_key_text"
-                            android:layout_width="wrap_content"
+                        <!-- Divider before Row 5: DNS Search Domains (mirrors visibility) -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?attr/colorOutlineVariant"
+                            android:visibility="@{config.interface.dnsSearchDomains.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}" />
+
+                        <!-- Row 5: DNS Search Domains (conditional, FieldValue) -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/public_key"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:nextFocusUp="@id/interface_name_text"
-                            android:nextFocusDown="@id/addresses_text"
-                            android:nextFocusForward="@id/addresses_text"
-                            android:onClick="@{ClipboardUtils::copyTextView}"
-                            android:singleLine="true"
-                            android:text="@{config.interface.keyPair.publicKey.toBase64}"
-                            android:textAppearance="?attr/textAppearanceBodyLarge"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/public_key_label"
-                            tools:text="wOs2eguFEohqIZxlSJ1CAT9584tc6ejj9hfGFsoBVkA=" />
+                            android:orientation="vertical"
+                            android:paddingVertical="@dimen/space_sm"
+                            android:paddingHorizontal="@dimen/space_md"
+                            android:visibility="@{config.interface.dnsSearchDomains.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}">
+                            <TextView
+                                android:id="@+id/dns_search_domains_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@+id/dns_search_domain_text"
+                                android:text="@string/dns_search_domains"
+                                android:textAppearance="@style/TextAppearance.Awg.FieldLabel" />
+                            <TextView
+                                android:id="@+id/dns_search_domains_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/dns_search_domains"
+                                android:nextFocusUp="@id/dns_servers_text"
+                                android:nextFocusDown="@id/listen_port_text"
+                                android:nextFocusForward="@id/listen_port_text"
+                                android:onClick="@{ClipboardUtils::copyTextView}"
+                                android:text="@{config.interface.dnsSearchDomains}"
+                                android:textAppearance="@style/TextAppearance.Awg.FieldValue"
+                                tools:text="zx2c4.com" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/addresses_label"
-                            android:layout_width="wrap_content"
+                        <!-- Divider before Row 6: Listen Port / MTU pair.
+                             Visible when at least one of them is present. -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?attr/colorOutlineVariant"
+                            android:visibility="@{config.interface.listenPort.isPresent() || config.interface.mtu.isPresent() ? android.view.View.VISIBLE : android.view.View.GONE}" />
+
+                        <!-- Row 6: Listen Port + MTU (paired horizontal row; each hides independently) -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:labelFor="@+id/addresses_text"
-                            android:text="@string/addresses"
-                            android:visibility="@{config.interface.addresses.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/public_key_text" />
+                            android:orientation="horizontal"
+                            android:visibility="@{config.interface.listenPort.isPresent() || config.interface.mtu.isPresent() ? android.view.View.VISIBLE : android.view.View.GONE}">
 
-                        <TextView
-                            android:id="@+id/addresses_text"
-                            android:layout_width="wrap_content"
+                            <!-- Listen Port column -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:paddingVertical="@dimen/space_sm"
+                                android:paddingHorizontal="@dimen/space_md"
+                                android:visibility="@{!config.interface.listenPort.isPresent() ? android.view.View.GONE : android.view.View.VISIBLE}">
+                                <TextView
+                                    android:id="@+id/listen_port_label"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:labelFor="@+id/listen_port_text"
+                                    android:text="@string/listen_port"
+                                    android:textAppearance="@style/TextAppearance.Awg.FieldLabel" />
+                                <TextView
+                                    android:id="@+id/listen_port_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/listen_port"
+                                    android:nextFocusRight="@id/mtu_text"
+                                    android:nextFocusUp="@id/dns_search_domains_text"
+                                    android:nextFocusDown="@id/applications_text"
+                                    android:nextFocusForward="@id/mtu_text"
+                                    android:onClick="@{ClipboardUtils::copyTextView}"
+                                    android:text="@{config.interface.listenPort}"
+                                    android:textAppearance="@style/TextAppearance.Awg.FieldValue"
+                                    tools:text="51820" />
+                            </LinearLayout>
+
+                            <!-- MTU column -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:paddingVertical="@dimen/space_sm"
+                                android:paddingHorizontal="@dimen/space_md"
+                                android:visibility="@{!config.interface.mtu.isPresent() ? android.view.View.GONE : android.view.View.VISIBLE}">
+                                <TextView
+                                    android:id="@+id/mtu_label"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:labelFor="@+id/mtu_text"
+                                    android:text="@string/mtu"
+                                    android:textAppearance="@style/TextAppearance.Awg.FieldLabel" />
+                                <TextView
+                                    android:id="@+id/mtu_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/mtu"
+                                    android:nextFocusLeft="@id/listen_port_text"
+                                    android:nextFocusUp="@id/dns_servers_text"
+                                    android:nextFocusForward="@id/applications_text"
+                                    android:onClick="@{ClipboardUtils::copyTextView}"
+                                    android:text="@{config.interface.mtu}"
+                                    android:textAppearance="@style/TextAppearance.Awg.FieldValue"
+                                    tools:text="1500" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Divider before Row 7: Applications (mirrors applications visibility) -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?attr/colorOutlineVariant"
+                            android:visibility="@{config.interface.includedApplications.isEmpty() &amp;&amp; config.interface.excludedApplications.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}" />
+
+                        <!-- Row 7: Applications (conditional, FieldValue) -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/addresses"
-                            android:nextFocusUp="@id/public_key_text"
-                            android:nextFocusDown="@id/dns_servers_text"
-                            android:nextFocusForward="@id/dns_servers_text"
-                            android:onClick="@{ClipboardUtils::copyTextView}"
-                            android:text="@{config.interface.addresses}"
-                            android:textAppearance="?attr/textAppearanceBodyLarge"
-                            android:visibility="@{config.interface.addresses.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/addresses_label"
-                            tools:text="fc00:bbbb:bbbb:bb11::3:368b/128" />
+                            android:orientation="vertical"
+                            android:paddingVertical="@dimen/space_sm"
+                            android:paddingHorizontal="@dimen/space_md"
+                            android:visibility="@{config.interface.includedApplications.isEmpty() &amp;&amp; config.interface.excludedApplications.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}">
+                            <TextView
+                                android:id="@+id/applications_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@+id/applications_text"
+                                android:text="@string/applications"
+                                android:textAppearance="@style/TextAppearance.Awg.FieldLabel" />
+                            <TextView
+                                android:id="@+id/applications_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/applications"
+                                android:nextFocusUp="@id/mtu_text"
+                                android:nextFocusDown="@id/imitate_protocol_text"
+                                android:nextFocusForward="@id/imitate_protocol_text"
+                                android:onClick="@{ClipboardUtils::copyTextView}"
+                                android:text="@{config.interface.includedApplications.isEmpty() ? @plurals/n_excluded_applications(config.interface.excludedApplications.size(), config.interface.excludedApplications.size()) : @plurals/n_included_applications(config.interface.includedApplications.size(), config.interface.includedApplications.size())}"
+                                android:textAppearance="@style/TextAppearance.Awg.FieldValue"
+                                tools:text="8 excluded" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/dns_servers_label"
-                            android:layout_width="wrap_content"
+                        <!-- Divider before Row 8: Imitate Protocol (mirrors its visibility) -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?attr/colorOutlineVariant"
+                            android:visibility="@{!config.interface.imitateProtocol.isPresent() ? android.view.View.GONE : android.view.View.VISIBLE}" />
+
+                        <!-- Row 8: Imitate Protocol (conditional, FieldValue) -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:labelFor="@+id/dns_servers_text"
-                            android:text="@string/dns_servers"
-                            android:visibility="@{config.interface.dnsServers.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/addresses_text" />
+                            android:orientation="vertical"
+                            android:paddingVertical="@dimen/space_sm"
+                            android:paddingHorizontal="@dimen/space_md"
+                            android:visibility="@{!config.interface.imitateProtocol.isPresent() ? android.view.View.GONE : android.view.View.VISIBLE}">
+                            <TextView
+                                android:id="@+id/imitate_protocol_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@+id/imitate_protocol_text"
+                                android:text="@string/imitate_protocol"
+                                android:textAppearance="@style/TextAppearance.Awg.FieldLabel" />
+                            <TextView
+                                android:id="@+id/imitate_protocol_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/imitate_protocol"
+                                android:nextFocusUp="@id/applications_text"
+                                android:nextFocusDown="@id/peers_layout"
+                                android:nextFocusForward="@id/peers_layout"
+                                android:onClick="@{ClipboardUtils::copyTextView}"
+                                android:text="@{config.interface.imitateProtocol}"
+                                android:textAppearance="@style/TextAppearance.Awg.FieldValue"
+                                tools:text="quic" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/dns_servers_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/dns_servers"
-                            android:nextFocusUp="@id/addresses_text"
-                            android:nextFocusDown="@id/dns_search_domains_text"
-                            android:nextFocusForward="@id/dns_search_domains_text"
-                            android:onClick="@{ClipboardUtils::copyTextView}"
-                            android:text="@{config.interface.dnsServers}"
-                            android:textAppearance="?attr/textAppearanceBodyLarge"
-                            android:visibility="@{config.interface.dnsServers.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/dns_servers_label"
-                            tools:text="8.8.8.8, 8.8.4.4" />
-
-                        <TextView
-                            android:id="@+id/dns_search_domains_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:labelFor="@+id/dns_search_domain_text"
-                            android:text="@string/dns_search_domains"
-                            android:visibility="@{config.interface.dnsSearchDomains.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/dns_servers_text" />
-
-                        <TextView
-                            android:id="@+id/dns_search_domains_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/dns_search_domains"
-                            android:nextFocusUp="@id/dns_servers_text"
-                            android:nextFocusDown="@id/listen_port_text"
-                            android:nextFocusForward="@id/listen_port_text"
-                            android:onClick="@{ClipboardUtils::copyTextView}"
-                            android:text="@{config.interface.dnsSearchDomains}"
-                            android:textAppearance="?attr/textAppearanceBodyLarge"
-                            android:visibility="@{config.interface.dnsSearchDomains.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/dns_search_domains_label"
-                            tools:text="zx2c4.com" />
-
-                        <TextView
-                            android:id="@+id/listen_port_label"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:labelFor="@+id/listen_port_text"
-                            android:text="@string/listen_port"
-                            android:visibility="@{!config.interface.listenPort.isPresent() ? android.view.View.GONE : android.view.View.VISIBLE}"
-                            app:layout_constraintEnd_toStartOf="@id/mtu_label"
-                            app:layout_constraintHorizontal_weight="0.5"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/dns_search_domains_text" />
-
-                        <TextView
-                            android:id="@+id/listen_port_text"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/listen_port"
-                            android:nextFocusRight="@id/mtu_text"
-                            android:nextFocusUp="@id/dns_search_domains_text"
-                            android:nextFocusDown="@id/applications_text"
-                            android:nextFocusForward="@id/mtu_text"
-                            android:onClick="@{ClipboardUtils::copyTextView}"
-                            android:text="@{config.interface.listenPort}"
-                            android:textAppearance="?attr/textAppearanceBodyLarge"
-                            android:visibility="@{!config.interface.listenPort.isPresent() ? android.view.View.GONE : android.view.View.VISIBLE}"
-                            app:layout_constraintEnd_toStartOf="@id/mtu_label"
-                            app:layout_constraintHorizontal_weight="0.5"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/listen_port_label"
-                            tools:text="51820" />
-
-                        <TextView
-                            android:id="@+id/mtu_label"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:labelFor="@+id/mtu_text"
-                            android:text="@string/mtu"
-                            android:visibility="@{!config.interface.mtu.isPresent() ? android.view.View.GONE : android.view.View.VISIBLE}"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_weight="0.5"
-                            app:layout_constraintLeft_toRightOf="@id/listen_port_label"
-                            app:layout_constraintStart_toEndOf="@id/listen_port_label"
-                            app:layout_constraintTop_toBottomOf="@id/dns_search_domains_text" />
-
-                        <TextView
-                            android:id="@+id/mtu_text"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/mtu"
-                            android:nextFocusLeft="@id/listen_port_text"
-                            android:nextFocusUp="@id/dns_servers_text"
-                            android:nextFocusForward="@id/applications_text"
-                            android:onClick="@{ClipboardUtils::copyTextView}"
-                            android:text="@{config.interface.mtu}"
-                            android:textAppearance="?attr/textAppearanceBodyLarge"
-                            android:visibility="@{!config.interface.mtu.isPresent() ? android.view.View.GONE : android.view.View.VISIBLE}"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_weight="0.5"
-                            app:layout_constraintStart_toEndOf="@id/listen_port_label"
-                            app:layout_constraintStart_toStartOf="@+id/mtu_label"
-                            app:layout_constraintTop_toBottomOf="@+id/mtu_label"
-                            tools:text="1500" />
-
-                        <androidx.constraintlayout.widget.Barrier
-                            android:id="@+id/listen_port_mtu_barrier"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:barrierDirection="bottom"
-                            app:constraint_referenced_ids="listen_port_text,mtu_text" />
-
-                        <!-- A1: applications + imitate_protocol belong to the Interface group -->
-                        <TextView
-                            android:id="@+id/applications_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:labelFor="@+id/applications_text"
-                            android:text="@string/applications"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/listen_port_mtu_barrier" />
-
-                        <TextView
-                            android:id="@+id/applications_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/applications"
-                            android:nextFocusUp="@id/mtu_text"
-                            android:nextFocusDown="@id/imitate_protocol_text"
-                            android:nextFocusForward="@id/imitate_protocol_text"
-                            android:onClick="@{ClipboardUtils::copyTextView}"
-                            android:text="@{config.interface.includedApplications.isEmpty() ? @plurals/n_excluded_applications(config.interface.excludedApplications.size(), config.interface.excludedApplications.size()) : @plurals/n_included_applications(config.interface.includedApplications.size(), config.interface.includedApplications.size())}"
-                            android:textAppearance="?attr/textAppearanceBodyLarge"
-                            android:visibility="@{config.interface.includedApplications.isEmpty() &amp;&amp; config.interface.excludedApplications.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/applications_label"
-                            tools:text="8 excluded" />
-
-                        <TextView
-                            android:id="@+id/imitate_protocol_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:labelFor="@+id/imitate_protocol_text"
-                            android:text="@string/imitate_protocol"
-                            android:visibility="@{!config.interface.imitateProtocol.isPresent() ? android.view.View.GONE : android.view.View.VISIBLE}"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/applications_text" />
-
-                        <TextView
-                            android:id="@+id/imitate_protocol_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/imitate_protocol"
-                            android:nextFocusUp="@id/applications_text"
-                            android:nextFocusDown="@id/peers_layout"
-                            android:nextFocusForward="@id/peers_layout"
-                            android:onClick="@{ClipboardUtils::copyTextView}"
-                            android:text="@{config.interface.imitateProtocol}"
-                            android:textAppearance="?attr/textAppearanceBodyLarge"
-                            android:visibility="@{!config.interface.imitateProtocol.isPresent() ? android.view.View.GONE : android.view.View.VISIBLE}"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/imitate_protocol_label"
-                            tools:text="quic" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- ── Obfuscation card (collapsible, collapsed by default) ──── -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/obfuscation_card"
+            <!-- ── Obfuscation section: label row OUTSIDE + card as body ─────── -->
+            <LinearLayout
+                android:id="@+id/obfuscation_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="@dimen/screen_padding"
+                android:layout_marginBottom="@dimen/card_gap"
                 android:visibility="@{(config.interface.junkPacketCount.isPresent() || config.interface.junkPacketMinSize.isPresent() || config.interface.junkPacketMaxSize.isPresent() || config.interface.initPacketJunkSize.isPresent() || config.interface.responsePacketJunkSize.isPresent() || config.interface.cookieReplyPacketJunkSize.isPresent() || config.interface.transportPacketJunkSize.isPresent() || config.interface.initPacketMagicHeader.isPresent() || config.interface.responsePacketMagicHeader.isPresent() || config.interface.underloadPacketMagicHeader.isPresent() || config.interface.transportPacketMagicHeader.isPresent() || config.interface.specialJunkI1.isPresent() || config.interface.specialJunkI2.isPresent() || config.interface.specialJunkI3.isPresent() || config.interface.specialJunkI4.isPresent() || config.interface.specialJunkI5.isPresent()) ? android.view.View.VISIBLE : android.view.View.GONE}"
+                app:layout_constraintTop_toBottomOf="@id/interface_section"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tunnel_detail_card">
+                app:layout_constraintEnd_toEndOf="parent">
 
+                <!-- Obfuscation label row: title + AMNEZIA/PROXY pill + summary + chevron -->
                 <LinearLayout
+                    android:id="@+id/obfuscation_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:animateLayoutChanges="true">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/touch_min"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingStart="@dimen/space_xs"
+                    android:paddingEnd="@dimen/space_xs">
 
-                    <!-- Header row -->
-                    <LinearLayout
-                        android:id="@+id/obfuscation_header"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/obfuscation_title"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:minHeight="@dimen/touch_min"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackground"
-                        android:paddingEnd="@dimen/space_xs">
+                        android:textAppearance="@style/TextAppearance.Awg.SectionHeader"
+                        android:text="@string/section_obfuscation" />
 
-                        <TextView
-                            android:id="@+id/obfuscation_title"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textAppearance="@style/TextAppearance.Awg.SectionHeader"
-                            android:text="@string/section_obfuscation" />
+                    <!-- AMNEZIA / PROXY pill, immediately right of title -->
+                    <TextView
+                        android:id="@+id/proto_badge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_sm"
+                        android:background="@drawable/bg_proto_pill"
+                        android:paddingHorizontal="@dimen/space_sm"
+                        android:paddingVertical="2dp"
+                        android:textAppearance="@style/TextAppearance.Awg.StatLabel"
+                        android:textColor="?attr/colorOnPrimaryContainer"
+                        tools:text="AMNEZIA" />
 
-                        <TextView
-                            android:id="@+id/obfuscation_summary"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/space_sm"
-                            android:textAppearance="@style/TextAppearance.Awg.FieldLabel"
-                            tools:text="8 parameters" />
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
-                        <ImageView
-                            android:id="@+id/obfuscation_chevron"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_chevron_down"
-                            android:contentDescription="@null" />
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/obfuscation_summary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/space_sm"
+                        android:textAppearance="@style/TextAppearance.Awg.FieldLabel"
+                        tools:text="8 parameters" />
 
-                    <!-- Body: chip group -->
+                    <ImageView
+                        android:id="@+id/obfuscation_chevron"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_chevron_down"
+                        android:contentDescription="@null" />
+                </LinearLayout>
+
+                <!-- Obfuscation card (collapsible body) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/obfuscation_card"
+                    style="@style/AmneziaWgTheme.MaterialCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
                     <LinearLayout
                         android:id="@+id/obfuscation_body"
                         android:layout_width="match_parent"
@@ -558,57 +655,58 @@
                             app:chipSpacingHorizontal="@dimen/space_xs"
                             app:chipSpacingVertical="@dimen/space_xs" />
                     </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
 
-            <!-- ── Peer card (collapsible) ─────────────────────────────────── -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/peer_card"
+            <!-- ── Peer section: label row OUTSIDE + card as body ────────────── -->
+            <LinearLayout
+                android:id="@+id/peer_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="@dimen/screen_padding"
+                android:layout_marginBottom="@dimen/card_gap"
+                app:layout_constraintTop_toBottomOf="@id/obfuscation_section"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/obfuscation_card">
+                app:layout_constraintEnd_toEndOf="parent">
 
+                <!-- Peer label row (collapse tap target) -->
                 <LinearLayout
+                    android:id="@+id/peer_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:animateLayoutChanges="true">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/touch_min"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingStart="@dimen/space_xs"
+                    android:paddingEnd="@dimen/space_xs">
 
-                    <!-- Header row -->
-                    <LinearLayout
-                        android:id="@+id/peer_header"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/peer_title"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:minHeight="@dimen/touch_min"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackground"
-                        android:paddingEnd="@dimen/space_xs">
+                        android:layout_weight="1"
+                        android:textAppearance="@style/TextAppearance.Awg.SectionHeader"
+                        android:text="@string/section_peer" />
 
-                        <TextView
-                            android:id="@+id/peer_title"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textAppearance="@style/TextAppearance.Awg.SectionHeader"
-                            android:text="@string/section_peer" />
+                    <ImageView
+                        android:id="@+id/peer_chevron"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_chevron_down"
+                        android:contentDescription="@null" />
+                </LinearLayout>
 
-                        <ImageView
-                            android:id="@+id/peer_chevron"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_chevron_down"
-                            android:contentDescription="@null" />
-                    </LinearLayout>
+                <!-- Peer card (collapsible body) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/peer_card"
+                    style="@style/AmneziaWgTheme.MaterialCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                    <!-- Body: dynamic peer list -->
                     <LinearLayout
                         android:id="@+id/peer_body"
                         android:layout_width="match_parent"
@@ -626,8 +724,8 @@
                             app:layout="@{@layout/tunnel_detail_peer}"
                             tools:ignore="UselessLeaf" />
                     </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

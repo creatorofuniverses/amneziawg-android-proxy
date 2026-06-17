@@ -6,5 +6,6 @@
         android:alphabeticShortcut="s"
         android:icon="@drawable/ic_action_save"
         android:title="@string/save"
+        app:actionLayout="@layout/action_save_button"
         app:showAsAction="always" />
 </menu>

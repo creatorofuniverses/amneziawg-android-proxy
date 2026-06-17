@@ -64,9 +64,9 @@ class TunnelDetailFragment : BaseFragment(), MenuProvider {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
         val b = binding ?: return
-        bindCollapsibleSection("interface", b.interfaceHeader, b.interfaceBody, b.interfaceChevron, defaultExpanded = true)
-        bindCollapsibleSection("obfuscation", b.obfuscationHeader, b.obfuscationBody, b.obfuscationChevron, defaultExpanded = false)
-        bindCollapsibleSection("peer", b.peerHeader, b.peerBody, b.peerChevron, defaultExpanded = true)
+        bindCollapsibleSection("interface", b.interfaceHeader, b.interfaceCard, b.interfaceChevron, defaultExpanded = true)
+        bindCollapsibleSection("obfuscation", b.obfuscationHeader, b.obfuscationCard, b.obfuscationChevron, defaultExpanded = false)
+        bindCollapsibleSection("peer", b.peerHeader, b.peerCard, b.peerChevron, defaultExpanded = true)
     }
 
     override fun onDestroyView() {
@@ -208,11 +208,8 @@ class TunnelDetailFragment : BaseFragment(), MenuProvider {
         lastState = state
         try {
             val statistics = tunnel.getStatisticsAsync()
-            binding.summaryTransfer.text = getString(
-                R.string.transfer_rx_tx,
-                QuantityFormatter.formatBytes(statistics.totalRx()),
-                QuantityFormatter.formatBytes(statistics.totalTx())
-            )
+            binding.summaryDownload.text = QuantityFormatter.formatBytes(statistics.totalRx())
+            binding.summaryUpload.text = QuantityFormatter.formatBytes(statistics.totalTx())
             val latestHandshake = statistics.peers()
                 .map { statistics.peer(it)?.latestHandshakeEpochMillis ?: 0L }
                 .maxOrNull() ?: 0L

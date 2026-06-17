@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -22,39 +23,42 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/list_item_background"
         android:gravity="center_vertical"
         android:onClick="@{(view) -> item.setSelected(!item.selected)}"
         android:orientation="horizontal"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:paddingTop="@dimen/space_sm"
+        android:paddingBottom="@dimen/space_sm">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/app_icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="@dimen/screen_padding"
             android:src="@{item.icon}"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Awg.AppIcon"
             tools:src="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/app_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/space_lg"
+            android:layout_marginEnd="@dimen/space_lg"
             android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{key}"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:textAppearance="@style/TextAppearance.Awg.FieldValue"
             tools:text="@tools:sample/full_names" />
 
         <CheckBox
             android:id="@+id/selected_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/space_md"
             android:checked="@={item.selected}"
+            android:clickable="false"
+            android:focusable="false"
             tools:checked="true" />
 
     </LinearLayout>

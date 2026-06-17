@@ -16,6 +16,10 @@
         <variable
             name="appData"
             type="org.amnezia.awg.databinding.ObservableKeyedArrayList&lt;String, ApplicationData&gt;" />
+
+        <variable
+            name="loading"
+            type="androidx.databinding.ObservableBoolean" />
     </data>
 
     <LinearLayout
@@ -23,26 +27,100 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            style="@style/Widget.Material3.TabLayout.OnSurface"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/AmneziaWgTheme.Toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationContentDescription="@string/navigate_back"
+            app:title="@string/split_tunnel_title"
+            app:menu="@menu/split_tunnel" />
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/exclude_from_tunnel" />
+        <!-- Mode card: segmented Include/Exclude toggle -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_padding"
+            android:layout_marginTop="@dimen/space_sm"
+            android:layout_marginEnd="@dimen/screen_padding"
+            android:layout_marginBottom="@dimen/space_sm"
+            app:cardBackgroundColor="?attr/colorSurfaceContainer"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp"
+            app:strokeColor="@android:color/transparent"
+            app:contentPaddingLeft="@dimen/card_padding"
+            app:contentPaddingTop="@dimen/space_sm"
+            app:contentPaddingRight="@dimen/card_padding"
+            app:contentPaddingBottom="@dimen/card_padding">
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/include_in_tunnel" />
-        </com.google.android.material.tabs.TabLayout>
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_sm"
+                    android:text="@string/split_tunnel_mode_helper"
+                    android:textAppearance="@style/TextAppearance.Awg.FieldLabel" />
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/mode_toggle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="true"
+                    app:selectionRequired="true">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_exclude"
+                        style="@style/Widget.Awg.SegmentedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/split_tunnel_exclude" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_include"
+                        style="@style/Widget.Awg.SegmentedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/split_tunnel_include" />
+
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/app_search_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_padding"
+            android:layout_marginTop="@dimen/space_sm"
+            android:layout_marginEnd="@dimen/screen_padding"
+            android:layout_marginBottom="@dimen/space_sm"
+            app:startIconDrawable="@drawable/ic_search">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/app_search_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/split_tunnel_search_hint"
+                android:inputType="text"
+                android:imeOptions="actionSearch"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:minHeight="200dp">
 
             <ProgressBar
@@ -51,7 +129,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:indeterminate="true"
-                android:visibility="@{appData.isEmpty() ? View.VISIBLE : View.GONE}"
+                android:visibility="@{loading ? View.VISIBLE : View.GONE}"
+                tools:visibility="gone" />
+
+            <TextView
+                android:id="@+id/app_empty_text"
+                style="@style/TextAppearance.Awg.FieldLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/split_tunnel_no_matches"
+                android:visibility="@{!loading &amp;&amp; appData.isEmpty() ? View.VISIBLE : View.GONE}"
                 tools:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -63,5 +152,15 @@
                 tools:itemCount="10"
                 tools:listitem="@layout/app_list_item" />
         </FrameLayout>
+
+        <TextView
+            android:id="@+id/app_routed_summary"
+            style="@style/TextAppearance.Awg.FieldLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/space_md"
+            android:gravity="center"
+            tools:text="5 of 42 apps routed" />
+
     </LinearLayout>
 </layout>

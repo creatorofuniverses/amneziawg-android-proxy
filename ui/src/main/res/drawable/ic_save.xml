@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Save: light stroke floppy, matches the 2px stroke icon set (back/chevron/delete).
+     NOTE: in the editor the PREFERRED save affordance is a filled text button
+     ("Save", primary/onPrimary) per SPEC-detail-editor-split.md. Use this icon
+     only if you keep an icon-only action. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24"
+    android:tint="?attr/colorOnSurface">
+    <path android:fillColor="#00000000" android:strokeColor="@android:color/white"
+        android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M5,4 h11 l4,4 v11 a1,1 0 0 1 -1,1 H5 a1,1 0 0 1 -1,-1 V5 a1,1 0 0 1 1,-1 Z" />
+    <!-- label slot (top) -->
+    <path android:fillColor="#00000000" android:strokeColor="@android:color/white"
+        android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M8,4 v4 h7 V4" />
+    <!-- inner disc -->
+    <path android:fillColor="#00000000" android:strokeColor="@android:color/white"
+        android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M8,20 v-6 a1,1 0 0 1 1,-1 h6 a1,1 0 0 1 1,1 v6" />
+</vector>
