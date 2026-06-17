@@ -59,6 +59,9 @@ class MainActivity : BaseActivity(), FragmentManager.OnBackStackChangedListener 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
         actionBar = supportActionBar
+        // Launcher icon uses the short app_name (manifest label); the in-app
+        // header keeps the full app_title. The editor restores this same title.
+        actionBar?.setTitle(R.string.app_title)
         isTwoPaneLayout = findViewById<View?>(R.id.master_detail_wrapper) != null
         supportFragmentManager.addOnBackStackChangedListener(this)
         backPressedCallback = onBackPressedDispatcher.addCallback(this) { handleBackPressed() }

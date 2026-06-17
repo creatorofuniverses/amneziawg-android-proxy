@@ -21,6 +21,7 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.BundleCompat
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
@@ -135,7 +136,20 @@ class TunnelEditorFragment : BaseFragment(), MenuProvider {
         requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
+    /** Editor owns the shared toolbar while shown: ✕ close icon + "Edit/New tunnel" title. */
+    private fun applyEditorChrome() {
+        (activity as? AppCompatActivity)?.supportActionBar?.apply {
+            setTitle(if (tunnel == null) R.string.new_tunnel_title else R.string.edit_tunnel_title)
+            setHomeAsUpIndicator(R.drawable.ic_close)
+        }
+    }
+
     override fun onDestroyView() {
+        // Restore the default toolbar chrome for the screen we return to.
+        (activity as? AppCompatActivity)?.supportActionBar?.apply {
+            setHomeAsUpIndicator(null)
+            setTitle(R.string.app_title)
+        }
         activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
         binding = null
         super.onDestroyView()
@@ -265,6 +279,7 @@ class TunnelEditorFragment : BaseFragment(), MenuProvider {
         newTunnel: ObservableTunnel?
     ) {
         tunnel = newTunnel
+        applyEditorChrome()
         if (binding == null) return
         binding!!.config = ConfigProxy()
         if (tunnel != null) {
@@ -338,6 +353,7 @@ class TunnelEditorFragment : BaseFragment(), MenuProvider {
             val config = BundleCompat.getParcelable(savedInstanceState, KEY_LOCAL_CONFIG, ConfigProxy::class.java)!!
             val originalName = savedInstanceState.getString(KEY_ORIGINAL_NAME)
             if (tunnel != null && tunnel!!.name != originalName) onSelectedTunnelChanged(null, tunnel) else binding!!.config = config
+            applyEditorChrome()
         }
         super.onViewStateRestored(savedInstanceState)
     }

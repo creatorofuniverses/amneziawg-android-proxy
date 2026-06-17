@@ -38,5 +38,8 @@
         <item name="colorSurfaceContainerHigh">@color/md_theme_dark_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/md_theme_dark_surfaceContainerHighest</item>
         <item name="colorOutlineVariant">@color/md_theme_dark_outlineVariant</item>
+        <!-- Visual refresh: app-wide default proportional face (Manrope). -->
+        <item name="fontFamily">@font/manrope_regular</item>
+        <item name="android:fontFamily">@font/manrope_regular</item>
     </style>
 </resources>

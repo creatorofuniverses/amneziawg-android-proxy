@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Manrope (bundled). Maps weights to the .ttf files in res/font/.
+     Reference as @font/manrope_family; the right weight is picked by the
+     view's textAppearance fontWeight (400/500/600). -->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font android:fontStyle="normal" android:fontWeight="400" android:font="@font/manrope_regular" />
+    <font android:fontStyle="normal" android:fontWeight="500" android:font="@font/manrope_medium" />
+    <font android:fontStyle="normal" android:fontWeight="600" android:font="@font/manrope_semibold" />
+</font-family>

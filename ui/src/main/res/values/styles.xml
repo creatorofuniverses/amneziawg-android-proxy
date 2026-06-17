@@ -54,6 +54,24 @@
         <item name="cornerSize">@dimen/radius_fab</item>
     </style>
 
+    <!-- Editor toolbar Save button. Default Material button is a full-radius pill;
+         override the shape to a rounded RECTANGLE (radius_input = 12dp). -->
+    <style name="AmneziaWgTheme.Button.Save" parent="Widget.Material3.Button">
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textAppearance">@style/TextAppearance.Awg.Button</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Awg.Button</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:minHeight">40dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+    </style>
+    <style name="ShapeAppearance.Awg.Button" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_input</item>
+    </style>
+
     <style name="AmneziaWgTheme.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
         <item name="thumbTint">@color/awg_switch_thumb</item>
         <item name="trackTint">@color/awg_switch_track</item>

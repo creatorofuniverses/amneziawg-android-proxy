@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.button.MaterialButton
+<!-- Wrapper carries the trailing gap as padding: the toolbar's ActionMenuView
+     ignores layout_margin on action views, but honors the view's own padding. -->
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/action_save_button"
-    style="@style/Widget.Material3.Button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="@dimen/space_sm"
-    android:text="@string/save"
-    app:icon="@drawable/ic_save" />
+    android:paddingEnd="16dp">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/action_save_button"
+        style="@style/AmneziaWgTheme.Button.Save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save" />
+</FrameLayout>

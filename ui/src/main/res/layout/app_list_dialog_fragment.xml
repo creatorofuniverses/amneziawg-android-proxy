@@ -22,6 +22,10 @@
             type="androidx.databinding.ObservableBoolean" />
     </data>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -160,7 +164,19 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/space_md"
             android:gravity="center"
+            android:paddingEnd="72dp"
             tools:text="5 of 42 apps routed" />
 
     </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/commit_fab"
+            style="@style/AmneziaWgTheme.Fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/save"
+            android:src="@drawable/ic_check" />
+    </FrameLayout>
 </layout>

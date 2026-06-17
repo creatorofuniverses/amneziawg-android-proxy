@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Checked: filled primary square (6dp radius) + onPrimary check. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="22dp" android:height="22dp"
+    android:viewportWidth="22" android:viewportHeight="22">
+    <path android:fillColor="?attr/colorPrimary"
+        android:pathData="M0,6 a6,6 0 0 1 6,-6 h10 a6,6 0 0 1 6,6 v10 a6,6 0 0 1 -6,6 h-10 a6,6 0 0 1 -6,-6 z" />
+    <path android:fillColor="#00000000" android:strokeColor="?attr/colorOnPrimary"
+        android:strokeWidth="2.2" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M6,11.3 l3,3 l7,-7" />
+</vector>

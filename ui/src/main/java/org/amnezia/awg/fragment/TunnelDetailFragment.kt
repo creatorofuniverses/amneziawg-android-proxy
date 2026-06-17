@@ -4,7 +4,11 @@
  */
 package org.amnezia.awg.fragment
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -12,8 +16,15 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.color.MaterialColors
+import com.google.android.material.snackbar.Snackbar
+import org.amnezia.awg.config.BadConfigException
+import org.amnezia.awg.config.Interface
+import org.amnezia.awg.config.SplitTunnelSummary
+import org.amnezia.awg.viewmodel.ConfigProxy
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.Lifecycle
@@ -26,6 +37,7 @@ import org.amnezia.awg.config.ObfuscationMode
 import org.amnezia.awg.databinding.TunnelDetailFragmentBinding
 import org.amnezia.awg.databinding.TunnelDetailPeerBinding
 import org.amnezia.awg.model.ObservableTunnel
+import org.amnezia.awg.util.ErrorMessages
 import org.amnezia.awg.util.QuantityFormatter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -41,6 +53,7 @@ class TunnelDetailFragment : BaseFragment(), MenuProvider {
     private var binding: TunnelDetailFragmentBinding? = null
     private var lastState = Tunnel.State.TOGGLE
     private var timerActive = true
+    private var totalInstalledApps: Int? = null
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         return false
@@ -67,6 +80,10 @@ class TunnelDetailFragment : BaseFragment(), MenuProvider {
         bindCollapsibleSection("interface", b.interfaceHeader, b.interfaceCard, b.interfaceChevron, defaultExpanded = true)
         bindCollapsibleSection("obfuscation", b.obfuscationHeader, b.obfuscationCard, b.obfuscationChevron, defaultExpanded = false)
         bindCollapsibleSection("peer", b.peerHeader, b.peerCard, b.peerChevron, defaultExpanded = true)
+        // Tapping the summary card while off connects the tunnel ("Tap to connect").
+        b.connectionSummaryCard.setOnClickListener { card ->
+            if (b.tunnel?.state != Tunnel.State.UP) setTunnelState(card, true)
+        }
     }
 
     override fun onDestroyView() {
@@ -80,6 +97,7 @@ class TunnelDetailFragment : BaseFragment(), MenuProvider {
         lifecycleScope.launch {
             while (timerActive) {
                 updateStats()
+                applySummaryState()
                 updatePublicEndpoint()
                 delay(1000)
             }
@@ -97,12 +115,14 @@ class TunnelDetailFragment : BaseFragment(), MenuProvider {
                     val config = newTunnel.getConfigAsync()
                     binding.config = config
                     populateObfuscation(config)
+                    updateSplitTunnelSummary(config.getInterface(), fetchTotalInstalledApps())
                 } catch (_: Throwable) {
                     binding.config = null
                 }
             }
         }
         lastState = Tunnel.State.TOGGLE
+        applySummaryState()
         lifecycleScope.launch { updateStats() }
     }
 
@@ -185,8 +205,100 @@ class TunnelDetailFragment : BaseFragment(), MenuProvider {
         binding.obfuscationSummary.text = resources.getString(R.string.detail_section_count, chips.size)
     }
 
+    private suspend fun fetchTotalInstalledApps(): Int {
+        totalInstalledApps?.let { return it }
+        val pm = requireContext().packageManager
+        val count = withContext(Dispatchers.IO) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                pm.getPackagesHoldingPermissions(
+                    arrayOf(Manifest.permission.INTERNET),
+                    PackageManager.PackageInfoFlags.of(0L)
+                ).size
+            } else {
+                @Suppress("DEPRECATION")
+                pm.getPackagesHoldingPermissions(arrayOf(Manifest.permission.INTERNET), 0).size
+            }
+        }
+        totalInstalledApps = count
+        return count
+    }
+
+    private fun updateSplitTunnelSummary(iface: Interface, totalApps: Int) {
+        val inc = iface.includedApplications.size
+        val exc = iface.excludedApplications.size
+        binding?.applicationsSummary?.text = if (SplitTunnelSummary.isAllApps(inc, exc))
+            getString(R.string.split_tunnel_all_apps)
+        else
+            getString(R.string.split_tunnel_summary, SplitTunnelSummary.routedCount(inc, exc, totalApps), totalApps)
+    }
+
+    /** Opens the split-tunnel picker and persists the new selection back to the tunnel config. */
+    fun onApplicationsClick(@Suppress("UNUSED_PARAMETER") view: View) {
+        val config = binding?.config ?: return
+        val iface = config.getInterface()
+        var isExcluded = true
+        var selectedApps = ArrayList(iface.excludedApplications)
+        if (selectedApps.isEmpty()) {
+            selectedApps = ArrayList(iface.includedApplications)
+            if (selectedApps.isNotEmpty()) isExcluded = false
+        }
+        val fragment = AppListDialogFragment.newInstance(selectedApps, isExcluded)
+        childFragmentManager.setFragmentResultListener(AppListDialogFragment.REQUEST_SELECTION, viewLifecycleOwner) { _, bundle ->
+            val tunnel = binding?.tunnel ?: return@setFragmentResultListener
+            val current = binding?.config ?: return@setFragmentResultListener
+            val newSelections = bundle.getStringArray(AppListDialogFragment.KEY_SELECTED_APPS) ?: return@setFragmentResultListener
+            val excluded = bundle.getBoolean(AppListDialogFragment.KEY_IS_EXCLUDED)
+            val proxy = ConfigProxy(current)
+            if (excluded) {
+                proxy.`interface`.includedApplications.clear()
+                proxy.`interface`.excludedApplications.apply { clear(); addAll(newSelections) }
+            } else {
+                proxy.`interface`.excludedApplications.clear()
+                proxy.`interface`.includedApplications.apply { clear(); addAll(newSelections) }
+            }
+            lifecycleScope.launch {
+                val newConfig = try {
+                    proxy.resolve()
+                } catch (e: BadConfigException) {
+                    Log.w(TAG, "Failed to resolve split-tunnel config", e)
+                    return@launch
+                }
+                try {
+                    tunnel.setConfigAsync(newConfig)
+                    binding?.config = newConfig
+                    updateSplitTunnelSummary(newConfig.getInterface(), fetchTotalInstalledApps())
+                } catch (e: Throwable) {
+                    binding?.root?.let { Snackbar.make(it, ErrorMessages[e], Snackbar.LENGTH_LONG).show() }
+                }
+            }
+        }
+        fragment.show(childFragmentManager, null)
+    }
+
+    /**
+     * Tints the summary card per connection status and, when disconnected, shows the
+     * "Tap to connect" hint in place of the resolved server address. Connected/connecting
+     * keep the teal-tinted treatment; the address itself is filled by [updatePublicEndpoint].
+     */
+    private fun applySummaryState() {
+        val binding = binding ?: return
+        val card = binding.connectionSummaryCard
+        val connected = binding.tunnel?.connectionStatus != ObservableTunnel.ConnectionStatus.DISCONNECTED
+        if (connected) {
+            card.setCardBackgroundColor(ContextCompat.getColor(card.context, R.color.awg_connected_fill))
+            card.strokeColor = ContextCompat.getColor(card.context, R.color.awg_connected_stroke)
+        } else {
+            card.setCardBackgroundColor(MaterialColors.getColor(card, com.google.android.material.R.attr.colorSurfaceContainer))
+            card.strokeColor = MaterialColors.getColor(card, com.google.android.material.R.attr.colorOutlineVariant)
+            binding.publicEndpointText.text = getString(R.string.detail_tap_to_connect)
+            binding.publicEndpointText.visibility = View.VISIBLE
+        }
+    }
+
     private suspend fun updatePublicEndpoint() {
         val binding = binding ?: return
+        // Disconnected state owns the endpoint line ("Tap to connect"); don't overwrite it.
+        if (binding.tunnel?.connectionStatus == ObservableTunnel.ConnectionStatus.DISCONNECTED) return
         val config = binding.config ?: return
         val peer = config.peers.firstOrNull() ?: return
         val text = withContext(Dispatchers.IO) {
@@ -213,9 +325,7 @@ class TunnelDetailFragment : BaseFragment(), MenuProvider {
             val latestHandshake = statistics.peers()
                 .map { statistics.peer(it)?.latestHandshakeEpochMillis ?: 0L }
                 .maxOrNull() ?: 0L
-            binding.summaryHandshake.text =
-                if (latestHandshake <= 0L) getString(R.string.stat_ago_never)
-                else QuantityFormatter.formatEpochAgo(latestHandshake)
+            binding.summaryHandshake.text = QuantityFormatter.formatEpochAgoShort(latestHandshake)
             for (i in 0 until binding.peersLayout.childCount) {
                 val peer: TunnelDetailPeerBinding = DataBindingUtil.getBinding(binding.peersLayout.getChildAt(i))
                     ?: continue
@@ -237,7 +347,7 @@ class TunnelDetailFragment : BaseFragment(), MenuProvider {
                     peer.latestHandshakeLabel.visibility = View.GONE
                     peer.latestHandshakeText.visibility = View.GONE
                 } else {
-                    peer.latestHandshakeText.text = QuantityFormatter.formatEpochAgo(peerStats.latestHandshakeEpochMillis)
+                    peer.latestHandshakeText.text = QuantityFormatter.formatEpochAgoShort(peerStats.latestHandshakeEpochMillis)
                     peer.latestHandshakeLabel.visibility = View.VISIBLE
                     peer.latestHandshakeText.visibility = View.VISIBLE
                 }
@@ -252,5 +362,9 @@ class TunnelDetailFragment : BaseFragment(), MenuProvider {
                 peer.latestHandshakeText.visibility = View.GONE
             }
         }
+    }
+
+    companion object {
+        private const val TAG = "AmneziaWG/TunnelDetailFragment"
     }
 }

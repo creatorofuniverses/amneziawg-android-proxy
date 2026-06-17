@@ -60,4 +60,18 @@ object QuantityFormatter {
 
         return Application.get().applicationContext.getString(R.string.latest_handshake_ago, joined)
     }
+
+    /** Compact relative handshake age: "23s ago" / "1m 14s ago" / "1h 4m ago" / "2d 3h ago". */
+    fun formatEpochAgoShort(epochMillis: Long): String {
+        val context = Application.get().applicationContext
+        if (epochMillis <= 0L)
+            return context.getString(R.string.stat_ago_never)
+        val s = ((System.currentTimeMillis() - epochMillis) / 1000L).coerceAtLeast(0L)
+        return when {
+            s < 60L    -> context.getString(R.string.stat_ago_seconds, s.toInt())
+            s < 3600L  -> context.getString(R.string.stat_ago_min_sec, (s / 60L).toInt(), (s % 60L).toInt())
+            s < 86400L -> context.getString(R.string.stat_ago_hour_min, (s / 3600L).toInt(), ((s % 3600L) / 60L).toInt())
+            else       -> context.getString(R.string.stat_ago_day_hour, (s / 86400L).toInt(), ((s % 86400L) / 3600L).toInt())
+        }
+    }
 }

@@ -92,6 +92,8 @@
     <string name="config_save_error">Cannot save configuration for “%1$s”: %2$s</string>
     <string name="config_save_success">Successfully saved configuration for “%s”</string>
     <string name="create_activity_title">Create AmneziaWG Tunnel</string>
+    <string name="edit_tunnel_title">Edit tunnel</string>
+    <string name="new_tunnel_title">New tunnel</string>
     <string name="create_bin_dir_error">Cannot create local binary directory</string>
     <string name="create_downloads_file_error">Cannot create file in downloads directory</string>
     <string name="create_empty">Create from scratch</string>
@@ -249,7 +251,9 @@
     <string name="stat_handshake">Handshake</string>
     <string name="stat_rate_format">%1$s/s</string>
     <string name="stat_ago_seconds">%1$ds ago</string>
-    <string name="stat_ago_minutes">%1$dm ago</string>
+    <string name="stat_ago_min_sec">%1$dm %2$ds ago</string>
+    <string name="stat_ago_hour_min">%1$dh %2$dm ago</string>
+    <string name="stat_ago_day_hour">%1$dd %2$dh ago</string>
     <string name="stat_ago_never">—</string>
     <string name="add_subtitle_file">Import from a .conf file</string>
     <string name="add_subtitle_qr">Scan a configuration QR code</string>
@@ -291,6 +295,7 @@
     <string name="section_applications">Applications</string>
     <string name="detail_section_count">%d parameters</string>
     <string name="detail_public_endpoint">Server address</string>
+    <string name="detail_tap_to_connect">Tap to connect</string>
     <string name="detail_endpoint">Endpoint</string>
     <string name="detail_interface_addresses">Addresses</string>
     <string name="detail_allowed_ips">Allowed IPs</string>

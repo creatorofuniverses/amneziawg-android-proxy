@@ -35,6 +35,7 @@ import org.amnezia.awg.widget.ToggleSwitch.OnBeforeCheckedChangeListener
 import org.amnezia.awg.widget.TvCardView
 import org.amnezia.awg.config.Attribute
 import org.amnezia.awg.config.InetNetwork
+import org.amnezia.awg.util.QuantityFormatter
 import java.net.InetAddress
 import java.util.Optional
 
@@ -277,13 +278,7 @@ object BindingAdapters {
 
         val handshakeText = root.findViewById<TextView>(R.id.stat_handshake)
         val epoch = latestHandshakeEpochMillis(stats)
-        handshakeText?.text = if (epoch <= 0) {
-            ctx.getString(R.string.stat_ago_never)
-        } else {
-            val secs = ((System.currentTimeMillis() - epoch) / 1000L).coerceAtLeast(0L)
-            if (secs < 60) ctx.getString(R.string.stat_ago_seconds, secs.toInt())
-            else ctx.getString(R.string.stat_ago_minutes, (secs / 60L).toInt())
-        }
+        handshakeText?.text = QuantityFormatter.formatEpochAgoShort(epoch)
     }
 
     @JvmStatic

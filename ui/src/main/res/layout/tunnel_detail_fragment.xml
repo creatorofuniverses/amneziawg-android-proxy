@@ -33,7 +33,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/screen_padding">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/connection_summary_card"
@@ -56,12 +57,13 @@
                     android:orientation="vertical"
                     android:padding="15dp">
 
-                    <!-- Row 1: status dot + status label + resolved IP at end -->
+                    <!-- Row 1: status dot + status label (start) + on/off switch (end) -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingEnd="@dimen/space_xs">
 
                         <View
                             android:id="@+id/summary_status_dot"
@@ -84,17 +86,28 @@
                             android:text="@{tunnel.connectionStatus == ConnectionStatus.CONNECTED ? @string/tunnel_status_connected : tunnel.connectionStatus == ConnectionStatus.CONNECTING ? @string/tunnel_status_connecting : @string/tunnel_status_disconnected}"
                             tools:text="Connected" />
 
-                        <TextView
-                            android:id="@+id/public_endpoint_text"
+                        <org.amnezia.awg.widget.ToggleSwitch
+                            android:id="@+id/tunnel_switch"
+                            style="@style/AmneziaWgTheme.Switch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="@style/TextAppearance.Awg.Mono"
-                            android:textColor="?attr/colorOnSurfaceVariant"
-                            android:textAlignment="viewEnd"
-                            tools:text="201.51.6.117:443" />
+                            android:nextFocusDown="@id/interface_name_text"
+                            android:nextFocusForward="@id/interface_name_text"
+                            app:checked="@{tunnel.state == State.UP}"
+                            app:onBeforeCheckedChanged="@{fragment::setTunnelState}" />
                     </LinearLayout>
 
-                    <!-- Row 2: 3-column stats grid (DOWNLOAD / UPLOAD / HANDSHAKE) -->
+                    <!-- Row 2: resolved server address (mono); "Tap to connect" when off -->
+                    <TextView
+                        android:id="@+id/public_endpoint_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:textAppearance="@style/TextAppearance.Awg.Mono"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        tools:text="201.51.6.117:443" />
+
+                    <!-- Row 3: 3-column stats grid (DOWNLOAD / UPLOAD / HANDSHAKE) -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -202,16 +215,6 @@
                         android:layout_weight="1"
                         android:textAppearance="@style/TextAppearance.Awg.SectionHeader"
                         android:text="@string/section_interface" />
-
-                    <org.amnezia.awg.widget.ToggleSwitch
-                        android:id="@+id/tunnel_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/space_sm"
-                        android:nextFocusDown="@id/interface_name_text"
-                        android:nextFocusForward="@id/interface_name_text"
-                        app:checked="@{tunnel.state == State.UP}"
-                        app:onBeforeCheckedChanged="@{fragment::setTunnelState}" />
 
                     <ImageView
                         android:id="@+id/interface_chevron"
@@ -451,7 +454,7 @@
                                     android:contentDescription="@string/listen_port"
                                     android:nextFocusRight="@id/mtu_text"
                                     android:nextFocusUp="@id/dns_search_domains_text"
-                                    android:nextFocusDown="@id/applications_text"
+                                    android:nextFocusDown="@id/imitate_protocol_text"
                                     android:nextFocusForward="@id/mtu_text"
                                     android:onClick="@{ClipboardUtils::copyTextView}"
                                     android:text="@{config.interface.listenPort}"
@@ -482,7 +485,7 @@
                                     android:contentDescription="@string/mtu"
                                     android:nextFocusLeft="@id/listen_port_text"
                                     android:nextFocusUp="@id/dns_servers_text"
-                                    android:nextFocusForward="@id/applications_text"
+                                    android:nextFocusForward="@id/imitate_protocol_text"
                                     android:onClick="@{ClipboardUtils::copyTextView}"
                                     android:text="@{config.interface.mtu}"
                                     android:textAppearance="@style/TextAppearance.Awg.FieldValue"
@@ -490,43 +493,7 @@
                             </LinearLayout>
                         </LinearLayout>
 
-                        <!-- Divider before Row 7: Applications (mirrors applications visibility) -->
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="?attr/colorOutlineVariant"
-                            android:visibility="@{config.interface.includedApplications.isEmpty() &amp;&amp; config.interface.excludedApplications.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}" />
-
-                        <!-- Row 7: Applications (conditional, FieldValue) -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingVertical="@dimen/space_sm"
-                            android:paddingHorizontal="@dimen/space_md"
-                            android:visibility="@{config.interface.includedApplications.isEmpty() &amp;&amp; config.interface.excludedApplications.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE}">
-                            <TextView
-                                android:id="@+id/applications_label"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:labelFor="@+id/applications_text"
-                                android:text="@string/applications"
-                                android:textAppearance="@style/TextAppearance.Awg.FieldLabel" />
-                            <TextView
-                                android:id="@+id/applications_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/applications"
-                                android:nextFocusUp="@id/mtu_text"
-                                android:nextFocusDown="@id/imitate_protocol_text"
-                                android:nextFocusForward="@id/imitate_protocol_text"
-                                android:onClick="@{ClipboardUtils::copyTextView}"
-                                android:text="@{config.interface.includedApplications.isEmpty() ? @plurals/n_excluded_applications(config.interface.excludedApplications.size(), config.interface.excludedApplications.size()) : @plurals/n_included_applications(config.interface.includedApplications.size(), config.interface.includedApplications.size())}"
-                                android:textAppearance="@style/TextAppearance.Awg.FieldValue"
-                                tools:text="8 excluded" />
-                        </LinearLayout>
-
-                        <!-- Divider before Row 8: Imitate Protocol (mirrors its visibility) -->
+                        <!-- Divider before Imitate Protocol row (mirrors its visibility) -->
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
@@ -553,7 +520,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:contentDescription="@string/imitate_protocol"
-                                android:nextFocusUp="@id/applications_text"
+                                android:nextFocusUp="@id/mtu_text"
                                 android:nextFocusDown="@id/peers_layout"
                                 android:nextFocusForward="@id/peers_layout"
                                 android:onClick="@{ClipboardUtils::copyTextView}"
@@ -723,6 +690,87 @@
                             app:items="@{config.peers}"
                             app:layout="@{@layout/tunnel_detail_peer}"
                             tools:ignore="UselessLeaf" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- ── Applications section: tappable split-tunnel entry ─────────── -->
+            <LinearLayout
+                android:id="@+id/applications_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="@dimen/screen_padding"
+                android:layout_marginTop="@dimen/card_gap"
+                android:layout_marginBottom="@dimen/card_gap"
+                app:layout_constraintTop_toBottomOf="@id/peer_section"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_xs"
+                    android:layout_marginBottom="@dimen/space_xs"
+                    android:textAppearance="@style/TextAppearance.Awg.SectionHeader"
+                    android:text="@string/section_applications" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/applications_card"
+                    style="@style/AmneziaWgTheme.MaterialCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:minHeight="@dimen/touch_min"
+                    android:onClick="@{fragment::onApplicationsClick}">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="@dimen/space_sm">
+
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_stat_chip"
+                            android:backgroundTint="?attr/colorPrimaryContainer">
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:layout_gravity="center"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/ic_split_tunnel" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/space_md"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/split_tunnel_title"
+                                android:textAppearance="?attr/textAppearanceTitleMedium"
+                                android:textColor="?attr/colorOnSurface" />
+                            <TextView
+                                android:id="@+id/applications_summary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?attr/textAppearanceBodySmall"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                tools:text="2 of 86 apps routed" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_chevron_right" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>

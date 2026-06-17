@@ -113,8 +113,11 @@ class AppListDialogFragment : DialogFragment() {
         b.appData = appData
         b.loading = isLoading
 
-        // Toolbar: back = apply selection + dismiss
+        // Toolbar back = cancel/discard; the check-FAB is the explicit commit.
         b.toolbar.setNavigationOnClickListener {
+            dismiss()
+        }
+        b.commitFab.setOnClickListener {
             applySelectionAndDismiss()
         }
 
@@ -199,7 +202,7 @@ class AppListDialogFragment : DialogFragment() {
     }
 
     override fun onCancel(dialog: DialogInterface) {
-        emitSelectionResult()
+        // System-back / outside dismiss = discard. Commit happens only via the check-FAB.
         super.onCancel(dialog)
     }
 

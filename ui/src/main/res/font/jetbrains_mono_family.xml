@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- JetBrains Mono (bundled) for keys / IPs / stat values.
+     Reference as @font/jetbrains_mono_family. -->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font android:fontStyle="normal" android:fontWeight="400" android:font="@font/jetbrains_mono_regular" />
+    <font android:fontStyle="normal" android:fontWeight="500" android:font="@font/jetbrains_mono_medium" />
+</font-family>
