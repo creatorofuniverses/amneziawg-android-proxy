@@ -93,4 +93,8 @@
     <!-- Active/connected row (light): pale teal fill + visible teal border. -->
     <color name="awg_connected_fill">#ECFDF8</color>
     <color name="awg_connected_stroke">#99E6D8</color>
+
+    <!-- Duplicate "already added" card (light): ~8% error tint over surface + muted rose border. -->
+    <color name="awg_dup_card_fill">#FBEDEC</color>
+    <color name="awg_dup_card_stroke">#E7C9C7</color>
 </resources>

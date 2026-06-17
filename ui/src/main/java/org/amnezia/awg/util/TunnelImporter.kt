@@ -122,6 +122,31 @@ object TunnelImporter {
         }
     }
 
+    /**
+     * QR variant: if the scanned config already exists (same peer key + endpoint), hand the
+     * existing tunnel to [onDuplicate] instead of opening the naming dialog. Otherwise behaves
+     * like [importTunnel]. Must be called on the main dispatcher (shows a dialog / fragment).
+     */
+    suspend fun importTunnelOrDuplicate(
+        parentFragmentManager: FragmentManager,
+        configText: String,
+        onDuplicate: (existing: ObservableTunnel) -> Unit,
+        messageCallback: (CharSequence) -> Unit
+    ) {
+        val config = try {
+            Config.parse(ByteArrayInputStream(configText.toByteArray(StandardCharsets.UTF_8)))
+        } catch (e: Throwable) {
+            onTunnelImportFinished(emptyList(), listOf(e), messageCallback)
+            return
+        }
+        val existing = runCatching { Application.getTunnelManager().findMatchingTunnel(config) }.getOrNull()
+        if (existing != null) {
+            onDuplicate(existing)
+            return
+        }
+        ConfigNamingDialogFragment.newInstance(configText).show(parentFragmentManager, null)
+    }
+
     private fun onTunnelImportFinished(tunnels: List<ObservableTunnel>, throwables: Collection<Throwable>, messageCallback: (CharSequence) -> Unit) {
         val context = Application.get().applicationContext
         var message = ""

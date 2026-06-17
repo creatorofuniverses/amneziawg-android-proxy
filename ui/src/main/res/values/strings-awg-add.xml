@@ -15,10 +15,33 @@
     <string name="paste_from_clipboard">Paste from clipboard</string>
     <string name="paste_valid">Valid AmneziaWG link — "%1$s"</string>
     <string name="paste_invalid">Couldn\'t decode this string. Check you copied the whole link.</string>
-    <string name="paste_duplicate">Already added as “%1$s”</string>
     <string name="paste_preview">Decoded preview</string>
-    <string name="paste_preview_name">Name</string>
     <string name="paste_preview_endpoint">Endpoint</string>
     <string name="paste_preview_obfuscation">Obfuscation</string>
     <string name="paste_add">Add tunnel</string>
+
+    <!-- Clipboard -->
+    <string name="paste_clipboard_empty">Clipboard is empty or has no text.</string>
+
+    <!-- Editable tunnel name (rename-on-import) -->
+    <string name="paste_name_label">Tunnel name</string>
+    <string name="paste_name_hint">Rename it now, or keep the server\'s default.</string>
+    <string name="paste_name_empty">Enter a name for this tunnel.</string>
+    <string name="paste_name_invalid_chars">Use only letters, numbers, and _ - . = + (no spaces or other characters).</string>
+    <string name="paste_name_too_long">Keep the name to 15 characters or fewer.</string>
+    <string name="paste_name_duplicate">A tunnel named \"%1$s\" already exists.</string>
+
+    <!-- Duplicate config — inline (paste) -->
+    <string name="dup_config_inline">This config is already added.</string>
+    <string name="dup_config_detail">You already have this tunnel saved as \"%1$s\".</string>
+    <string name="dup_open_named">Open \"%1$s\"</string>
+
+    <!-- Duplicate config — manual editor field error -->
+    <string name="dup_name_inline">This config is already added as \"%1$s\".</string>
+
+    <!-- Duplicate config — QR interrupting dialog -->
+    <string name="dup_dialog_title">Already added</string>
+    <string name="dup_dialog_body_qr">This QR code matches \"%1$s\", a tunnel you already have.</string>
+    <string name="dup_dialog_open">Open tunnel</string>
+    <string name="dup_dialog_scan_again">Scan again</string>
 </resources>

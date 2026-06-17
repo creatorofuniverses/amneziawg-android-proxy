@@ -60,6 +60,10 @@ class TunnelManager(private val configStore: ConfigStore) : BaseObservable() {
         }
     }
 
+    suspend fun exists(name: String): Boolean = withContext(Dispatchers.Main.immediate) {
+        getTunnels().containsKey(name)
+    }
+
     suspend fun create(name: String, config: Config?): ObservableTunnel = withContext(Dispatchers.Main.immediate) {
         if (Tunnel.isNameInvalid(name))
             throw IllegalArgumentException(context.getString(R.string.tunnel_error_invalid_name))

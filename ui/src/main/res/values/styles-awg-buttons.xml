@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Full-width "Paste from clipboard" affordance: primaryContainer fill, primary icon/text. -->
+    <style name="Widget.Awg.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="cornerRadius">@dimen/radius_input</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/space_sm</item>
+    </style>
+</resources>

@@ -71,6 +71,15 @@
                     android:textAppearance="@style/TextAppearance.Awg.Mono" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/paste_clipboard_button"
+                style="@style/Widget.Awg.Button.Tonal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_sm"
+                android:text="@string/paste_from_clipboard"
+                app:icon="@drawable/ic_paste" />
+
             <TextView
                 android:id="@+id/validation_text"
                 android:layout_width="match_parent"
@@ -81,6 +90,86 @@
                 android:textAppearance="@style/TextAppearance.Awg.FieldLabel"
                 android:visibility="gone"
                 tools:ignore="MissingPrefix" />
+
+            <!-- Duplicate-config soft card (visible only on a content duplicate) -->
+            <!-- "Already added" soft card (SPEC §C1): tinted surface, NOT errorContainer. -->
+            <LinearLayout
+                android:id="@+id/dup_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_md"
+                android:orientation="vertical"
+                android:background="@drawable/bg_dup_card"
+                android:paddingHorizontal="13dp"
+                android:paddingVertical="@dimen/space_md"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/dup_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingMultiplier="1.4"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurface" />
+                <!-- "Open <name>  →" — teal text link, single line, ic_arrow_forward trailing -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/dup_open"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xs"
+                    android:singleLine="true"
+                    android:textColor="?attr/colorPrimary"
+                    app:icon="@drawable/ic_arrow_forward"
+                    app:iconGravity="textEnd"
+                    app:iconSize="15dp"
+                    app:iconTint="?attr/colorPrimary" />
+            </LinearLayout>
+
+            <!-- Editable tunnel name (rename-on-import); hidden until a valid decode -->
+            <TextView
+                android:id="@+id/name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_lg"
+                android:text="@string/paste_name_label"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.Awg.FieldLabel"
+                android:textColor="?attr/colorPrimary"
+                android:visibility="gone" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/name_layout"
+                style="@style/AmneziaWgTheme.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_sm"
+                android:visibility="gone"
+                app:boxCornerRadiusBottomEnd="@dimen/radius_input"
+                app:boxCornerRadiusBottomStart="@dimen/radius_input"
+                app:boxCornerRadiusTopEnd="@dimen/radius_input"
+                app:boxCornerRadiusTopStart="@dimen/radius_input"
+                app:endIconDrawable="@drawable/ic_edit"
+                app:endIconMode="custom"
+                app:errorIconDrawable="@drawable/ic_error">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/name_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="text|textNoSuggestions|textVisiblePassword"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.Awg.FieldValue" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/name_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:text="@string/paste_name_hint"
+                android:textAppearance="@style/TextAppearance.Awg.FieldLabel"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:visibility="gone" />
 
             <!-- Decoded preview (visible only when valid) -->
             <com.google.android.material.card.MaterialCardView
@@ -105,19 +194,6 @@
                         android:textAllCaps="true"
                         android:textAppearance="@style/TextAppearance.Awg.FieldLabel"
                         android:textColor="?attr/colorPrimary" />
-                    <TextView
-                        android:id="@+id/preview_name_label"
-                        style="@style/TextAppearance.Awg.FieldLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/paste_preview_name"
-                        android:textColor="?attr/colorOnSurfaceVariant" />
-                    <TextView
-                        android:id="@+id/preview_name"
-                        style="@style/TextAppearance.Awg.FieldValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/space_sm" />
                     <TextView
                         android:id="@+id/preview_endpoint_label"
                         style="@style/TextAppearance.Awg.FieldLabel"

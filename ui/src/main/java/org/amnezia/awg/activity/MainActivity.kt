@@ -15,10 +15,13 @@ import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
+import androidx.lifecycle.lifecycleScope
+import org.amnezia.awg.Application
 import org.amnezia.awg.R
 import org.amnezia.awg.fragment.TunnelDetailFragment
 import org.amnezia.awg.fragment.TunnelEditorFragment
 import org.amnezia.awg.model.ObservableTunnel
+import kotlinx.coroutines.launch
 
 /**
  * CRUD interface for AmneziaWG tunnels. This activity serves as the main entry point to the
@@ -29,6 +32,11 @@ class MainActivity : BaseActivity(), FragmentManager.OnBackStackChangedListener 
     private var actionBar: ActionBar? = null
     private var isTwoPaneLayout = false
     private var backPressedCallback: OnBackPressedCallback? = null
+
+    companion object {
+        /** Intent extra (tunnel name) requesting MainActivity open straight to that tunnel's detail. */
+        const val INTENT_EXTRA_OPEN_TUNNEL = "open_tunnel"
+    }
 
     private fun handleBackPressed() {
         val backStackEntries = supportFragmentManager.backStackEntryCount
@@ -66,6 +74,20 @@ class MainActivity : BaseActivity(), FragmentManager.OnBackStackChangedListener 
         supportFragmentManager.addOnBackStackChangedListener(this)
         backPressedCallback = onBackPressedDispatcher.addCallback(this) { handleBackPressed() }
         onBackStackChanged()
+
+        // "Open «tunnel»" requests (e.g. from the duplicate card on the paste screen) navigate to
+        // the detail view like a normal row tap — selecting the tunnel once the activity is
+        // created so onSelectedTunnelChanged pushes the detail fragment and a back-stack entry.
+        // (BaseActivity's selected_tunnel restore path only re-highlights; it does not navigate.)
+        if (savedInstanceState == null) {
+            intent?.getStringExtra(INTENT_EXTRA_OPEN_TUNNEL)?.let { name ->
+                lifecycleScope.launch {
+                    runCatching { Application.getTunnelManager().getTunnels()[name] }.getOrNull()?.let {
+                        selectedTunnel = it
+                    }
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

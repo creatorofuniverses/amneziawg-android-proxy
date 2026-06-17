@@ -40,7 +40,8 @@ class NameInputFilter : InputFilter {
     }
 
     companion object {
-        private fun isAllowed(c: Char) = Character.isLetterOrDigit(c) || "_=+.-".indexOf(c) >= 0
+        internal fun isAllowed(c: Char) =
+            c in 'a'..'z' || c in 'A'..'Z' || c in '0'..'9' || c in "_=+.-"
 
         @JvmStatic
         fun newInstance() = NameInputFilter()

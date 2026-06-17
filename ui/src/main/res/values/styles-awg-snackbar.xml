@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Network-Teal snackbar: calm tonal surface instead of the default dark bar.
+     These snackbars carry both success and error text (showSnackbar is generic),
+     so the action uses the neutral teal accent, not the error role. -->
+<resources>
+    <style name="Widget.Awg.Snackbar" parent="Widget.Material3.Snackbar">
+        <item name="backgroundTint">?attr/colorSurfaceContainerHigh</item>
+        <item name="android:layout_margin">@dimen/space_md</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Medium</item>
+    </style>
+    <style name="Widget.Awg.Snackbar.TextView" parent="Widget.Material3.Snackbar.TextView">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+    <style name="Widget.Awg.Snackbar.Button" parent="Widget.Material3.Button.TextButton.Snackbar">
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+</resources>

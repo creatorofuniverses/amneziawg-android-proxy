@@ -24,6 +24,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.BundleCompat
 import androidx.core.view.MenuProvider
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
@@ -41,6 +42,8 @@ import org.amnezia.awg.model.ObservableTunnel
 import org.amnezia.awg.util.AdminKnobs
 import org.amnezia.awg.util.BiometricAuthenticator
 import org.amnezia.awg.util.ErrorMessages
+import org.amnezia.awg.util.NameError
+import org.amnezia.awg.util.NameValidator
 import org.amnezia.awg.viewmodel.ConfigProxy
 
 /**
@@ -127,6 +130,7 @@ class TunnelEditorFragment : BaseFragment(), MenuProvider {
         binding?.apply {
             executePendingBindings()
             privateKeyTextLayout.setEndIconOnClickListener { config?.`interface`?.generateKeyPair() }
+            interfaceNameText.doAfterTextChanged { interfaceNameLayout.error = null }
         }
         return binding?.root
     }
@@ -190,10 +194,29 @@ class TunnelEditorFragment : BaseFragment(), MenuProvider {
             activity.lifecycleScope.launch {
                 when {
                     tunnel == null -> {
-                        Log.d(TAG, "Attempting to create new tunnel " + binding!!.name)
+                        val candidate = binding!!.name.orEmpty()
+                        // Inline name validation (SPEC §C2): keep the error on the Name field rather
+                        // than failing at create time with a generic snackbar.
+                        val nameErr = when (NameValidator.validate(candidate)) {
+                            NameError.EMPTY -> getString(R.string.paste_name_empty)
+                            NameError.BAD_CHARS -> getString(R.string.paste_name_invalid_chars)
+                            NameError.TOO_LONG -> getString(R.string.paste_name_too_long)
+                            null -> null
+                        }
+                        if (nameErr != null) {
+                            binding!!.interfaceNameLayout.error = nameErr
+                            return@launch
+                        }
                         val manager = Application.getTunnelManager()
+                        val dup = runCatching { manager.findMatchingTunnel(newConfig) }.getOrNull()
+                        if (dup != null) {
+                            binding!!.interfaceNameLayout.error = getString(R.string.dup_name_inline, dup.name)
+                            return@launch
+                        }
+                        binding!!.interfaceNameLayout.error = null
+                        Log.d(TAG, "Attempting to create new tunnel $candidate")
                         try {
-                            onTunnelCreated(manager.create(binding!!.name!!, newConfig), null)
+                            onTunnelCreated(manager.create(candidate, newConfig), null)
                         } catch (e: Throwable) {
                             onTunnelCreated(null, e)
                         }

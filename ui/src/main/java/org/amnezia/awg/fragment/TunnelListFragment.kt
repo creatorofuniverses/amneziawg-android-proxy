@@ -22,6 +22,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.zxing.qrcode.QRCodeReader
 import com.journeyapps.barcodescanner.ScanContract
@@ -80,8 +81,35 @@ class TunnelListFragment : BaseFragment() {
         val qrCode = result.contents
         val activity = activity
         if (qrCode != null && activity != null) {
-            activity.lifecycleScope.launch { TunnelImporter.importTunnel(parentFragmentManager, qrCode) { showSnackbar(it) } }
+            activity.lifecycleScope.launch {
+                TunnelImporter.importTunnelOrDuplicate(
+                    parentFragmentManager, qrCode,
+                    onDuplicate = { existing -> showDuplicateQrDialog(existing) }
+                ) { showSnackbar(it) }
+            }
         }
+    }
+
+    private fun launchQrScanner() {
+        qrImportResultLauncher.launch(
+            ScanOptions()
+                .setOrientationLocked(false)
+                .setBeepEnabled(false)
+                .setPrompt(getString(R.string.qr_code_hint))
+        )
+    }
+
+    // SPEC §C3: a scanned QR matching an existing tunnel has no inline slot, so interrupt with a
+    // dialog — open the existing tunnel, or dismiss and resume scanning.
+    private fun showDuplicateQrDialog(existing: ObservableTunnel) {
+        val ctx = context ?: return
+        MaterialAlertDialogBuilder(ctx)
+            .setIcon(R.drawable.ic_error)
+            .setTitle(R.string.dup_dialog_title)
+            .setMessage(getString(R.string.dup_dialog_body_qr, existing.name))
+            .setPositiveButton(R.string.dup_dialog_open) { _, _ -> selectedTunnel = existing }
+            .setNegativeButton(R.string.dup_dialog_scan_again) { d, _ -> d.dismiss(); launchQrScanner() }
+            .show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -125,12 +153,7 @@ class TunnelListFragment : BaseFragment() {
                 }
 
                 AddTunnelsSheet.REQUEST_SCAN -> {
-                    qrImportResultLauncher.launch(
-                        ScanOptions()
-                            .setOrientationLocked(false)
-                            .setBeepEnabled(false)
-                            .setPrompt(getString(R.string.qr_code_hint))
-                    )
+                    launchQrScanner()
                 }
 
                 AddTunnelsSheet.REQUEST_PASTE -> {

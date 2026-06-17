@@ -5,13 +5,17 @@
 package org.amnezia.awg.fragment
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.amnezia.awg.Application
 import org.amnezia.awg.R
+import org.amnezia.awg.util.NameError
+import org.amnezia.awg.util.NameValidator
 import org.amnezia.awg.databinding.ConfigNamingDialogFragmentBinding
 import org.amnezia.awg.config.BadConfigException
 import org.amnezia.awg.config.Config
@@ -65,6 +69,21 @@ class ConfigNamingDialogFragment : DialogFragment() {
         alertDialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> dismiss() }
         val dialog = alertDialogBuilder.create()
         dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+        dialog.setOnShowListener {
+            val createButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+            fun refresh() {
+                val name = binding?.tunnelNameText?.text?.toString().orEmpty()
+                // Empty just disables (no scary message before they've typed); bad chars / too long explain.
+                binding?.tunnelNameTextLayout?.error = when (NameValidator.validate(name)) {
+                    NameError.BAD_CHARS -> getString(R.string.paste_name_invalid_chars)
+                    NameError.TOO_LONG -> getString(R.string.paste_name_too_long)
+                    NameError.EMPTY, null -> null
+                }
+                createButton.isEnabled = NameValidator.validate(name) == null
+            }
+            binding?.tunnelNameText?.doAfterTextChanged { refresh() }
+            refresh()
+        }
         return dialog
     }
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Forward / "go to" arrow. Mirror of ic_arrow_back. Used in inline link actions
+     like "Open <tunnel>" on the duplicate-config card. 2px stroke, currentColor. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24"
+    android:tint="?attr/colorOnSurface">
+    <path android:fillColor="#00000000" android:strokeColor="@android:color/white"
+        android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M5,12 H19 M12,5 L19,12 L12,19" />
+</vector>

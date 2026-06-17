@@ -15,7 +15,9 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tunnel_name_text_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@drawable/ic_error">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tunnel_name_text"

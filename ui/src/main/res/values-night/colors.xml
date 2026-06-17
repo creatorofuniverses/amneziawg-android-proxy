@@ -8,4 +8,8 @@
     <!-- Active/connected row (dark): fill lifts off the #0E0F11 bg + teal border. -->
     <color name="awg_connected_fill">#14211F</color>
     <color name="awg_connected_stroke">#1E3A36</color>
+
+    <!-- Duplicate "already added" card (dark): deep maroon fill + muted red border. -->
+    <color name="awg_dup_card_fill">#241619</color>
+    <color name="awg_dup_card_stroke">#4A2528</color>
 </resources>

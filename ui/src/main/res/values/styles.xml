@@ -19,6 +19,10 @@
         <item name="actionModeCloseDrawable">@drawable/ic_arrow_back</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="preferenceTheme">@style/Awg.PreferenceThemeOverlay</item>
+        <!-- Visual refresh: calm tonal snackbars app-wide (import/create/delete messages). -->
+        <item name="snackbarStyle">@style/Widget.Awg.Snackbar</item>
+        <item name="snackbarTextViewStyle">@style/Widget.Awg.Snackbar.TextView</item>
+        <item name="snackbarButtonStyle">@style/Widget.Awg.Snackbar.Button</item>
     </style>
 
     <!-- Selection-mode top bar: primaryContainer so it reads as a distinct mode. -->
