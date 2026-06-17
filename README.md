@@ -4,6 +4,14 @@
 
 This is an Android GUI for [AmneziaWG](https://amnezia.org/learn-more/31_amneziawg).
 
+## Fork notice
+
+This is an independent fork, distributed as **AWG Proxy** under the application ID
+`org.amnezia.awg.proxy`, and is **not affiliated with or endorsed by** the original
+AmneziaWG / Amnezia VPN developers or WireGuard LLC. It installs alongside the
+official app rather than replacing it. All upstream code remains under its original
+Apache-2.0 license and copyright (© WireGuard LLC); see `COPYING`.
+
 ## Building
 
 ```
