@@ -32,20 +32,48 @@
         android:id="@+id/tunnel_list_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/list_item_background"
+        android:background="@{item.state == State.UP ? @drawable/tunnel_row_background_connected : @drawable/tunnel_row_background}"
         android:descendantFocusability="beforeDescendants"
         android:focusable="true"
+        android:layout_marginHorizontal="@dimen/space_md"
+        android:layout_marginVertical="@dimen/space_xs"
         android:nextFocusRight="@+id/tunnel_switch"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp">
+        android:paddingHorizontal="@dimen/space_lg"
+        android:paddingVertical="@dimen/space_md">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/tunnel_info_layout"
+            android:id="@+id/tunnel_row_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/tunnel_switch"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/selection_check"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="@dimen/space_md"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_check_circle"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/tunnel_info_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -55,20 +83,37 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{key}"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textAppearance="@style/TextAppearance.Awg.TunnelName"
                 tools:text="@sample/interface_names.json/names/names/name" />
 
-            <TextView
-                android:id="@+id/tunnel_status"
+            <LinearLayout
+                android:id="@+id/tunnel_status_row"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="@{item.connectionStatus == ConnectionStatus.CONNECTED ? @string/tunnel_status_connected : @string/tunnel_status_connecting}"
-                android:textAppearance="?attr/textAppearanceBodySmall"
-                android:textColor="@{item.connectionStatus == ConnectionStatus.CONNECTED ? @color/tunnel_status_connected : @color/tunnel_status_connecting}"
-                android:visibility="@{item.connectionStatus == ConnectionStatus.DISCONNECTED ? android.view.View.GONE : android.view.View.VISIBLE}"
-                tools:text="Подключено"
-                tools:textColor="@color/tunnel_status_connected" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/tunnel_status_dot"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/ic_status_dot"
+                    app:backgroundTintColor="@{item.connectionStatus == ConnectionStatus.CONNECTED ? @color/tunnel_status_connected : item.connectionStatus == ConnectionStatus.CONNECTING ? @color/tunnel_status_connecting : @color/tunnel_status_disconnected}"
+                    tools:backgroundTint="@color/tunnel_status_connected" />
+
+                <TextView
+                    android:id="@+id/tunnel_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{item.connectionStatus == ConnectionStatus.CONNECTED ? @string/tunnel_status_connected : item.connectionStatus == ConnectionStatus.CONNECTING ? @string/tunnel_status_connecting : @string/tunnel_status_disconnected}"
+                    android:textAppearance="@style/TextAppearance.Awg.Status"
+                    android:textColor="@{item.connectionStatus == ConnectionStatus.CONNECTED ? @color/tunnel_status_connected : item.connectionStatus == ConnectionStatus.CONNECTING ? @color/tunnel_status_connecting : @color/tunnel_status_disconnected}"
+                    tools:text="Подключено"
+                    tools:textColor="@color/tunnel_status_connected" />
+            </LinearLayout>
+        </LinearLayout>
         </LinearLayout>
 
         <org.amnezia.awg.widget.ToggleSwitch
@@ -81,5 +126,11 @@
             app:checked="@{item.state == State.UP}"
             app:onBeforeCheckedChanged="@{fragment::setTunnelState}"
             tools:checked="@sample/interface_names.json/names/checked/checked" />
+        </RelativeLayout>
+
+        <include
+            layout="@layout/include_tunnel_stats"
+            app:tunnel="@{item}" />
+      </LinearLayout>
     </org.amnezia.awg.widget.MultiselectableRelativeLayout>
 </layout>

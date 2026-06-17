@@ -63,7 +63,8 @@
     <string name="allow_remote_control_intents_summary_on">External apps may toggle tunnels (advanced)</string>
     <string name="allow_remote_control_intents_title">Allow remote control apps</string>
     <string name="allowed_ips">Allowed IPs</string>
-    <string name="app_name" translatable="false">AmneziaWG</string>
+    <string name="app_name" translatable="false">AWG Proxy</string>
+    <string name="app_title" translatable="false">AmneziaWG Proxy</string>
     <string name="bad_config_context">%1$s\'s %2$s</string>
     <string name="bad_config_context_top_level">%s</string>
     <string name="bad_config_error">%1$s in %2$s</string>
@@ -239,6 +240,21 @@
     <string name="tunnel_error_already_exists">Tunnel “%s” already exists</string>
     <string name="tunnel_error_invalid_name">Invalid name</string>
     <string name="tunnel_list_placeholder">Add a tunnel using the button below</string>
+    <string name="tunnel_list_empty_title">No tunnels yet</string>
+    <string name="tunnel_list_empty_subtitle">Add an AmneziaWG tunnel to get started.</string>
+    <string name="add_tunnel">Add a tunnel</string>
+    <string name="section_obfuscation">Obfuscation</string>
+    <string name="stat_download">Download</string>
+    <string name="stat_upload">Upload</string>
+    <string name="stat_handshake">Handshake</string>
+    <string name="stat_rate_format">%1$s/s</string>
+    <string name="stat_ago_seconds">%1$ds ago</string>
+    <string name="stat_ago_minutes">%1$dm ago</string>
+    <string name="stat_ago_never">—</string>
+    <string name="add_subtitle_file">Import from a .conf file</string>
+    <string name="add_subtitle_qr">Scan a configuration QR code</string>
+    <string name="add_subtitle_empty">Start with a blank tunnel</string>
+    <string name="split_tunnel_title">Split tunneling</string>
     <string name="tunnel_name">Tunnel Name</string>
     <string name="tunnel_on_error">Unable to turn tunnel on (wgTurnOn returned %d)</string>
     <string name="tunnel_dns_failure">Unable to resolve DNS hostname: “%s”</string>
@@ -264,4 +280,18 @@
     <string name="import_disclaimer">Ensure that you obtained the configuration file from a trusted source.\n\nOfficial Amnezia services are available only at <a href="https://amnezia.org">amnezia.org</a>\n</string>
     <string name="tunnel_status_connected">Connected</string>
     <string name="tunnel_status_connecting">Connecting…</string>
+    <string name="tunnel_status_disconnected">Disconnected</string>
+    <string name="section_interface">Interface</string>
+    <string name="section_peer">Peer</string>
+    <string name="section_applications">Applications</string>
+    <string name="detail_section_count">%d parameters</string>
+    <string name="detail_public_endpoint">Server address</string>
+    <string name="detail_endpoint">Endpoint</string>
+    <string name="detail_interface_addresses">Addresses</string>
+    <string name="detail_allowed_ips">Allowed IPs</string>
+    <string name="split_tunnel_summary">%1$d of %2$d apps routed</string>
+    <string name="split_tunnel_all_apps">All apps routed</string>
+    <string name="proto_badge_wg" translatable="false">WG</string>
+    <string name="proto_badge_amnezia" translatable="false">Amnezia</string>
+    <string name="proto_badge_proxy" translatable="false">Proxy</string>
 </resources>

@@ -30,7 +30,8 @@
 
     <org.amnezia.awg.widget.TvCardView
         android:layout_width="225dp"
-        android:layout_height="110dp"
+        android:layout_height="wrap_content"
+        android:minHeight="110dp"
         android:layout_margin="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="0dp"
@@ -43,7 +44,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tunnel_name"
@@ -61,8 +62,8 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceBodyLarge"
                 android:visibility="@{isDeleting ? View.GONE : View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tunnel_name"
                 tools:text="rx: 200 MB, tx: 100 MB" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -71,9 +72,18 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tv_delete"
                 android:visibility="@{(isDeleting &amp;&amp; isFocused) ? View.VISIBLE : View.GONE}"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tunnel_name"
                 tools:visibility="gone" />
+
+            <include
+                layout="@layout/include_tunnel_stats"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tunnel_transfer"
+                app:tunnel="@{item}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

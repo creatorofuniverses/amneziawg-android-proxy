@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Empty-state Signal mark, theme-aware.
+     Ring + waveform = colorPrimary (teal). The A monogram = colorOnSurface,
+     so it stays visible in BOTH light and dark themes (fixes invisible-A on light).
+     NOTE: theme attr colors in a VectorDrawable require AppCompat inflation
+     (vectorDrawables.useSupportLibrary = true) — already on in this project. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <path android:fillColor="#00000000" android:strokeColor="?attr/colorPrimary"
+        android:strokeWidth="6" android:strokeLineCap="round"
+        android:pathData="M104,60 A44,44 0 1 1 16,60 A44,44 0 1 1 104,60 Z" />
+    <path android:fillColor="#00000000" android:strokeColor="?attr/colorOnSurface"
+        android:strokeWidth="6" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M42,84 L60,34 L78,84" />
+    <path android:fillColor="#00000000" android:strokeColor="?attr/colorPrimary"
+        android:strokeWidth="5" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M34,64 L46,64 L52,50 L60,78 L68,56 L74,64 L86,64" />
+</vector>

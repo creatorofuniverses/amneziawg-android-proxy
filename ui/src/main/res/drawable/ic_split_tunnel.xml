@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Split tunneling entry icon: call-split (a single line forking into two
+     diverging arrows) - the standard, recognizable routing-split metaphor. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24"
+    android:tint="?attr/colorPrimary">
+    <path android:fillColor="#00000000" android:strokeColor="@android:color/white"
+        android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M11,21 V13 M11,13 L5.5,7.5 M5.5,7.5 H9.5 M5.5,7.5 V11.5 M11,13 L18,6 M18,6 H14 M18,6 V10" />
+</vector>

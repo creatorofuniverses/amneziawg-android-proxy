@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- AmneziaWG Visual Refresh - typography.
+     Built on the Material 3 type scale with the system font (Roboto).
+     No custom font dependency. Apply these textAppearance styles per element;
+     each inherits the M3 size/letter-spacing and only sets color/weight where
+     the design needs to deviate from the scale default.
+
+     Material 3 scale defaults (Roboto) for reference:
+       TitleLarge   22sp / Regular 400 / ls 0
+       TitleMedium  16sp / Medium 500  / ls 0.15
+       BodyLarge    16sp / Regular 400 / ls 0.5
+       BodyMedium   14sp / Regular 400 / ls 0.25
+       BodySmall    12sp / Regular 400 / ls 0.4
+       LabelLarge   14sp / Medium 500  / ls 0.1
+       LabelSmall   11sp / Medium 500  / ls 0.5
+-->
+<resources>
+
+    <!-- Toolbar / screen title -->
+    <style name="TextAppearance.Awg.Title" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="fontFamily">sans-serif-medium</item>   <!-- Medium 500 -->
+    </style>
+
+    <!-- Tunnel name (list row + detail header) -->
+    <style name="TextAppearance.Awg.TunnelName" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="fontFamily">sans-serif-medium</item>   <!-- Medium 500, ~16sp -->
+    </style>
+
+    <!-- Section header: INTERFACE / OBFUSCATION / PEER / APPLICATIONS -->
+    <style name="TextAppearance.Awg.SectionHeader" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="fontFamily">sans-serif-medium</item>   <!-- Medium 500, ~14sp caps -->
+    </style>
+
+    <!-- Field VALUE (addresses, keys, endpoint, DNS) -->
+    <style name="TextAppearance.Awg.FieldValue" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="fontFamily">sans-serif</item>          <!-- Regular 400, ~16sp -->
+    </style>
+
+    <!-- Field LABEL (above each value) -->
+    <style name="TextAppearance.Awg.FieldLabel" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="fontFamily">sans-serif</item>          <!-- Regular 400, ~12sp -->
+    </style>
+
+    <!-- Status label: Connected / Connecting / Disconnected (color set in code) -->
+    <style name="TextAppearance.Awg.Status" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">sans-serif-medium</item>   <!-- Medium 500, ~14sp -->
+    </style>
+
+    <!-- Stat label: DOWNLOAD / UPLOAD / HANDSHAKE -->
+    <style name="TextAppearance.Awg.StatLabel" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.05</item>
+        <item name="fontFamily">sans-serif-medium</item>   <!-- Medium 500, ~11sp caps -->
+    </style>
+
+    <!-- Stat VALUE + keys/IPs: monospace so digits/hex align -->
+    <style name="TextAppearance.Awg.Mono" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">monospace</item>  <!-- Regular, ~14sp -->
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- Accent monospace: download/upload RATES on a connected row.
+         Teal is intentional (ties the live throughput to the active state).
+         Use Mono (neutral onSurface) for handshake/uptime, keys and IPs. -->
+    <style name="TextAppearance.Awg.Mono.Accent" parent="TextAppearance.Awg.Mono">
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+    <!-- Primary button label (Add a tunnel / Save) -->
+    <style name="TextAppearance.Awg.Button" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">sans-serif-medium</item>   <!-- Medium 500, ~14sp -->
+    </style>
+
+    <!-- Empty-state title -->
+    <style name="TextAppearance.Awg.EmptyTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+
+    <!-- Empty-state body -->
+    <style name="TextAppearance.Awg.EmptyBody" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- OPTIONAL branded display face for titles only.
+         To use, drop Manrope into res/font/ and uncomment the fontFamily lines
+         in Title / TunnelName / EmptyTitle above (point them at @font/manrope_medium).
+         Body, labels, mono stay on the system font. Keep weights as set. -->
+
+</resources>

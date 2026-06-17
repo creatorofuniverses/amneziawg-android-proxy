@@ -4,6 +4,8 @@
  */
 package org.amnezia.awg.databinding
 
+import android.content.res.ColorStateList
+import android.os.SystemClock
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
@@ -25,6 +27,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.amnezia.awg.BR
 import org.amnezia.awg.R
+import org.amnezia.awg.backend.Statistics
+import org.amnezia.awg.backend.Tunnel
 import org.amnezia.awg.databinding.ObservableKeyedRecyclerViewAdapter.RowConfigurationHandler
 import org.amnezia.awg.widget.ToggleSwitch
 import org.amnezia.awg.widget.ToggleSwitch.OnBeforeCheckedChangeListener
@@ -210,6 +214,75 @@ object BindingAdapters {
             Integer.parseInt(s)
         } catch (_: Throwable) {
             0
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("backgroundTintColor")
+    fun setBackgroundTintColor(view: View, color: Int) {
+        view.backgroundTintList = ColorStateList.valueOf(color)
+    }
+
+    // Per-tunnel throughput samples (key -> rx, tx, elapsedRealtime ms) for rate deltas.
+    private val statsSamples = HashMap<String, Triple<Long, Long, Long>>()
+    private val byteUnits = arrayOf("B", "KB", "MB", "GB", "TB")
+
+    private fun humanBytes(bytes: Long): String {
+        if (bytes <= 0) return "0 B"
+        var v = bytes.toDouble()
+        var i = 0
+        while (v >= 1024 && i < byteUnits.lastIndex) { v /= 1024; i++ }
+        return (if (v < 10 && i > 0) String.format("%.1f", v) else String.format("%.0f", v)) + " " + byteUnits[i]
+    }
+
+    private fun latestHandshakeEpochMillis(stats: Statistics?): Long {
+        if (stats == null) return 0
+        var max = 0L
+        for (key in stats.peers()) {
+            val p = stats.peer(key) ?: continue
+            if (p.latestHandshakeEpochMillis() > max) max = p.latestHandshakeEpochMillis()
+        }
+        return max
+    }
+
+    /**
+     * Render the connected-row throughput strip. Shown only while the tunnel is UP;
+     * download/upload are rates derived from the delta since the previous sample, and
+     * handshake is "time since latest handshake". Re-runs whenever statistics, state, or
+     * name change — ObservableTunnel.statistics refreshes itself opportunistically (~1s).
+     */
+    @JvmStatic
+    @BindingAdapter("statsValue", "statsState", "statsKey", requireAll = false)
+    fun setTunnelStats(root: View, stats: Statistics?, state: Tunnel.State?, key: String?) {
+        if (state != Tunnel.State.UP) {
+            root.visibility = View.GONE
+            if (key != null) statsSamples.remove(key)
+            return
+        }
+        root.visibility = View.VISIBLE
+        val ctx = root.context
+        val rx = stats?.totalRx() ?: 0L
+        val tx = stats?.totalTx() ?: 0L
+        val now = SystemClock.elapsedRealtime()
+        val prev = if (key != null) statsSamples.put(key, Triple(rx, tx, now)) else null
+        var rxRate = 0L
+        var txRate = 0L
+        if (prev != null) {
+            val dt = (now - prev.third).coerceAtLeast(1L)
+            rxRate = (rx - prev.first).coerceAtLeast(0L) * 1000L / dt
+            txRate = (tx - prev.second).coerceAtLeast(0L) * 1000L / dt
+        }
+        root.findViewById<TextView>(R.id.stat_download)?.text = ctx.getString(R.string.stat_rate_format, humanBytes(rxRate))
+        root.findViewById<TextView>(R.id.stat_upload)?.text = ctx.getString(R.string.stat_rate_format, humanBytes(txRate))
+
+        val handshakeText = root.findViewById<TextView>(R.id.stat_handshake)
+        val epoch = latestHandshakeEpochMillis(stats)
+        handshakeText?.text = if (epoch <= 0) {
+            ctx.getString(R.string.stat_ago_never)
+        } else {
+            val secs = ((System.currentTimeMillis() - epoch) / 1000L).coerceAtLeast(0L)
+            if (secs < 60) ctx.getString(R.string.stat_ago_seconds, secs.toInt())
+            else ctx.getString(R.string.stat_ago_minutes, (secs / 60L).toInt())
         }
     }
 

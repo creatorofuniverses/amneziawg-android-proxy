@@ -7,4 +7,31 @@
     <dimen name="bottom_sheet_top_padding">8dp</dimen>
     <dimen name="bottom_sheet_icon_padding">16dp</dimen>
     <dimen name="tunnel_list_placeholder_margin">16dp</dimen>
+
+    <!-- ===== Visual refresh tokens ===== -->
+    <!-- Spacing scale (4dp grid) -->
+    <dimen name="space_xs">4dp</dimen>
+    <dimen name="space_sm">8dp</dimen>
+    <dimen name="space_md">12dp</dimen>
+    <dimen name="space_lg">16dp</dimen>
+    <dimen name="space_xl">24dp</dimen>
+    <dimen name="touch_min">48dp</dimen>
+
+    <!-- Screen / card padding -->
+    <dimen name="screen_padding">16dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="card_gap">12dp</dimen>
+
+    <!-- Corner radius -->
+    <dimen name="radius_input">12dp</dimen>
+    <dimen name="radius_card">16dp</dimen>
+    <dimen name="radius_list_row">18dp</dimen>
+    <dimen name="radius_fab">18dp</dimen>
+    <dimen name="radius_sheet_top">26dp</dimen>
+
+    <!-- Elevation (tonal-first; keep flat) -->
+    <dimen name="elevation_card">0dp</dimen>
+    <dimen name="elevation_toolbar">0dp</dimen>
+    <dimen name="elevation_sheet">1dp</dimen>
+    <dimen name="elevation_fab">3dp</dimen>
 </resources>

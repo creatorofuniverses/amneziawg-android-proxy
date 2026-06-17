@@ -29,6 +29,7 @@ import com.journeyapps.barcodescanner.ScanOptions
 import org.amnezia.awg.Application
 import org.amnezia.awg.R
 import org.amnezia.awg.activity.TunnelCreatorActivity
+import org.amnezia.awg.backend.Tunnel
 import org.amnezia.awg.databinding.ObservableKeyedRecyclerViewAdapter.RowConfigurationHandler
 import org.amnezia.awg.databinding.TunnelListFragmentBinding
 import org.amnezia.awg.databinding.TunnelListItemBinding
@@ -40,6 +41,7 @@ import org.amnezia.awg.widget.MultiselectableRelativeLayout
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -50,6 +52,7 @@ class TunnelListFragment : BaseFragment() {
     private var actionMode: ActionMode? = null
     private var backPressedCallback: OnBackPressedCallback? = null
     private var binding: TunnelListFragmentBinding? = null
+    private var statsTimerActive = false
     private val tunnelFileImportResultLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { data ->
         if (data == null) return@registerForActivityResult
         val activity = activity ?: return@registerForActivityResult
@@ -96,33 +99,9 @@ class TunnelListFragment : BaseFragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = TunnelListFragmentBinding.inflate(inflater, container, false)
-        val bottomSheet = AddTunnelsSheet()
         binding?.apply {
-            createFab.setOnClickListener {
-                if (childFragmentManager.findFragmentByTag("BOTTOM_SHEET") != null)
-                    return@setOnClickListener
-                childFragmentManager.setFragmentResultListener(AddTunnelsSheet.REQUEST_KEY_NEW_TUNNEL, viewLifecycleOwner) { _, bundle ->
-                    when (bundle.getString(AddTunnelsSheet.REQUEST_METHOD)) {
-                        AddTunnelsSheet.REQUEST_CREATE -> {
-                            startActivity(Intent(requireActivity(), TunnelCreatorActivity::class.java))
-                        }
-
-                        AddTunnelsSheet.REQUEST_IMPORT -> {
-                            tunnelFileImportResultLauncher.launch("*/*")
-                        }
-
-                        AddTunnelsSheet.REQUEST_SCAN -> {
-                            qrImportResultLauncher.launch(
-                                ScanOptions()
-                                    .setOrientationLocked(false)
-                                    .setBeepEnabled(false)
-                                    .setPrompt(getString(R.string.qr_code_hint))
-                            )
-                        }
-                    }
-                }
-                bottomSheet.showNow(childFragmentManager, "BOTTOM_SHEET")
-            }
+            createFab.setOnClickListener { showAddTunnelsSheet() }
+            emptyCreateButton.setOnClickListener { showAddTunnelsSheet() }
             executePendingBindings()
         }
         backPressedCallback = requireActivity().onBackPressedDispatcher.addCallback(this) { actionMode?.finish() }
@@ -131,9 +110,70 @@ class TunnelListFragment : BaseFragment() {
         return binding?.root
     }
 
+    private fun showAddTunnelsSheet() {
+        if (childFragmentManager.findFragmentByTag("BOTTOM_SHEET") != null)
+            return
+        childFragmentManager.setFragmentResultListener(AddTunnelsSheet.REQUEST_KEY_NEW_TUNNEL, viewLifecycleOwner) { _, bundle ->
+            when (bundle.getString(AddTunnelsSheet.REQUEST_METHOD)) {
+                AddTunnelsSheet.REQUEST_CREATE -> {
+                    startActivity(Intent(requireActivity(), TunnelCreatorActivity::class.java))
+                }
+
+                AddTunnelsSheet.REQUEST_IMPORT -> {
+                    tunnelFileImportResultLauncher.launch("*/*")
+                }
+
+                AddTunnelsSheet.REQUEST_SCAN -> {
+                    qrImportResultLauncher.launch(
+                        ScanOptions()
+                            .setOrientationLocked(false)
+                            .setBeepEnabled(false)
+                            .setPrompt(getString(R.string.qr_code_hint))
+                    )
+                }
+            }
+        }
+        AddTunnelsSheet().showNow(childFragmentManager, "BOTTOM_SHEET")
+    }
+
     override fun onDestroyView() {
         binding = null
         super.onDestroyView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Keep the per-row throughput strips live: refreshing each UP tunnel's
+        // statistics fires onStatisticsChanged, which the bound strip observes.
+        statsTimerActive = true
+        lifecycleScope.launch {
+            while (statsTimerActive) {
+                refreshStatistics()
+                delay(1000)
+            }
+        }
+    }
+
+    override fun onStop() {
+        statsTimerActive = false
+        super.onStop()
+    }
+
+    private suspend fun refreshStatistics() {
+        if (!isResumed) return
+        val tunnels = try {
+            Application.getTunnelManager().getTunnels()
+        } catch (_: Throwable) {
+            return
+        }
+        for (tunnel in tunnels) {
+            if (tunnel.state != Tunnel.State.UP) continue
+            try {
+                tunnel.getStatisticsAsync()
+            } catch (_: Throwable) {
+                // best-effort; the strip simply keeps its last value
+            }
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -182,10 +222,14 @@ class TunnelListFragment : BaseFragment() {
                     actionModeListener.toggleItemChecked(position)
                     true
                 }
-                if (actionMode != null)
-                    (binding.root as MultiselectableRelativeLayout).setMultiSelected(actionModeListener.checkedItems.contains(position))
-                else
+                if (actionMode != null) {
+                    val checked = actionModeListener.checkedItems.contains(position)
+                    (binding.root as MultiselectableRelativeLayout).setMultiSelected(checked)
+                    binding.selectionCheck.visibility = if (checked) View.VISIBLE else View.GONE
+                } else {
                     (binding.root as MultiselectableRelativeLayout).setSingleSelected(selectedTunnel == item)
+                    binding.selectionCheck.visibility = View.GONE
+                }
             }
         }
     }

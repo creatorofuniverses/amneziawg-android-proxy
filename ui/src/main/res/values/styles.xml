@@ -3,6 +3,7 @@
 
     <style name="AmneziaWgTheme.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="android:background">?attr/colorSurface</item>
+        <item name="titleTextAppearance">@style/TextAppearance.Awg.Title</item>
     </style>
 
     <style name="AppThemeBase" parent="AmneziaWgTheme">
@@ -10,19 +11,96 @@
         <item name="toolbarStyle">@style/AmneziaWgTheme.Toolbar</item>
         <item name="bottomSheetDialogTheme">@style/AmneziaWgTheme.BottomSheetDialog</item>
         <item name="android:statusBarColor">@null</item>
+        <!-- Visual refresh: outlined inputs app-wide + colorOnSurface input text
+             (fixes the black-on-black editor bug). -->
+        <item name="textInputStyle">@style/AmneziaWgTheme.TextInputLayout</item>
+        <!-- Selection mode: distinct primaryContainer contextual bar + back close icon. -->
+        <item name="actionModeStyle">@style/AmneziaWgTheme.ActionMode</item>
+        <item name="actionModeCloseDrawable">@drawable/ic_arrow_back</item>
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <!-- Selection-mode top bar: primaryContainer so it reads as a distinct mode. -->
+    <style name="AmneziaWgTheme.ActionMode" parent="Widget.Material3.ActionMode">
+        <item name="background">?attr/colorPrimaryContainer</item>
+        <item name="titleTextStyle">@style/AmneziaWgTheme.ActionMode.Title</item>
+    </style>
+    <style name="AmneziaWgTheme.ActionMode.Title" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">?attr/colorOnPrimaryContainer</item>
     </style>
 
     <!-- Various additional API-specific features in values-v*/styles.xml -->
     <style name="AppTheme" parent="AppThemeBase" />
 
+    <!-- Visual refresh: bump radius 4->16dp, padding 8->16dp, flat tonal surface. -->
     <style name="AmneziaWgTheme.MaterialCardView" parent="Widget.Material3.CardView.Elevated">
-        <item name="cornerRadius">4dp</item>
-        <item name="contentPadding">8dp</item>
+        <item name="cornerRadius">@dimen/radius_card</item>
+        <item name="contentPadding">@dimen/card_padding</item>
+        <item name="cardElevation">@dimen/elevation_card</item>
+        <item name="cardBackgroundColor">?attr/colorSurfaceContainer</item>
+        <item name="strokeColor">?attr/colorOutlineVariant</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <!-- Visual refresh: dormant styles, applied in layouts during phase 2. -->
+    <style name="AmneziaWgTheme.Fab" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="tint">?attr/colorOnPrimary</item>
+        <item name="elevation">@dimen/elevation_fab</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Awg.Fab</item>
+    </style>
+    <style name="ShapeAppearance.Awg.Fab" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_fab</item>
+    </style>
+
+    <style name="AmneziaWgTheme.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbTint">@color/awg_switch_thumb</item>
+        <item name="trackTint">@color/awg_switch_track</item>
+    </style>
+
+    <style name="AmneziaWgTheme.SectionHeader" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="AmneziaWgTheme.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">@dimen/radius_input</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_input</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_input</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_input</item>
+        <item name="boxStrokeColor">?attr/colorOutline</item>
+        <item name="hintTextColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:textColorHint">?attr/colorOnSurfaceVariant</item>
+        <!-- Route child inputs through an overlay that forces high-contrast text. -->
+        <item name="materialThemeOverlay">@style/ThemeOverlay.AmneziaWgTheme.TextInput</item>
+    </style>
+    <style name="ThemeOverlay.AmneziaWgTheme.TextInput" parent="">
+        <item name="editTextStyle">@style/AmneziaWgTheme.TextInputEditText</item>
+    </style>
+    <!-- editText text color = colorOnSurface fixes the black-on-black editor bug. -->
+    <style name="AmneziaWgTheme.TextInputEditText" parent="Widget.Material3.TextInputEditText.OutlinedBox">
+        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
     <style name="AmneziaWgTheme.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/AmneziaWgTheme.BottomSheet</item>
+    </style>
+
+    <!-- Visual refresh: rounded 26dp top + tonal container background. -->
+    <style name="AmneziaWgTheme.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Awg.BottomSheet</item>
+        <item name="backgroundTint">?attr/colorSurfaceContainer</item>
+    </style>
+    <style name="ShapeAppearance.Awg.BottomSheet" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/radius_sheet_top</item>
+        <item name="cornerSizeTopRight">@dimen/radius_sheet_top</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
     </style>
 
     <style name="NoBackgroundTheme" parent="AppTheme">

@@ -53,12 +53,12 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/interface_title"
+                            style="@style/AmneziaWgTheme.SectionHeader"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
                             android:layout_marginTop="32dp"
                             android:text="@string/interface_title"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -210,7 +210,7 @@
                                 android:imeOptions="actionNext"
                                 android:inputType="textNoSuggestions|textVisiblePassword"
                                 android:nextFocusUp="@id/addresses_label_text"
-                                android:nextFocusDown="@id/junk_packet_count_text"
+                                android:nextFocusDown="@id/imitate_protocol_text"
                                 android:nextFocusForward="@id/mtu_text"
                                 android:text="@={config.interface.dnsServers}" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -235,365 +235,13 @@
                                 android:imeOptions="actionNext"
                                 android:inputType="number"
                                 android:nextFocusUp="@id/listen_port_text"
-                                android:nextFocusDown="@id/junk_packet_count_text"
-                                android:nextFocusForward="@id/junk_packet_count_text"
+                                android:nextFocusDown="@id/imitate_protocol_text"
+                                android:nextFocusForward="@id/imitate_protocol_text"
                                 android:text="@={config.interface.mtu}"
                                 android:textAlignment="center" />
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/junk_packet_count_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:hint="@string/junk_packet_count"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/dns_servers_label_layout">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/junk_packet_count_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="number"
-                                android:nextFocusUp="@id/mtu_text"
-                                android:nextFocusDown="@id/junk_packet_min_size_text"
-                                android:nextFocusForward="@id/junk_packet_min_size_text"
-                                android:text="@={config.interface.junkPacketCount}" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/junk_packet_min_size_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/junk_packet_min_size"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/junk_packet_count_layout"
-                            android:layout_margin="4dp">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/junk_packet_min_size_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="number"
-                                android:nextFocusUp="@id/junk_packet_count_text"
-                                android:nextFocusDown="@id/init_packet_junk_size_text"
-                                android:nextFocusForward="@id/junk_packet_max_size_text"
-                                android:text="@={config.interface.junkPacketMinSize}" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/junk_packet_max_size_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:hint="@string/junk_packet_max_size"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/junk_packet_min_size_layout">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/junk_packet_max_size_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="number"
-                                android:nextFocusUp="@id/mtu_text"
-                                android:nextFocusDown="@id/response_packet_junk_size_text"
-                                android:nextFocusForward="@id/init_packet_junk_size_text"
-                                android:text="@={config.interface.junkPacketMaxSize}" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/init_packet_junk_size_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/init_packet_junk_size"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/junk_packet_max_size_layout"
-                            android:layout_margin="4dp">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/init_packet_junk_size_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="number"
-                                android:nextFocusUp="@id/junk_packet_min_size_text"
-                                android:nextFocusDown="@id/init_packet_magic_header_text"
-                                android:nextFocusForward="@id/response_packet_junk_size_text"
-                                android:text="@={config.interface.initPacketJunkSize}" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/response_packet_junk_size_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:hint="@string/response_packet_junk_size"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/init_packet_junk_size_layout">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/response_packet_junk_size_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="number"
-                                android:nextFocusUp="@id/init_packet_junk_size_text"
-                                android:nextFocusDown="@id/cookie_reply_packet_junk_size_text"
-                                android:nextFocusForward="@id/cookie_reply_packet_junk_size_text"
-                                android:text="@={config.interface.responsePacketJunkSize}" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/cookie_reply_packet_junk_size_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:hint="@string/cookie_reply_packet_junk_size"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/response_packet_junk_size_layout">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/cookie_reply_packet_junk_size_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="number"
-                                android:nextFocusUp="@id/response_packet_junk_size_text"
-                                android:nextFocusDown="@id/transport_packet_junk_size_text"
-                                android:nextFocusForward="@id/transport_packet_junk_size_text"
-                                android:text="@={config.interface.cookieReplyPacketJunkSize}" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/transport_packet_junk_size_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:hint="@string/transport_packet_junk_size"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/cookie_reply_packet_junk_size_layout">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/transport_packet_junk_size_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="number"
-                                android:nextFocusUp="@id/cookie_reply_packet_junk_size_text"
-                                android:nextFocusDown="@id/init_packet_magic_header_text"
-                                android:nextFocusForward="@id/init_packet_magic_header_text"
-                                android:text="@={config.interface.transportPacketJunkSize}" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/init_packet_magic_header_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/init_packet_magic_header"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/transport_packet_junk_size_layout"
-                            android:layout_margin="4dp">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/init_packet_magic_header_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="textNoSuggestions"
-                                android:nextFocusUp="@id/transport_packet_junk_size_text"
-                                android:nextFocusDown="@id/underload_packet_magic_header_text"
-                                android:nextFocusForward="@id/response_packet_magic_header_text"
-                                android:text="@={config.interface.initPacketMagicHeader}" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/response_packet_magic_header_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:hint="@string/response_packet_magic_header"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/init_packet_magic_header_layout">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/response_packet_magic_header_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="textNoSuggestions"
-                                android:nextFocusUp="@id/response_packet_junk_size_text"
-                                android:nextFocusDown="@id/transport_packet_magic_header_text"
-                                android:nextFocusForward="@id/underload_packet_magic_header_text"
-                                android:text="@={config.interface.responsePacketMagicHeader}" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/underload_packet_magic_header_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/underload_packet_magic_header"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/response_packet_magic_header_layout"
-                            android:layout_margin="4dp">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/underload_packet_magic_header_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="textNoSuggestions"
-                                android:nextFocusUp="@id/init_packet_magic_header_text"
-                                android:nextFocusDown="@id/special_junk_i1_text"
-                                android:nextFocusForward="@id/transport_packet_magic_header_text"
-                                android:text="@={config.interface.underloadPacketMagicHeader}" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/transport_packet_magic_header_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:hint="@string/transport_packet_magic_header"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/underload_packet_magic_header_layout">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/transport_packet_magic_header_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="textNoSuggestions"
-                                android:nextFocusUp="@id/response_packet_magic_header_text"
-                                android:nextFocusDown="@id/special_junk_i1_text"
-                                android:nextFocusForward="@id/special_junk_i1_text"
-                                android:text="@={config.interface.transportPacketMagicHeader}" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/special_junk_i1_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:hint="@string/special_junk_i1"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/transport_packet_magic_header_layout">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/special_junk_i1_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="textNoSuggestions"
-                                android:nextFocusUp="@id/transport_packet_magic_header_text"
-                                android:nextFocusDown="@id/special_junk_i2_text"
-                                android:nextFocusForward="@id/special_junk_i2_text"
-                                android:text="@={config.interface.specialJunkI1}" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/special_junk_i2_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:hint="@string/special_junk_i2"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/special_junk_i1_layout">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/special_junk_i2_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="textNoSuggestions"
-                                android:nextFocusUp="@id/special_junk_i1_text"
-                                android:nextFocusDown="@id/special_junk_i3_text"
-                                android:nextFocusForward="@id/special_junk_i3_text"
-                                android:text="@={config.interface.specialJunkI2}" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/special_junk_i3_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:hint="@string/special_junk_i3"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/special_junk_i2_layout">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/special_junk_i3_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="textNoSuggestions"
-                                android:nextFocusUp="@id/special_junk_i2_text"
-                                android:nextFocusDown="@id/special_junk_i4_text"
-                                android:nextFocusForward="@id/special_junk_i4_text"
-                                android:text="@={config.interface.specialJunkI3}" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/special_junk_i4_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:hint="@string/special_junk_i4"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/special_junk_i3_layout">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/special_junk_i4_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="textNoSuggestions"
-                                android:nextFocusUp="@id/special_junk_i3_text"
-                                android:nextFocusDown="@id/special_junk_i5_text"
-                                android:nextFocusForward="@id/special_junk_i5_text"
-                                android:text="@={config.interface.specialJunkI4}" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/special_junk_i5_layout"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:hint="@string/special_junk_i5"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/special_junk_i4_layout">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/special_junk_i5_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionDone"
-                                android:inputType="textNoSuggestions"
-                                android:nextFocusUp="@id/special_junk_i4_text"
-                                android:nextFocusDown="@id/imitate_protocol_text"
-                                android:nextFocusForward="@id/imitate_protocol_text"
-                                android:text="@={config.interface.specialJunkI5}" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
+                        <!-- A1: imitate_protocol belongs to the Interface group -->
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/imitate_protocol_layout"
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -603,7 +251,7 @@
                             android:hint="@string/imitate_protocol"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/special_junk_i5_layout">
+                            app:layout_constraintTop_toBottomOf="@+id/dns_servers_label_layout">
 
                             <com.google.android.material.textfield.MaterialAutoCompleteTextView
                                 android:id="@+id/imitate_protocol_text"
@@ -611,32 +259,458 @@
                                 android:layout_height="wrap_content"
                                 android:imeOptions="actionDone"
                                 android:inputType="none"
-                                android:nextFocusUp="@id/special_junk_i5_text"
-                                android:nextFocusDown="@id/set_excluded_applications"
-                                android:nextFocusForward="@id/set_excluded_applications"
+                                android:nextFocusUp="@id/mtu_text"
+                                android:nextFocusDown="@id/junk_packet_count_text"
+                                android:nextFocusForward="@id/junk_packet_count_text"
                                 app:dropdownValue="@={config.interface.imitateProtocol}"
                                 app:simpleItems="@array/imitate_protocol_values" />
                         </com.google.android.material.textfield.TextInputLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/set_excluded_applications"
-                            style="@style/Widget.Material3.Button.TextButton"
-                            android:layout_width="0dp"
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/obfuscation_title"
+                            style="@style/AmneziaWgTheme.SectionHeader"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:nextFocusUp="@id/imitate_protocol_text"
-                            android:nextFocusDown="@id/peers_layout"
-                            android:nextFocusForward="@id/peers_layout"
-                            android:onClick="@{fragment::onRequestSetExcludedIncludedApplications}"
-                            android:text="@{config.interface.includedApplications.size > 0 ? @plurals/set_included_applications(config.interface.includedApplications.size, config.interface.includedApplications.size) : config.interface.excludedApplications.size > 0 ? @plurals/set_excluded_applications(config.interface.excludedApplications.size, config.interface.excludedApplications.size) : @string/all_applications}"
-                            android:textColor="?attr/colorSecondary"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/imitate_protocol_layout"
-                            app:rippleColor="?attr/colorSecondary"
-                            tools:text="4 excluded applications" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            android:text="@string/section_obfuscation" />
+
+                        <!-- Row A: junk_packet_count — full width -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/junk_packet_count_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:hint="@string/junk_packet_count">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/junk_packet_count_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:imeOptions="actionNext"
+                                android:inputType="number"
+                                android:nextFocusUp="@id/imitate_protocol_text"
+                                android:nextFocusDown="@id/junk_packet_min_size_text"
+                                android:nextFocusForward="@id/junk_packet_min_size_text"
+                                android:text="@={config.interface.junkPacketCount}" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Row B: junk_packet_min_size | junk_packet_max_size -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/junk_packet_min_size_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="@dimen/space_sm"
+                                android:layout_marginBottom="4dp"
+                                android:layout_weight="1"
+                                android:hint="@string/junk_packet_min_size">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/junk_packet_min_size_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="number"
+                                    android:nextFocusUp="@id/junk_packet_count_text"
+                                    android:nextFocusDown="@id/init_packet_junk_size_text"
+                                    android:nextFocusForward="@id/junk_packet_max_size_text"
+                                    android:text="@={config.interface.junkPacketMinSize}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/junk_packet_max_size_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/space_sm"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="4dp"
+                                android:layout_marginBottom="4dp"
+                                android:layout_weight="1"
+                                android:hint="@string/junk_packet_max_size">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/junk_packet_max_size_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="number"
+                                    android:nextFocusUp="@id/junk_packet_count_text"
+                                    android:nextFocusDown="@id/response_packet_junk_size_text"
+                                    android:nextFocusForward="@id/init_packet_junk_size_text"
+                                    android:text="@={config.interface.junkPacketMaxSize}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <!-- Row C: init_packet_junk_size | response_packet_junk_size -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/init_packet_junk_size_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="@dimen/space_sm"
+                                android:layout_marginBottom="4dp"
+                                android:layout_weight="1"
+                                android:hint="@string/init_packet_junk_size">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/init_packet_junk_size_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="number"
+                                    android:nextFocusUp="@id/junk_packet_min_size_text"
+                                    android:nextFocusDown="@id/cookie_reply_packet_junk_size_text"
+                                    android:nextFocusForward="@id/response_packet_junk_size_text"
+                                    android:text="@={config.interface.initPacketJunkSize}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/response_packet_junk_size_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/space_sm"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="4dp"
+                                android:layout_marginBottom="4dp"
+                                android:layout_weight="1"
+                                android:hint="@string/response_packet_junk_size">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/response_packet_junk_size_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="number"
+                                    android:nextFocusUp="@id/junk_packet_max_size_text"
+                                    android:nextFocusDown="@id/transport_packet_junk_size_text"
+                                    android:nextFocusForward="@id/cookie_reply_packet_junk_size_text"
+                                    android:text="@={config.interface.responsePacketJunkSize}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <!-- Row D: cookie_reply_packet_junk_size | transport_packet_junk_size -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/cookie_reply_packet_junk_size_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="@dimen/space_sm"
+                                android:layout_marginBottom="4dp"
+                                android:layout_weight="1"
+                                android:hint="@string/cookie_reply_packet_junk_size">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/cookie_reply_packet_junk_size_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="number"
+                                    android:nextFocusUp="@id/init_packet_junk_size_text"
+                                    android:nextFocusDown="@id/init_packet_magic_header_text"
+                                    android:nextFocusForward="@id/transport_packet_junk_size_text"
+                                    android:text="@={config.interface.cookieReplyPacketJunkSize}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/transport_packet_junk_size_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/space_sm"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="4dp"
+                                android:layout_marginBottom="4dp"
+                                android:layout_weight="1"
+                                android:hint="@string/transport_packet_junk_size">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/transport_packet_junk_size_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="number"
+                                    android:nextFocusUp="@id/response_packet_junk_size_text"
+                                    android:nextFocusDown="@id/response_packet_magic_header_text"
+                                    android:nextFocusForward="@id/init_packet_magic_header_text"
+                                    android:text="@={config.interface.transportPacketJunkSize}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <!-- Row E: init_packet_magic_header | response_packet_magic_header -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/init_packet_magic_header_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="@dimen/space_sm"
+                                android:layout_marginBottom="4dp"
+                                android:layout_weight="1"
+                                android:hint="@string/init_packet_magic_header">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/init_packet_magic_header_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="textNoSuggestions"
+                                    android:nextFocusUp="@id/cookie_reply_packet_junk_size_text"
+                                    android:nextFocusDown="@id/underload_packet_magic_header_text"
+                                    android:nextFocusForward="@id/response_packet_magic_header_text"
+                                    android:text="@={config.interface.initPacketMagicHeader}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/response_packet_magic_header_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/space_sm"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="4dp"
+                                android:layout_marginBottom="4dp"
+                                android:layout_weight="1"
+                                android:hint="@string/response_packet_magic_header">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/response_packet_magic_header_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="textNoSuggestions"
+                                    android:nextFocusUp="@id/transport_packet_junk_size_text"
+                                    android:nextFocusDown="@id/transport_packet_magic_header_text"
+                                    android:nextFocusForward="@id/underload_packet_magic_header_text"
+                                    android:text="@={config.interface.responsePacketMagicHeader}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <!-- Row F: underload_packet_magic_header | transport_packet_magic_header -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/underload_packet_magic_header_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="@dimen/space_sm"
+                                android:layout_marginBottom="4dp"
+                                android:layout_weight="1"
+                                android:hint="@string/underload_packet_magic_header">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/underload_packet_magic_header_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="textNoSuggestions"
+                                    android:nextFocusUp="@id/init_packet_magic_header_text"
+                                    android:nextFocusDown="@id/special_junk_i1_text"
+                                    android:nextFocusForward="@id/transport_packet_magic_header_text"
+                                    android:text="@={config.interface.underloadPacketMagicHeader}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/transport_packet_magic_header_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/space_sm"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="4dp"
+                                android:layout_marginBottom="4dp"
+                                android:layout_weight="1"
+                                android:hint="@string/transport_packet_magic_header">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/transport_packet_magic_header_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="textNoSuggestions"
+                                    android:nextFocusUp="@id/response_packet_magic_header_text"
+                                    android:nextFocusDown="@id/special_junk_i3_text"
+                                    android:nextFocusForward="@id/special_junk_i1_text"
+                                    android:text="@={config.interface.transportPacketMagicHeader}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <!-- Row G: special_junk_i1 | special_junk_i2 | special_junk_i3 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/special_junk_i1_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="@dimen/space_sm"
+                                android:layout_marginBottom="4dp"
+                                android:layout_weight="1"
+                                android:hint="@string/special_junk_i1">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/special_junk_i1_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="textNoSuggestions"
+                                    android:nextFocusUp="@id/underload_packet_magic_header_text"
+                                    android:nextFocusDown="@id/special_junk_i4_text"
+                                    android:nextFocusForward="@id/special_junk_i2_text"
+                                    android:text="@={config.interface.specialJunkI1}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/special_junk_i2_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/space_sm"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="@dimen/space_sm"
+                                android:layout_marginBottom="4dp"
+                                android:layout_weight="1"
+                                android:hint="@string/special_junk_i2">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/special_junk_i2_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="textNoSuggestions"
+                                    android:nextFocusUp="@id/transport_packet_magic_header_text"
+                                    android:nextFocusDown="@id/special_junk_i4_text"
+                                    android:nextFocusForward="@id/special_junk_i3_text"
+                                    android:text="@={config.interface.specialJunkI2}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/special_junk_i3_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/space_sm"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="4dp"
+                                android:layout_marginBottom="4dp"
+                                android:layout_weight="1"
+                                android:hint="@string/special_junk_i3">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/special_junk_i3_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="textNoSuggestions"
+                                    android:nextFocusUp="@id/transport_packet_magic_header_text"
+                                    android:nextFocusDown="@id/special_junk_i5_text"
+                                    android:nextFocusForward="@id/special_junk_i4_text"
+                                    android:text="@={config.interface.specialJunkI3}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <!-- Row H: special_junk_i4 | special_junk_i5 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/special_junk_i4_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="@dimen/space_sm"
+                                android:layout_marginBottom="4dp"
+                                android:layout_weight="1"
+                                android:hint="@string/special_junk_i4">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/special_junk_i4_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="textNoSuggestions"
+                                    android:nextFocusUp="@id/special_junk_i1_text"
+                                    android:nextFocusDown="@id/split_tunnel_entry"
+                                    android:nextFocusForward="@id/special_junk_i5_text"
+                                    android:text="@={config.interface.specialJunkI4}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/special_junk_i5_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/space_sm"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginEnd="4dp"
+                                android:layout_marginBottom="4dp"
+                                android:layout_weight="1"
+                                android:hint="@string/special_junk_i5">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/special_junk_i5_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:imeOptions="actionDone"
+                                    android:inputType="textNoSuggestions"
+                                    android:nextFocusUp="@id/special_junk_i2_text"
+                                    android:nextFocusDown="@id/split_tunnel_entry"
+                                    android:nextFocusForward="@id/split_tunnel_entry"
+                                    android:text="@={config.interface.specialJunkI5}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
@@ -663,6 +737,81 @@
                     android:textColor="?attr/colorSecondary"
                     app:layout_anchorGravity="bottom"
                     app:rippleColor="?attr/colorSecondary" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/AmneziaWgTheme.SectionHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/applications" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/split_tunnel_entry"
+                    style="@style/AmneziaWgTheme.MaterialCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:minHeight="@dimen/touch_min"
+                    android:nextFocusUp="@id/imitate_protocol_text"
+                    android:onClick="@{fragment::onRequestSetExcludedIncludedApplications}">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingVertical="@dimen/space_sm">
+
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_stat_chip"
+                            android:backgroundTint="?attr/colorPrimaryContainer">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:layout_gravity="center"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/ic_split_tunnel" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/space_md"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/split_tunnel_title"
+                                android:textAppearance="?attr/textAppearanceTitleMedium"
+                                android:textColor="?attr/colorOnSurface" />
+
+                            <TextView
+                                android:id="@+id/split_tunnel_summary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?attr/textAppearanceBodySmall"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                tools:text="All apps routed" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_chevron_right" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
         </ScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

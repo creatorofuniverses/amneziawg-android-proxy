@@ -5,7 +5,6 @@
 package org.amnezia.awg.fragment
 
 import android.content.pm.PackageManager
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
@@ -20,7 +19,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.amnezia.awg.R
-import org.amnezia.awg.util.resolveAttribute
 
 class AddTunnelsSheet : BottomSheetDialogFragment() {
 
@@ -74,10 +72,9 @@ class AddTunnelsSheet : BottomSheetDialogFragment() {
                 }
             }
         })
-        val gradientDrawable = GradientDrawable().apply {
-            setColor(requireContext().resolveAttribute(com.google.android.material.R.attr.colorSurface))
-        }
-        view.background = gradientDrawable
+        // Let the themed bottom-sheet background (rounded 26dp top, surfaceContainer)
+        // show through instead of painting a flat square colorSurface over it.
+        view.background = null
     }
 
     override fun dismiss() {

@@ -46,31 +46,50 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
+            android:paddingHorizontal="@dimen/screen_padding"
             android:visibility="@{tunnels.size() == 0 ? android.view.View.VISIBLE : android.view.View.GONE}"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/logo_placeholder"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
+                android:layout_width="92dp"
+                android:layout_height="92dp"
                 android:layout_gravity="center"
-                android:layout_marginBottom="20dp"
-                android:alpha="0.3333333"
-                android:src="@drawable/ic_icon" />
+                android:layout_marginBottom="@dimen/space_xl"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_logo_empty_state" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/tunnel_list_placeholder_margin"
-                android:layout_marginEnd="@dimen/tunnel_list_placeholder_margin"
-                android:text="@string/tunnel_list_placeholder"
-                android:textSize="20sp" />
+                android:text="@string/tunnel_list_empty_title"
+                android:textAppearance="@style/TextAppearance.Awg.EmptyTitle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/space_sm"
+                android:gravity="center"
+                android:text="@string/tunnel_list_empty_subtitle"
+                android:textAppearance="@style/TextAppearance.Awg.EmptyBody" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/empty_create_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/add_tunnel"
+                app:icon="@drawable/ic_action_add_white" />
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/create_fab"
+            style="@style/AmneziaWgTheme.Fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"

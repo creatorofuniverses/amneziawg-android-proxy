@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Status colors for dark theme -->
-    <color name="tunnel_status_connected">#66BB6A</color>
-    <color name="tunnel_status_connecting">#FFB74D</color>
-    <color name="tunnel_status_disconnected">#EF5350</color>
-</resources>
+    <!-- Connection status (dark). Disconnected is neutral grey, not red. -->
+    <color name="tunnel_status_connected">#4ADE80</color>
+    <color name="tunnel_status_connecting">#FBBF24</color>
+    <color name="tunnel_status_disconnected">#6B7178</color>
 
+    <!-- Active/connected row (dark): fill lifts off the #0E0F11 bg + teal border. -->
+    <color name="awg_connected_fill">#14211F</color>
+    <color name="awg_connected_stroke">#1E3A36</color>
+</resources>

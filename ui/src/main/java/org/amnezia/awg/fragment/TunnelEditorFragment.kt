@@ -4,7 +4,10 @@
  */
 package org.amnezia.awg.fragment
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -23,17 +26,21 @@ import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.amnezia.awg.Application
 import org.amnezia.awg.R
 import org.amnezia.awg.backend.Tunnel
+import org.amnezia.awg.config.BadConfigException
+import org.amnezia.awg.config.Config
+import org.amnezia.awg.config.SplitTunnelSummary
 import org.amnezia.awg.databinding.TunnelEditorFragmentBinding
 import org.amnezia.awg.model.ObservableTunnel
 import org.amnezia.awg.util.AdminKnobs
 import org.amnezia.awg.util.BiometricAuthenticator
 import org.amnezia.awg.util.ErrorMessages
 import org.amnezia.awg.viewmodel.ConfigProxy
-import org.amnezia.awg.config.Config
-import kotlinx.coroutines.launch
 
 /**
  * Fragment for editing an AmneziaWG configuration.
@@ -42,9 +49,42 @@ class TunnelEditorFragment : BaseFragment(), MenuProvider {
     private var haveShownKeys = false
     private var binding: TunnelEditorFragmentBinding? = null
     private var tunnel: ObservableTunnel? = null
+    private var totalInstalledApps: Int? = null
+
+    private suspend fun fetchTotalInstalledApps(): Int {
+        totalInstalledApps?.let { return it }
+        val pm = requireContext().packageManager
+        val count = withContext(Dispatchers.IO) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                pm.getPackagesHoldingPermissions(
+                    arrayOf(Manifest.permission.INTERNET),
+                    PackageManager.PackageInfoFlags.of(0L)
+                ).size
+            } else {
+                @Suppress("DEPRECATION")
+                pm.getPackagesHoldingPermissions(arrayOf(Manifest.permission.INTERNET), 0).size
+            }
+        }
+        totalInstalledApps = count
+        return count
+    }
+
+    private fun updateSplitTunnelSummary(iface: org.amnezia.awg.config.Interface, totalApps: Int) {
+        val inc = iface.includedApplications.size
+        val exc = iface.excludedApplications.size
+        binding?.splitTunnelSummary?.text = if (SplitTunnelSummary.isAllApps(inc, exc))
+            getString(R.string.split_tunnel_all_apps)
+        else
+            getString(R.string.split_tunnel_summary,
+                SplitTunnelSummary.routedCount(inc, exc, totalApps), totalApps)
+    }
 
     private fun onConfigLoaded(config: Config) {
         binding?.config = ConfigProxy(config)
+        lifecycleScope.launch {
+            val total = fetchTotalInstalledApps()
+            updateSplitTunnelSummary(config.getInterface(), total)
+        }
     }
 
     private fun onConfigSaved(savedTunnel: Tunnel, throwable: Throwable?) {
@@ -191,6 +231,16 @@ class TunnelEditorFragment : BaseFragment(), MenuProvider {
                         clear()
                         addAll(newSelections)
                     }
+                }
+                lifecycleScope.launch {
+                    val total = fetchTotalInstalledApps()
+                    val iface = try {
+                        binding?.config?.`interface`?.resolve() ?: return@launch
+                    } catch (e: BadConfigException) {
+                        Log.w(TAG, "Failed to resolve interface for split-tunnel summary", e)
+                        return@launch
+                    }
+                    updateSplitTunnelSummary(iface, total)
                 }
             }
             fragment.show(childFragmentManager, null)

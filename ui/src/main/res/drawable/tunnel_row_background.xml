@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Set as the tunnel row's android:background. The adapter toggles
+     android:activated=true on the row in selection mode. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_activated="true" android:drawable="@drawable/bg_tunnel_selected" />
+    <item android:drawable="@drawable/bg_tunnel_row_default" />
+</selector>

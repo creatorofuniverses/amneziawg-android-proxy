@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Background for an UP tunnel row. Selection (android:activated) still wins so a
+     selected connected row reads as selected, not merely connected. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_activated="true" android:drawable="@drawable/bg_tunnel_selected" />
+    <item android:drawable="@drawable/bg_tunnel_connected" />
+</selector>
