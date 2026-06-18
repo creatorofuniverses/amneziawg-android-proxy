@@ -43,7 +43,6 @@ import static org.amnezia.awg.GoBackend.*;
  */
 @NonNullForAll
 public final class GoBackend implements Backend {
-    private static final int DNS_RESOLUTION_RETRIES = 10;
     private static final String TAG = "AmneziaWG/GoBackend";
     @Nullable private static AlwaysOnCallback alwaysOnCallback;
     private static GhettoCompletableFuture<VpnService> vpnService = new GhettoCompletableFuture<>();
@@ -351,16 +350,17 @@ public final class GoBackend implements Backend {
             }
 
 
-            dnsRetry: for (int i = 0; i < DNS_RESOLUTION_RETRIES; ++i) {
+            dnsRetry: for (int i = 0; i < DnsRetry.MAX_ATTEMPTS; ++i) {
                 // Pre-resolve IPs so they're cached when building the userspace string
                 for (final Peer peer : config.getPeers()) {
                     final InetEndpoint ep = peer.getEndpoint().orElse(null);
                     if (ep == null)
                         continue;
                     if (ep.getResolved().orElse(null) == null) {
-                        if (i < DNS_RESOLUTION_RETRIES - 1) {
-                            Log.w(TAG, "DNS host \"" + ep.getHost() + "\" failed to resolve; trying again");
-                            Thread.sleep(1000);
+                        if (i < DnsRetry.MAX_ATTEMPTS - 1) {
+                            final long backoff = DnsRetry.backoffMillis(i);
+                            Log.w(TAG, "DNS host \"" + ep.getHost() + "\" failed to resolve; retrying in " + backoff + "ms");
+                            Thread.sleep(backoff);
                             continue dnsRetry;
                         } else
                             throw new BackendException(Reason.DNS_RESOLUTION_FAILURE, ep.getHost());
