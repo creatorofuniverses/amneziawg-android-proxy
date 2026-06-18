@@ -44,10 +44,13 @@
     </style>
 
     <!-- QR capture (AwgCaptureActivity): thin fullscreen dark theme so the toolbar
-         and prompt card float over the live camera preview. -->
+         and prompt card float over the live camera preview.
+         windowFullscreen hides the status bar entirely (matching the old ZXing
+         capture screen) so the system clock/icons can't overlap the back + torch
+         buttons. Using windowTranslucentStatus here would instead draw the toolbar
+         *under* a still-visible status bar. -->
     <style name="Theme.AwgCapture" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowFullscreen">true</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 </resources>
