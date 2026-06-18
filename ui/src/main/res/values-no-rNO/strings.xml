@@ -178,7 +178,6 @@
     <string name="pre_shared_key_enabled">aktivert</string>
     <string name="private_key">Privat Nøkkel</string>
     <string name="public_key">Offentlig nøkkel</string>
-    <string name="qr_code_hint">Tips: generer med `qrencode -t ansiutf8 &lt; tunnel.conf`.</string>
     <string name="restore_on_boot_summary_off">Vil ikke ta opp aktive tunneler ved oppstart</string>
     <string name="restore_on_boot_summary_on">Vil ta opp aktive tunneler ved oppstart</string>
     <string name="restore_on_boot_title">Gjenopprett ved oppstart</string>

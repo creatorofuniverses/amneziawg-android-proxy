@@ -180,7 +180,6 @@
     <string name="pre_shared_key_enabled">aktiverad</string>
     <string name="private_key">Privat nyckel</string>
     <string name="public_key">Offentlig nyckel</string>
-    <string name="qr_code_hint">Tips: generera med `qrencode -t ansiutf8 &lt; tunnel.conf`.</string>
     <string name="quick_settings_tile_add_title">Lägg till tile i snabbinställningarna</string>
     <string name="quick_settings_tile_add_summary">Tilen växlar din senaste tunnel mellan på och av</string>
     <string name="quick_settings_tile_add_failure">Misslyckades med att skapa tile: fel %d</string>

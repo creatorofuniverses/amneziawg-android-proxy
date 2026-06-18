@@ -42,4 +42,12 @@
         <item name="fontFamily">@font/manrope_regular</item>
         <item name="android:fontFamily">@font/manrope_regular</item>
     </style>
+
+    <!-- QR capture (AwgCaptureActivity): thin fullscreen dark theme so the toolbar
+         and prompt card float over the live camera preview. -->
+    <style name="Theme.AwgCapture" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
 </resources>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Content view for AwgCaptureActivity (Option A2).
+  Hosts ZXing-Embedded's DecoratedBarcodeView and themes the chrome AROUND the
+  camera preview. The preview surface + decode loop stay the library's.
+
+  Layering (bottom → top):
+    1. DecoratedBarcodeView  - camera preview + our AwgViewfinderView overlay
+    2. scrim_top / scrim_bottom - legibility gradients for the chrome
+    3. Toolbar (back + title + torch)
+    4. Prompt card + "Import from gallery"
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_theme_dark_background">
+
+    <!-- 1 · ZXing decorated view, hosting our themed scanner sub-layout -->
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:id="@+id/zxing_barcode_scanner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:zxing_scanner_layout="@layout/awg_barcode_scanner" />
+
+    <!-- 2a · top scrim -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        android:layout_gravity="top"
+        android:background="@drawable/scrim_top" />
+
+    <!-- 2b · bottom scrim -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/scrim_bottom" />
+
+    <!-- 3 · transparent toolbar: back + title + torch -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/qr_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="top"
+        android:background="@android:color/transparent"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:navigationIconTint="@android:color/white"
+        app:title="@string/qr_title"
+        app:titleTextAppearance="?attr/textAppearanceTitleLarge"
+        app:titleTextColor="@android:color/white">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/qr_torch_button"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/bg_scan_icon_button"
+            android:contentDescription="@string/qr_torch_on"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            app:icon="@drawable/ic_flash"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="@android:color/white" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- 4 · prompt card + gallery import -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_scan_prompt"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/qr_prompt_title"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/md_theme_dark_onSurface" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="@string/qr_prompt_sub"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="@color/md_theme_dark_onSurfaceVariant" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/qr_gallery_button"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="6dp"
+            android:text="@string/qr_import_gallery"
+            android:textColor="@color/md_theme_dark_onPrimaryContainer"
+            app:icon="@drawable/ic_image"
+            app:iconTint="@color/md_theme_dark_onPrimaryContainer" />
+    </LinearLayout>
+</FrameLayout>

@@ -167,7 +167,6 @@
     <string name="pre_shared_key_enabled">有効</string>
     <string name="private_key">秘密鍵</string>
     <string name="public_key">公開鍵</string>
-    <string name="qr_code_hint">Tip: `qrencode -t ansiutf8 &lt; tunnel.conf` で生成できます</string>
     <string name="quick_settings_tile_add_title">クイック設定パネルを追加</string>
     <string name="quick_settings_tile_add_summary">ショートカットタイルを使用すると、最新のトンネルに切り替わります</string>
     <string name="quick_settings_tile_add_failure">ショートカットタイルを追加できません: エラー %d</string>

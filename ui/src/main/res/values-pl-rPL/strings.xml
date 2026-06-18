@@ -203,7 +203,6 @@
     <string name="pre_shared_key_enabled">włączone</string>
     <string name="private_key">Klucz prywatny</string>
     <string name="public_key">Klucz publiczny</string>
-    <string name="qr_code_hint">Wskazówka: wygeneruj za pomocą `qrencode -t ansiutf8 &lt; tunnel.conf`.</string>
     <string name="restore_on_boot_summary_off">Włączone tunele nie zostaną przywrócone podczas uruchamiania</string>
     <string name="restore_on_boot_summary_on">Włączone tunele zostaną przywrócone podczas uruchamiania</string>
     <string name="restore_on_boot_title">Przywróć podczas uruchamiania</string>

@@ -143,7 +143,6 @@
     <string name="pre_shared_key_enabled">සබලයි</string>
     <string name="private_key">පුද්ගලික යතුර</string>
     <string name="public_key">පොදු යතුර</string>
-    <string name="qr_code_hint">ඉඟිය: `qrencode -t ansiutf8 &lt; tunnel.conf` සමඟින් ජනනය කරන්න.</string>
     <string name="restore_on_boot_summary_off">ආරම්භයේදී සක්‍රීය උමං ගෙන එන්නේ නැත</string>
     <string name="restore_on_boot_summary_on">ආරම්භයේදී සක්‍රීය උමං ගෙන එනු ඇත</string>
     <string name="restore_on_boot_title">ආරම්භයේදී ප්‍රතිසාධනය කරන්න</string>

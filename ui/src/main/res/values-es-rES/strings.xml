@@ -180,7 +180,6 @@
     <string name="pre_shared_key_enabled">activado</string>
     <string name="private_key">Clave privada</string>
     <string name="public_key">Clave pública</string>
-    <string name="qr_code_hint">Consejo: generar con `qrencode -t ansiutf8 &lt; tunnel.conf`.</string>
     <string name="restore_on_boot_summary_off">No mostrará túneles habilitados al arrancar</string>
     <string name="restore_on_boot_summary_on">Mostrará túneles habilitados al arrancar</string>
     <string name="restore_on_boot_title">Restaurar al arrancar</string>

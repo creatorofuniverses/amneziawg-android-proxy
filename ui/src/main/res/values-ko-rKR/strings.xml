@@ -164,7 +164,6 @@
     <string name="pre_shared_key_enabled">활성화됨</string>
     <string name="private_key">개인 키</string>
     <string name="public_key">공개 키</string>
-    <string name="qr_code_hint">팁: `qrencode -t ansiutf8 &lt; tunnel.conf` 로 생성가능함.</string>
     <string name="restore_on_boot_summary_off">부팅 시 활성화된 터널들을 켜지 않음</string>
     <string name="restore_on_boot_summary_on">부팅 시 활성화된 터널들을 켬</string>
     <string name="restore_on_boot_title">부트 후 복구</string>

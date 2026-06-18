@@ -180,7 +180,6 @@
     <string name="pre_shared_key_enabled">etkinleştirildi</string>
     <string name="private_key">Özel anahtar</string>
     <string name="public_key">Genel anahtar</string>
-    <string name="qr_code_hint">İpucu: `qrencode -t ansiutf8 &lt; tunnel.conf` ile oluşturun.</string>
     <string name="quick_settings_tile_add_title">Hızlı ayarlar paneline kutucuk ekle</string>
     <string name="quick_settings_tile_add_summary">Kısayol kutucuğu en son tüneli değiştirir</string>
     <string name="quick_settings_tile_add_failure">Kısayol kutucuğu eklenemiyor: hata %d</string>

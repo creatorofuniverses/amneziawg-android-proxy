@@ -201,7 +201,6 @@
     <string name="pre_shared_key_enabled">omogočeno</string>
     <string name="private_key">Zasebni ključ</string>
     <string name="public_key">Javni ključ</string>
-    <string name="qr_code_hint">Namig: izdelajte z `qrencode -t ansiutf8 &lt; tunnel.conf`.</string>
     <string name="restore_on_boot_summary_off">Pri zagonu telefona omogočeni tuneli ne bodo aktivirani</string>
     <string name="restore_on_boot_summary_on">Pri zagonu telefona bodo omogočeni tuneli aktivirani</string>
     <string name="restore_on_boot_title">Ponovna vzpostavitev ob zagonu</string>

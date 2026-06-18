@@ -154,7 +154,6 @@
     <string name="pre_shared_key_enabled">ativo</string>
     <string name="private_key">Chave Privada</string>
     <string name="public_key">Chave pública</string>
-    <string name="qr_code_hint">Dica: gerar com `qrencode -t ansiutf8 &lt; tunnel.conf`.</string>
     <string name="quick_settings_tile_add_title">Adicionar botão ao painel de configurações rápidas</string>
     <string name="quick_settings_tile_add_summary">A tecla de atalho alterna o túnel mais recente</string>
     <string name="quick_settings_tile_add_failure">Não foi possível adicionar o atalho de botão: erro %d</string>

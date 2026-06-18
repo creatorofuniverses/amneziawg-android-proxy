@@ -206,7 +206,6 @@
     <string name="pre_shared_key_enabled">включено</string>
     <string name="private_key">Приватный ключ</string>
     <string name="public_key">Публичный ключ</string>
-    <string name="qr_code_hint">Совет: генерировать с “qrencode -t ansiutf8 &lt; tunnel.conf”.</string>
     <string name="quick_settings_tile_add_title">Добавить элемент в панель быстрых настроек</string>
     <string name="quick_settings_tile_add_summary">Элемент переключает последний активный туннель</string>
     <string name="quick_settings_tile_add_failure">Не удается добавить ярлык: ошибка %d</string>

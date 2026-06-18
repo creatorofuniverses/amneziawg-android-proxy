@@ -178,7 +178,6 @@
     <string name="pre_shared_key_enabled">فعال شده</string>
     <string name="private_key">کلید خصوصی</string>
     <string name="public_key">کلید عمومی</string>
-    <string name="qr_code_hint">نکته: با `qrencode -t ansiutf8 &lt; tunnel.conf` تولید کنید.</string>
     <string name="restore_on_boot_summary_off">تونل های فعال در لحظه بالا آمدن سیستم، روشن نخواهند شد</string>
     <string name="restore_on_boot_summary_on">تونل های فعال در لحظه بالا آمدن سیستم، روشن خواهند شد</string>
     <string name="restore_on_boot_title">بازگردانی در بوت</string>

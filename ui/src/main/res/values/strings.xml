@@ -201,7 +201,20 @@
     <string name="pre_shared_key_enabled">enabled</string>
     <string name="private_key">Private key</string>
     <string name="public_key">Public key</string>
-    <string name="qr_code_hint">Tip: generate with `qrencode -t ansiutf8 &lt; tunnel.conf`.</string>
+    <!-- QR scan screen (themed capture activity). -->
+    <string name="qr_title">Scan QR code</string>
+    <string name="qr_prompt_title">Point your camera at the QR code</string>
+    <string name="qr_prompt_sub">Hold steady — it imports automatically.</string>
+    <string name="qr_import_gallery">Import from gallery</string>
+    <!-- Torch toggle content descriptions (a11y / TV) -->
+    <string name="qr_torch_on">Turn on flashlight</string>
+    <string name="qr_torch_off">Turn off flashlight</string>
+    <!-- Gallery decode failure (no QR found in the chosen image) -->
+    <string name="qr_no_code_in_image">No QR code found in that image.</string>
+    <!-- Camera permission rationale (shown if the user denied the camera) -->
+    <string name="qr_permission_title">Camera needed to scan</string>
+    <string name="qr_permission_body">AmneziaWG uses the camera only to read the QR code on this screen.</string>
+    <string name="qr_permission_grant">Allow camera</string>
     <string name="quick_settings_tile_add_title">Add tile to quick settings panel</string>
     <string name="quick_settings_tile_add_summary">The shortcut tile toggles the most recent tunnel</string>
     <string name="quick_settings_tile_add_failure">Unable to add shortcut tile: error %d</string>

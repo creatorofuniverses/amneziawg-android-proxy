@@ -232,7 +232,6 @@
     <string name="pre_shared_key_enabled">مفعّل</string>
     <string name="private_key">مفتاح خاص</string>
     <string name="public_key">مفتاح عام</string>
-    <string name="qr_code_hint">نصيحة: إنشاء بواسطة `qrencode -t ansiutf8 &lt; tunnel.conf`.</string>
     <string name="quick_settings_tile_add_title">إضافة بلاطة إلى لوحة الإعدادات السريعة</string>
     <string name="quick_settings_tile_add_summary">بلاطة الاختصار تستبدل أحدث نفق</string>
     <string name="quick_settings_tile_add_failure">تعذر إضافة لوحة الاختصار: خطأ %d</string>

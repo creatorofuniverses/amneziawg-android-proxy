@@ -180,7 +180,6 @@
     <string name="pre_shared_key_enabled">lubatud</string>
     <string name="private_key">Privaatvõti</string>
     <string name="public_key">Avalik võti</string>
-    <string name="qr_code_hint">Vihje: tekita käsuga `qrencode -t ansiutf8 &lt; tunnel.conf`.</string>
     <string name="quick_settings_tile_action">Lülita tunnel</string>
     <string name="restore_on_boot_summary_off">Ei lülita seadme käivitumisel lubatud tunneleid sisse</string>
     <string name="restore_on_boot_summary_on">Lülitab seadme käivitumisel lubatud tunnelid sisse</string>

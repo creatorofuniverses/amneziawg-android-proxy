@@ -167,7 +167,6 @@
     <string name="pre_shared_key_enabled">已启用</string>
     <string name="private_key">私钥</string>
     <string name="public_key">公钥</string>
-    <string name="qr_code_hint">提示：使用命令 `qrencode -t ansiutf8 &lt; tunnel.conf` 生成二维码</string>
     <string name="quick_settings_tile_add_title">添加磁贴到快速设置面板</string>
     <string name="quick_settings_tile_add_summary">通过快捷磁贴开启/关闭上次使用的隧道</string>
     <string name="quick_settings_tile_add_failure">无法添加快捷磁贴：错误 %d</string>

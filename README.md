@@ -29,3 +29,44 @@ $ git submodule update --init --recursive
 ```
 
 macOS users may need [flock(1)](https://github.com/discoteq/flock).
+
+## Importing tunnels
+
+The app can import a tunnel by **scanning a QR code**, **picking a QR image from
+the gallery**, importing a `.conf` file, or pasting an `awg://v1` share-string.
+
+### Generate a QR code from a config
+
+Using [`qrencode`](https://fukuchi.org/works/qrencode/):
+
+```
+# Print to the terminal (scan it with the in-app camera scanner):
+$ qrencode -t ansiutf8 < tunnel.conf
+
+# Or write a PNG to import via "Import from gallery":
+$ qrencode -o tunnel.png < tunnel.conf
+```
+
+### Share-string (`awg://v1`)
+
+`tools/awgshare/awgshare.py` is the reference encoder/decoder for the compact
+`awg://v1` share-string the app pastes in (zlib-compressed, base64url-encoded
+config). It has no third-party dependencies:
+
+```
+# .conf -> awg://v1/...  (paste the output into the app's "Paste" import)
+$ python3 tools/awgshare/awgshare.py encode tunnel.conf
+
+# awg://v1/... -> .conf
+$ python3 tools/awgshare/awgshare.py decode "awg://v1/..."
+```
+
+The script also carries [PEP 723](https://peps.python.org/pep-0723/) inline
+metadata, so it can be run with [`uv`](https://docs.astral.sh/uv/) directly:
+`uv run tools/awgshare/awgshare.py encode tunnel.conf`.
+
+You can chain both — turn a config straight into a scannable share-string QR:
+
+```
+$ python3 tools/awgshare/awgshare.py encode tunnel.conf | qrencode -t ansiutf8
+```

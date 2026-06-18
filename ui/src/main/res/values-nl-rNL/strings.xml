@@ -180,7 +180,6 @@
     <string name="pre_shared_key_enabled">ingeschakeld</string>
     <string name="private_key">Privésleutel</string>
     <string name="public_key">Publieke sleutel</string>
-    <string name="qr_code_hint">Tip: genereer met `qrencode -t ansiutf8 &lt; tunnel.conf`.</string>
     <string name="quick_settings_tile_add_title">Voeg tegel toe aan snelle instellingen</string>
     <string name="quick_settings_tile_add_summary">De sneltoets schakelt de meest recente tunnel aan</string>
     <string name="quick_settings_tile_add_failure">Kan geen sneltoets toevoegen: fout %d</string>

@@ -113,7 +113,6 @@
     <string name="pre_shared_key_enabled">povolené</string>
     <string name="private_key">Súkromný kľúč</string>
     <string name="public_key">Verejný kľúč</string>
-    <string name="qr_code_hint">Tip: vygenerovať s `qrencode -t ansiutf8 &lt; tunnel.conf`.</string>
     <string name="restore_on_boot_title">Obnov po štarte</string>
     <string name="save">Uložiť</string>
     <string name="select_all">Označiť všetko</string>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Custom scanner sub-layout passed to DecoratedBarcodeView via
+  app:zxing_scanner_layout="@layout/awg_barcode_scanner".
+
+  DecoratedBarcodeView looks up these three IDs by name, so they MUST be kept:
+    - zxing_barcode_surface  (BarcodeView, the camera preview)
+    - zxing_viewfinder_view  (the overlay — we swap in AwgViewfinderView)
+    - zxing_status_view      (the library's prompt TextView — we hide it and use
+                              our own prompt card in awg_capture.xml instead)
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.journeyapps.barcodescanner.BarcodeView
+        android:id="@+id/zxing_barcode_surface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Teal rounded frame + corner brackets, dim mask, no red laser. -->
+    <org.amnezia.awg.ui.AwgViewfinderView
+        android:id="@+id/zxing_viewfinder_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Library status text is unused; our prompt card replaces it. -->
+    <TextView
+        android:id="@+id/zxing_status_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:visibility="gone" />
+</merge>

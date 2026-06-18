@@ -29,6 +29,7 @@ import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import org.amnezia.awg.Application
 import org.amnezia.awg.R
+import org.amnezia.awg.activity.AwgCaptureActivity
 import org.amnezia.awg.activity.PasteConfigActivity
 import org.amnezia.awg.activity.TunnelCreatorActivity
 import org.amnezia.awg.backend.Tunnel
@@ -95,7 +96,8 @@ class TunnelListFragment : BaseFragment() {
             ScanOptions()
                 .setOrientationLocked(false)
                 .setBeepEnabled(false)
-                .setPrompt(getString(R.string.qr_code_hint))
+                .setCaptureActivity(AwgCaptureActivity::class.java)
+            // The themed capture layout owns the prompt card, so no setPrompt(...).
         )
     }
 

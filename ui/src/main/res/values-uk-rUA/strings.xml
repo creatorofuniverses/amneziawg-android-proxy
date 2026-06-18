@@ -206,7 +206,6 @@
     <string name="pre_shared_key_enabled">увімкнений</string>
     <string name="private_key">Приватний ключ</string>
     <string name="public_key">Публічний ключ</string>
-    <string name="qr_code_hint">Порада: згенеруйте за допомогою `qrencode -t ansiutf8 &lt; tunnel.conf`.</string>
     <string name="restore_on_boot_summary_off">Не піднімати увімкнені тунелі при запуску</string>
     <string name="restore_on_boot_summary_on">Піднімати увімкнені тунелі при запуску</string>
     <string name="restore_on_boot_title">Відновлювати при запуску</string>

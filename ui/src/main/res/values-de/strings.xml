@@ -180,7 +180,6 @@
     <string name="pre_shared_key_enabled">aktiviert</string>
     <string name="private_key">Privater Schlüssel</string>
     <string name="public_key">Öffentlicher Schlüssel</string>
-    <string name="qr_code_hint">Tipp: Mit `qrencode -t ansiutf8 &lt; tunnel.conf` generieren.</string>
     <string name="quick_settings_tile_add_title">Kachel zu Schnelleinstellungen hinzufügen</string>
     <string name="quick_settings_tile_add_summary">Die Verknüpfung schaltet den letzten Tunnel um</string>
     <string name="quick_settings_tile_add_failure">Verknüpfung kann nicht hinzugefügt werden: Fehler %d</string>

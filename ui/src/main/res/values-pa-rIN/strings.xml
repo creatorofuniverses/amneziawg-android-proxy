@@ -174,7 +174,6 @@
     <string name="pre_shared_key_enabled">ਸਮਰੱਥ ਹੈ</string>
     <string name="private_key">ਪ੍ਰਾਈਵੇਟ ਕੁੰਜੀ</string>
     <string name="public_key">ਪਬਲਿਕ ਕੁੰਜੀ</string>
-    <string name="qr_code_hint">ਟੋਟਕਾ: `qrencode -t ansiutf8 &lt; tunnel.conf` ਨਾਲ ਤਿਆਰ ਕਰੋ।</string>
     <string name="restore_on_boot_summary_off">ਬੂਟ ਕਰਨ ਸਮੇਂ ਸਮਰੱਥ ਕੀਤੀਆਂ ਟਨਲਾਂ ਨੂੰ ਚਾਲੂ ਨਹੀਂ ਕੀਤਾ ਜਾਵੇਗਾ</string>
     <string name="restore_on_boot_summary_on">ਬੂਟ ਕਰਨ ਸਮੇਂ ਸਮਰੱਥ ਕੀਤੀਆਂ ਟਨਲਾਂ ਨੂੰ ਚਾਲੂ ਕੀਤਾ ਜਾਵੇਗਾ</string>
     <string name="restore_on_boot_title">ਬੂਟ ਕਰਨ ਉੱਤੇ ਬਹਾਲ ਕਰੋ</string>

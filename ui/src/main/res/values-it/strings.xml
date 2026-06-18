@@ -180,7 +180,6 @@
     <string name="pre_shared_key_enabled">abilitata</string>
     <string name="private_key">Chiave privata</string>
     <string name="public_key">Chiave pubblica</string>
-    <string name="qr_code_hint">Suggerimento: genera con `qrencode -t ansiutf8 &lt; tunnel.conf`.</string>
     <string name="quick_settings_tile_add_title">Aggiungi riquadro ale impostazioni rapide</string>
     <string name="quick_settings_tile_add_summary">La scorciatoia attiva/disattiva il tunnel più recente</string>
     <string name="quick_settings_tile_add_failure">Impossibile aggiungere la scorciatoia: errore %d</string>
