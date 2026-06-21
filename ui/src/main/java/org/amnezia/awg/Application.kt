@@ -25,6 +25,7 @@ import org.amnezia.awg.model.TunnelManager
 import org.amnezia.awg.util.NetworkState
 import org.amnezia.awg.util.NetworkType
 import org.amnezia.awg.util.RootShell
+import org.amnezia.awg.util.ThemeMode
 import org.amnezia.awg.util.ToolsInstaller
 import org.amnezia.awg.util.UserKnobs
 import org.amnezia.awg.util.applicationScope
@@ -92,23 +93,17 @@ class Application : android.app.Application() {
         rootShell = RootShell(applicationContext)
         toolsInstaller = ToolsInstaller(applicationContext, rootShell)
         preferencesDataStore = PreferenceDataStoreFactory.create { applicationContext.preferencesDataStoreFile("settings") }
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            runBlocking {
-                AppCompatDelegate.setDefaultNightMode(if (UserKnobs.darkTheme.first()) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
-            }
-            UserKnobs.darkTheme.onEach {
-                val newMode = if (it) {
-                    AppCompatDelegate.MODE_NIGHT_YES
-                } else {
-                    AppCompatDelegate.MODE_NIGHT_NO
-                }
-                if (AppCompatDelegate.getDefaultNightMode() != newMode) {
-                    AppCompatDelegate.setDefaultNightMode(newMode)
-                }
-            }.launchIn(coroutineScope)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        // Apply the user's theme choice (System/Light/Dark) before the first
+        // activity inflates, then keep it in sync so changes re-theme live.
+        runBlocking {
+            AppCompatDelegate.setDefaultNightMode(ThemeMode.toNightMode(UserKnobs.themeMode.first()))
         }
+        UserKnobs.themeMode.onEach {
+            val newMode = ThemeMode.toNightMode(it)
+            if (AppCompatDelegate.getDefaultNightMode() != newMode) {
+                AppCompatDelegate.setDefaultNightMode(newMode)
+            }
+        }.launchIn(coroutineScope)
         tunnelManager = TunnelManager(FileConfigStore(applicationContext))
         tunnelManager.onCreate()
 

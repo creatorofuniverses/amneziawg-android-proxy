@@ -8,6 +8,12 @@
             android:layout="@layout/preference_awg_about" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/settings_cat_appearance">
+        <org.amnezia.awg.preference.ThemePreference
+            android:key="theme_mode"
+            android:selectable="false" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/settings_cat_general">
         <SwitchPreferenceCompat
             android:defaultValue="false"
@@ -16,13 +22,6 @@
             android:summaryOff="@string/restore_on_boot_summary_off"
             android:summaryOn="@string/restore_on_boot_summary_on"
             android:title="@string/restore_on_boot_title" />
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:key="dark_theme"
-            android:singleLineTitle="false"
-            android:summaryOff="@string/dark_theme_summary_off"
-            android:summaryOn="@string/dark_theme_summary_on"
-            android:title="@string/dark_theme_title" />
         <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="multiple_tunnels"

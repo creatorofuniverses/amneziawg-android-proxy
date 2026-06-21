@@ -292,9 +292,16 @@
     <string name="version_title">AmneziaWG Proxy v%s</string>
     <string name="version_pill" translatable="false">v%s</string>
     <string name="settings_cat_about">About</string>
+    <string name="settings_cat_appearance">Appearance</string>
     <string name="settings_cat_general">General</string>
     <string name="settings_cat_actions">Actions</string>
     <string name="settings_cat_advanced">Advanced</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_caption_system">Follows your device theme</string>
+    <string name="theme_caption_light">Always light, regardless of system</string>
+    <string name="theme_caption_dark">Always dark, regardless of system</string>
     <string name="vpn_not_authorized_error">VPN service not authorized by user</string>
     <string name="vpn_start_error">Unable to start Android VPN service</string>
     <string name="zip_export_error">Unable to export tunnels: %s</string>

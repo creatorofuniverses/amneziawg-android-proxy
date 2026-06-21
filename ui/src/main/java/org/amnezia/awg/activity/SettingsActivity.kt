@@ -57,10 +57,6 @@ class SettingsActivity : AppCompatActivity() {
                 val quickTile = preferenceManager.findPreference<Preference>("quick_tile")
                 quickTile?.parent?.removePreference(quickTile)
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                val darkTheme = preferenceManager.findPreference<Preference>("dark_theme")
-                darkTheme?.parent?.removePreference(darkTheme)
-            }
             if (AdminKnobs.disableConfigExport) {
                 val zipExporter = preferenceManager.findPreference<Preference>("zip_exporter")
                 zipExporter?.parent?.removePreference(zipExporter)

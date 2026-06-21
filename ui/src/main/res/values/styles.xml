@@ -167,6 +167,20 @@
         <item name="backgroundTint">@color/segmented_button_bg</item>
     </style>
 
+    <!-- Compact variant for the 3-way theme picker: trims the default button
+         padding, icon padding and letter spacing so icon + label fit each
+         narrow segment without ellipsizing. -->
+    <style name="Widget.Awg.SegmentedButton.Compact">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:paddingRight">6dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="iconPadding">5dp</item>
+    </style>
+
     <!-- Full-screen dialog theme for the Split-tunnel panel (Task 8). -->
     <style name="ThemeOverlay_Awg_FullScreenDialog" parent="AppTheme">
         <item name="android:windowFullscreen">false</item>

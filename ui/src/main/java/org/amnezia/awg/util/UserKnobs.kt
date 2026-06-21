@@ -47,6 +47,20 @@ object UserKnobs {
         }
     }
 
+    private val THEME_MODE = stringPreferencesKey("theme_mode")
+    val themeMode: Flow<String>
+        get() = Application.getPreferencesDataStore().data.map {
+            // Migrate the legacy boolean dark_theme switch into the new picker:
+            // an explicit dark choice becomes "dark", everything else follows the system.
+            it[THEME_MODE] ?: if (it[DARK_THEME] == true) ThemeMode.DARK else ThemeMode.SYSTEM
+        }
+
+    suspend fun setThemeMode(mode: String) {
+        Application.getPreferencesDataStore().edit {
+            it[THEME_MODE] = mode
+        }
+    }
+
     private val ALLOW_REMOTE_CONTROL_INTENTS = booleanPreferencesKey("allow_remote_control_intents")
     val allowRemoteControlIntents: Flow<Boolean>
         get() = Application.getPreferencesDataStore().data.map {
